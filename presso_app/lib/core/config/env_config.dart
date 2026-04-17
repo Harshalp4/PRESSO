@@ -41,3 +41,33 @@ final envConfigProvider =
     StateNotifierProvider<EnvConfigNotifier, ApiEnvironment>(
   (ref) => EnvConfigNotifier(),
 );
+
+// ── Firebase Auth toggle ─────────────────────────────────────────────────────
+// Set to true once APNs key is uploaded to Firebase and license agreement is
+// resolved. When false, all platforms use dummy OTP (API DevAuth mode).
+// When true, iOS/Android use real Firebase Phone Auth; desktop still uses dummy.
+
+class FirebaseAuthToggleNotifier extends StateNotifier<bool> {
+  static const _key = 'use_firebase_auth';
+
+  /// Default: false (dummy OTP). Flip to true when APNs is ready.
+  FirebaseAuthToggleNotifier() : super(false) {
+    _load();
+  }
+
+  Future<void> _load() async {
+    final prefs = await SharedPreferences.getInstance();
+    state = prefs.getBool(_key) ?? false;
+  }
+
+  Future<void> toggle() async {
+    state = !state;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_key, state);
+  }
+}
+
+final useFirebaseAuthProvider =
+    StateNotifierProvider<FirebaseAuthToggleNotifier, bool>(
+  (ref) => FirebaseAuthToggleNotifier(),
+);

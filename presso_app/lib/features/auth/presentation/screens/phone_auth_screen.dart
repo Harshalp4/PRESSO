@@ -13,8 +13,7 @@ import 'package:presso_app/core/config/env_config.dart';
 import 'package:presso_app/core/widgets/loading_overlay.dart';
 import 'package:presso_app/features/auth/presentation/providers/auth_provider.dart';
 
-/// Desktop platforms don't support Firebase Phone Auth.
-/// On desktop (debug), fall back to dummy OTP (API must have DevAuth=true).
+/// Desktop platforms don't support Firebase Phone Auth at all.
 bool get _isDesktop =>
     Platform.isMacOS || Platform.isWindows || Platform.isLinux;
 
@@ -74,14 +73,18 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
 
     _phone = '+91${_phoneController.text.trim()}';
 
-    // Desktop: Firebase Phone Auth is unsupported → dummy OTP (API DevAuth mode)
-    if (_isDesktop) {
+    // Use dummy OTP when: desktop (unsupported) OR Firebase auth toggle is off
+    final useFirebase = ref.read(useFirebaseAuthProvider);
+    if (_isDesktop || !useFirebase) {
       setState(() {
         _isLoading = false;
         _otpSent = true;
       });
       _startCountdown();
-      _otpFocusNodes[0].requestFocus();
+      // Delay focus so the OTP fields are rendered before requesting keyboard
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted) _otpFocusNodes[0].requestFocus();
+      });
       return;
     }
 
@@ -155,8 +158,9 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
   Future<void> _verify() async {
     if (!_isOtpComplete) return;
 
-    // Desktop: skip Firebase, send phone number directly (API DevAuth mode)
-    if (_isDesktop) {
+    // Dummy OTP: skip Firebase, send phone number directly (API DevAuth mode)
+    final useFirebase = ref.read(useFirebaseAuthProvider);
+    if (_isDesktop || !useFirebase) {
       setState(() {
         _isLoading = true;
         _errorMessage = null;
@@ -437,12 +441,17 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
                 const SizedBox(height: 16),
 
                 // ── Auth mode note ──
-                Text(
-                  _isDesktop
-                      ? 'Desktop Dev Mode (any 6-digit OTP)'
-                      : 'Firebase Phone Authentication',
-                  style: const TextStyle(fontSize: 11, color: AppColors.textHint),
-                ),
+                Builder(builder: (context) {
+                  final firebaseOn = ref.watch(useFirebaseAuthProvider);
+                  final isDummy = _isDesktop || !firebaseOn;
+                  return Text(
+                    isDummy
+                        ? 'Dev Mode (any 6-digit OTP)'
+                        : 'Firebase Phone Authentication',
+                    style: const TextStyle(
+                        fontSize: 11, color: AppColors.textHint),
+                  );
+                }),
 
                 // ── OTP Section (appears after Send OTP) ──
                 if (_otpSent) ...[
@@ -580,16 +589,64 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
                   ),
                 ],
 
-                // ── API Environment Toggle (debug only) ──
+                // ── Debug toggles (debug only) ──
                 if (kDebugMode) ...[
                   const SizedBox(height: 16),
-                  _buildEnvToggle(),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildEnvToggle(),
+                      const SizedBox(width: 10),
+                      _buildFirebaseAuthToggle(),
+                    ],
+                  ),
                 ],
 
                 const SizedBox(height: 24),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFirebaseAuthToggle() {
+    final firebaseOn = ref.watch(useFirebaseAuthProvider);
+
+    return GestureDetector(
+      onTap: () => ref.read(useFirebaseAuthProvider.notifier).toggle(),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: firebaseOn
+              ? AppColors.green.withOpacity(0.1)
+              : Colors.grey.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: firebaseOn
+                ? AppColors.green.withOpacity(0.3)
+                : Colors.grey.withOpacity(0.3),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              firebaseOn ? Icons.verified_user : Icons.bug_report,
+              size: 14,
+              color: firebaseOn ? AppColors.green : Colors.grey,
+            ),
+            const SizedBox(width: 6),
+            Text(
+              firebaseOn ? 'OTP: Real' : 'OTP: Dummy',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: firebaseOn ? AppColors.green : Colors.grey,
+              ),
+            ),
+          ],
         ),
       ),
     );
