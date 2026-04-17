@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io' show Platform;
 
 import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter/foundation.dart';
@@ -11,6 +12,11 @@ import 'package:presso_app/core/constants/app_text_styles.dart';
 import 'package:presso_app/core/config/env_config.dart';
 import 'package:presso_app/core/widgets/loading_overlay.dart';
 import 'package:presso_app/features/auth/presentation/providers/auth_provider.dart';
+
+/// Desktop platforms don't support Firebase Phone Auth.
+/// On desktop (debug), fall back to dummy OTP (API must have DevAuth=true).
+bool get _isDesktop =>
+    Platform.isMacOS || Platform.isWindows || Platform.isLinux;
 
 class PhoneAuthScreen extends ConsumerStatefulWidget {
   const PhoneAuthScreen({super.key});
@@ -67,6 +73,17 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
     });
 
     _phone = '+91${_phoneController.text.trim()}';
+
+    // Desktop: Firebase Phone Auth is unsupported → dummy OTP (API DevAuth mode)
+    if (_isDesktop) {
+      setState(() {
+        _isLoading = false;
+        _otpSent = true;
+      });
+      _startCountdown();
+      _otpFocusNodes[0].requestFocus();
+      return;
+    }
 
     await fb.FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: _phone,
@@ -136,7 +153,46 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
   // ── Verify ──────────────────────────────────────────────────────────────────
 
   Future<void> _verify() async {
-    if (!_isOtpComplete || _verificationId == null) return;
+    if (!_isOtpComplete) return;
+
+    // Desktop: skip Firebase, send phone number directly (API DevAuth mode)
+    if (_isDesktop) {
+      setState(() {
+        _isLoading = true;
+        _errorMessage = null;
+      });
+      try {
+        final container = ProviderScope.containerOf(context);
+        final authNotifier = container.read(authProvider.notifier);
+        // In DevAuth mode the API treats firebaseToken as the phone number
+        await authNotifier.login(_phone);
+
+        if (!mounted) return;
+        final authState = container.read(authProvider);
+        if (authState.hasError) {
+          setState(() {
+            _isLoading = false;
+            _errorMessage = authState.errorMessage ?? 'Login failed';
+          });
+          return;
+        }
+        final hasName =
+            authState.user?.name != null && authState.user!.name!.isNotEmpty;
+        final destination = hasName ? '/home' : '/auth/setup';
+        Future(() {
+          if (mounted) context.go(destination);
+        });
+      } catch (e) {
+        if (!mounted) return;
+        setState(() {
+          _isLoading = false;
+          _errorMessage = 'Login failed. Please try again.';
+        });
+      }
+      return;
+    }
+
+    if (_verificationId == null) return;
     setState(() {
       _isLoading = true;
       _errorMessage = null;
@@ -380,10 +436,12 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
 
                 const SizedBox(height: 16),
 
-                // ── Firebase note ──
-                const Text(
-                  'Firebase Phone Authentication',
-                  style: TextStyle(fontSize: 11, color: AppColors.textHint),
+                // ── Auth mode note ──
+                Text(
+                  _isDesktop
+                      ? 'Desktop Dev Mode (any 6-digit OTP)'
+                      : 'Firebase Phone Authentication',
+                  style: const TextStyle(fontSize: 11, color: AppColors.textHint),
                 ),
 
                 // ── OTP Section (appears after Send OTP) ──
