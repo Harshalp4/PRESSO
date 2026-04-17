@@ -1,8 +1,10 @@
 class ApiConstants {
-  // Toggle between local dev and Render production:
-  // Local:  'http://192.168.29.63:5181'
-  // Render: 'https://presso-api.onrender.com'
-  static const String baseUrl = 'http://192.168.29.63:5181';
+  // Auto-switches: debug builds use local IP, release builds use Render.
+  // Override at build time: flutter run --dart-define=API_BASE_URL=https://custom-url.com
+  static const String baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue: 'https://presso-3ggb.onrender.com',
+  );
 
   // Auth
   static const String login = '/api/auth/login';

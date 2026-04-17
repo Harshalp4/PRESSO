@@ -3,7 +3,7 @@ class ApiConstants {
 
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'http://192.168.31.197:5181',
+    defaultValue: 'https://presso-3ggb.onrender.com',
   );
 
   // Auth
