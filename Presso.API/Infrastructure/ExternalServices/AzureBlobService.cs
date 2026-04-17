@@ -12,23 +12,19 @@ public class AzureBlobService : IAzureBlobService
     private static readonly HashSet<string> AllowedContentTypes = new() { "image/jpeg", "image/png", "image/webp" };
     private const long MaxFileSizeBytes = 5 * 1024 * 1024; // 5MB
 
+    // Hardcoded for dev/testing — move to env vars for production
+    private const string HardcodedConnectionString =
+        "DefaultEndpointsProtocol=https;AccountName=pressoimages;AccountKey=9YRs6QaZ9QDp/a9dAYbApRsQ/jIJTHmhFzN7iKiZuPj12DJQRB7+nfQK/GY4MSBoeys64VDVIzJo+AStY9xHgg==;EndpointSuffix=core.windows.net";
+    private const string HardcodedContainerName = "presso";
+
     public AzureBlobService(IConfiguration config, ILogger<AzureBlobService> logger)
     {
         _logger = logger;
-        var connectionString = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING")
-            ?? config["AzureStorage:ConnectionString"];
-        var containerName = Environment.GetEnvironmentVariable("AZURE_STORAGE_CONTAINER_NAME")
-            ?? config.GetValue<string>("AzureStorage:ContainerName", "presso-photos");
+        var connectionString = HardcodedConnectionString;
+        var containerName = HardcodedContainerName;
 
-        if (!string.IsNullOrEmpty(connectionString))
-        {
-            var blobServiceClient = new BlobServiceClient(connectionString);
-            _containerClient = blobServiceClient.GetBlobContainerClient(containerName);
-        }
-        else
-        {
-            _logger.LogWarning("Azure Blob Storage not configured - photo uploads disabled");
-        }
+        var blobServiceClient = new BlobServiceClient(connectionString);
+        _containerClient = blobServiceClient.GetBlobContainerClient(containerName);
     }
 
     public async Task<string> UploadPhotoAsync(Stream fileStream, string fileName, string contentType, string folder)
