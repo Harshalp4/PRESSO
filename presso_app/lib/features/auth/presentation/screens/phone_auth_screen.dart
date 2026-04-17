@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart' as fb;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,8 +22,8 @@ class PhoneAuthScreen extends ConsumerStatefulWidget {
 class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
   final _phoneController = TextEditingController();
   final List<TextEditingController> _otpControllers =
-      List.generate(4, (_) => TextEditingController());
-  final List<FocusNode> _otpFocusNodes = List.generate(4, (_) => FocusNode());
+      List.generate(6, (_) => TextEditingController());
+  final List<FocusNode> _otpFocusNodes = List.generate(6, (_) => FocusNode());
 
   bool _isLoading = false;
   String? _errorMessage;
@@ -34,9 +35,13 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
   int _secondsLeft = 30;
   bool get _canResend => _secondsLeft == 0;
 
+  // Firebase Phone Auth state
+  String? _verificationId;
+  int? _resendToken;
+
   bool get _isPhoneValid => _phoneController.text.trim().length == 10;
   String get _otpCode => _otpControllers.map((c) => c.text).join();
-  bool get _isOtpComplete => _otpCode.length == 4;
+  bool get _isOtpComplete => _otpCode.length == 6;
 
   @override
   void dispose() {
@@ -53,7 +58,7 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
 
   // ── Send OTP ────────────────────────────────────────────────────────────────
 
-  Future<void> _sendOtp() async {
+  Future<void> _sendOtp({int? forceResendToken}) async {
     if (!_isPhoneValid) return;
 
     setState(() {
@@ -63,17 +68,36 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
 
     _phone = '+91${_phoneController.text.trim()}';
 
-    // TODO: Replace with real Firebase phone auth
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    if (!mounted) return;
-    setState(() {
-      _isLoading = false;
-      _otpSent = true;
-    });
-    _startCountdown();
-    // Focus first OTP box
-    _otpFocusNodes[0].requestFocus();
+    await fb.FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: _phone,
+      forceResendingToken: forceResendToken,
+      verificationCompleted: (fb.PhoneAuthCredential credential) async {
+        // Auto-verification (Android only) — sign in immediately
+        await _signInWithCredential(credential);
+      },
+      verificationFailed: (fb.FirebaseAuthException e) {
+        if (!mounted) return;
+        setState(() {
+          _isLoading = false;
+          _errorMessage = e.message ?? 'Failed to send OTP';
+        });
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        if (!mounted) return;
+        _verificationId = verificationId;
+        _resendToken = resendToken;
+        setState(() {
+          _isLoading = false;
+          _otpSent = true;
+        });
+        _startCountdown();
+        _otpFocusNodes[0].requestFocus();
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        _verificationId = verificationId;
+      },
+      timeout: const Duration(seconds: 60),
+    );
   }
 
   // ── Countdown ───────────────────────────────────────────────────────────────
@@ -99,7 +123,7 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
   // ── OTP digit handling ──────────────────────────────────────────────────────
 
   void _onOtpDigitChanged(int index, String value) {
-    if (value.length == 1 && index < 3) {
+    if (value.length == 1 && index < 5) {
       _otpFocusNodes[index + 1].requestFocus();
     }
     if (value.isEmpty && index > 0) {
@@ -112,21 +136,64 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
   // ── Verify ──────────────────────────────────────────────────────────────────
 
   Future<void> _verify() async {
-    if (!_isOtpComplete) return;
+    if (!_isOtpComplete || _verificationId == null) return;
     setState(() {
       _isLoading = true;
       _errorMessage = null;
     });
 
     try {
-      var phone = _phone;
-      if (phone.startsWith('+91')) phone = phone.substring(3);
+      final credential = fb.PhoneAuthProvider.credential(
+        verificationId: _verificationId!,
+        smsCode: _otpCode,
+      );
+      await _signInWithCredential(credential);
+    } on fb.FirebaseAuthException catch (e) {
+      if (!mounted) return;
+      String msg;
+      switch (e.code) {
+        case 'invalid-verification-code':
+          msg = 'Invalid OTP. Please try again.';
+          break;
+        case 'session-expired':
+          msg = 'OTP expired. Please resend.';
+          break;
+        default:
+          msg = e.message ?? 'Verification failed';
+      }
+      setState(() {
+        _isLoading = false;
+        _errorMessage = msg;
+      });
+    } catch (e) {
+      if (!mounted) return;
+      setState(() {
+        _isLoading = false;
+        _errorMessage = 'Login failed. Please try again.';
+      });
+    }
+  }
 
-      // Access provider container directly — avoids ConsumerStatefulElement
-      // lifecycle entanglement that causes "Duplicate GlobalKey" crashes.
+  Future<void> _signInWithCredential(fb.PhoneAuthCredential credential) async {
+    try {
+      final userCredential =
+          await fb.FirebaseAuth.instance.signInWithCredential(credential);
+      final idToken = await userCredential.user?.getIdToken();
+
+      if (idToken == null) {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+            _errorMessage = 'Failed to get Firebase token';
+          });
+        }
+        return;
+      }
+
+      // Exchange Firebase ID token for Presso JWT
       final container = ProviderScope.containerOf(context);
       final authNotifier = container.read(authProvider.notifier);
-      await authNotifier.login(phone);
+      await authNotifier.login(idToken);
 
       if (!mounted) return;
 
@@ -139,14 +206,10 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
         return;
       }
 
-      // Compute destination before scheduling navigation.
       final hasName =
           authState.user?.name != null && authState.user!.name!.isNotEmpty;
       final destination = hasName ? '/home' : '/auth/setup';
 
-      // Schedule navigation on the NEXT event-loop iteration so that all
-      // synchronous Riverpod notifications and widget-tree updates finish
-      // before GoRouter restructures the tree.
       Future(() {
         if (mounted) context.go(destination);
       });
@@ -163,21 +226,11 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
 
   Future<void> _resendOtp() async {
     if (!_canResend) return;
-    setState(() {
-      _isLoading = true;
-      _errorMessage = null;
-    });
-
-    // TODO: Replace with real Firebase resend
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    if (!mounted) return;
-    setState(() => _isLoading = false);
-    _startCountdown();
     for (final c in _otpControllers) {
       c.clear();
     }
-    _otpFocusNodes[0].requestFocus();
+    setState(() => _otpSent = false);
+    await _sendOtp(forceResendToken: _resendToken);
   }
 
   // ── Build ───────────────────────────────────────────────────────────────────
@@ -350,16 +403,16 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
                   ),
                   const SizedBox(height: 12),
 
-                  // 4 OTP boxes
+                  // 6 OTP boxes (Firebase uses 6-digit codes)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(4, (index) {
+                    children: List.generate(6, (index) {
                       final hasValue = _otpControllers[index].text.isNotEmpty;
                       return Padding(
-                        padding: EdgeInsets.only(right: index < 3 ? 10.0 : 0),
+                        padding: EdgeInsets.only(right: index < 5 ? 8.0 : 0),
                         child: SizedBox(
-                          width: 50,
-                          height: 54,
+                          width: 44,
+                          height: 52,
                           child: TextFormField(
                             controller: _otpControllers[index],
                             focusNode: _otpFocusNodes[index],

@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -54,7 +56,7 @@ Future<void> _tryFirebaseInit() async {
   }
 }
 
-// ── Thin helper that isolates Firebase imports ─────────────────────────────────
+// ── Firebase helpers ──────────────────────────────────────────────────────────
 
 class _FirebaseHelper {
   static bool _initialized = false;
@@ -62,9 +64,15 @@ class _FirebaseHelper {
   static Future<bool> init() async {
     if (_initialized) return true;
     try {
-      final firebaseCore = _FirebaseCore();
-      await firebaseCore.initializeApp();
+      const skipFirebase =
+          bool.fromEnvironment('SKIP_FIREBASE', defaultValue: false);
+      if (skipFirebase) {
+        debugPrint('[Firebase] SKIP_FIREBASE is set, skipping init');
+        return false;
+      }
+      await Firebase.initializeApp();
       _initialized = true;
+      debugPrint('[Firebase] initialized successfully');
       return true;
     } catch (e) {
       debugPrint('[Firebase] initializeApp failed: $e');
@@ -74,65 +82,19 @@ class _FirebaseHelper {
 
   static Future<void> setupFcm() async {
     try {
-      final fcm = _FcmHelper();
-      await fcm.requestPermission();
-      final token = await fcm.getToken();
+      final messaging = FirebaseMessaging.instance;
+      await messaging.requestPermission(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+      final token = await messaging.getToken();
       if (token != null) {
         debugPrint('[FCM] Token: ${token.substring(0, 10)}...');
       }
     } catch (e) {
       debugPrint('[FCM] setup failed: $e');
     }
-  }
-}
-
-class _FirebaseCore {
-  Future<void> initializeApp() async {
-    const skipFirebase =
-        bool.fromEnvironment('SKIP_FIREBASE', defaultValue: false);
-    if (skipFirebase) {
-      throw Exception('SKIP_FIREBASE is set');
-    }
-    await _doFirebaseInit();
-  }
-}
-
-Future<void> _doFirebaseInit() async {
-  try {
-    final init = _getFirebaseInitializer();
-    await init();
-  } catch (e) {
-    rethrow;
-  }
-}
-
-typedef _AsyncVoidFn = Future<void> Function();
-
-_AsyncVoidFn _getFirebaseInitializer() {
-  return () async {
-    // Replace with real Firebase init once firebase_options.dart is generated:
-    // import 'package:firebase_core/firebase_core.dart';
-    // import 'firebase_options.dart';
-    // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-    debugPrint('[Firebase] initializeApp placeholder — configure firebase_options.dart');
-  };
-}
-
-class _FcmHelper {
-  Future<void> requestPermission() async {
-    // Uncomment when Firebase is configured:
-    // import 'package:firebase_messaging/firebase_messaging.dart';
-    // final messaging = FirebaseMessaging.instance;
-    // await messaging.requestPermission(alert: true, badge: true, sound: true);
-    debugPrint('[FCM] requestPermission placeholder');
-  }
-
-  Future<String?> getToken() async {
-    // Uncomment when Firebase is configured:
-    // import 'package:firebase_messaging/firebase_messaging.dart';
-    // return FirebaseMessaging.instance.getToken();
-    debugPrint('[FCM] getToken placeholder');
-    return null;
   }
 }
 
