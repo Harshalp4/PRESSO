@@ -1,0 +1,88 @@
+<header class="page-head">
+  <div>
+    <h1>Customers</h1>
+    <p>Every signed-up customer, searchable by name, phone or email</p>
+  </div>
+  <div class="actions">
+    <button class="btn ghost" (click)="load()" [disabled]="loading()">
+      {{ loading() ? 'Refreshing…' : 'Refresh' }}
+    </button>
+  </div>
+</header>
+
+<div class="filters">
+  <input
+    class="search"
+    type="text"
+    placeholder="Search name, phone or email"
+    [ngModel]="search()"
+    (ngModelChange)="onSearchInput($event)"
+  />
+</div>
+
+@if (error(); as e) {
+  <div class="alert">{{ e }}</div>
+}
+
+<section class="table-card">
+  <table>
+    <thead>
+      <tr>
+        <th>Customer</th>
+        <th>Phone</th>
+        <th>Orders</th>
+        <th>Total spent</th>
+        <th>Coins</th>
+        <th>Last order</th>
+        <th>Joined</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @if (loading() && items().length === 0) {
+        <tr><td colspan="8" class="empty">Loading…</td></tr>
+      } @else if (items().length === 0) {
+        <tr><td colspan="8" class="empty">No customers match these filters.</td></tr>
+      } @else {
+        @for (c of items(); track c.id) {
+          <tr>
+            <td>
+              <div class="cust-name">
+                {{ c.name || '—' }}
+                @if (c.isStudentVerified) {
+                  <span class="badge student">Student</span>
+                }
+              </div>
+              @if (c.email) {
+                <div class="cust-email">{{ c.email }}</div>
+              }
+            </td>
+            <td class="mono">{{ c.phone }}</td>
+            <td>{{ c.orderCount }}</td>
+            <td class="amount">₹{{ c.totalSpent | number:'1.0-0' }}</td>
+            <td class="coins">{{ c.coinBalance }}</td>
+            <td class="placed">
+              @if (c.lastOrderAt) {
+                {{ c.lastOrderAt | date:'d MMM, h:mm a' }}
+              } @else {
+                <span class="muted">—</span>
+              }
+            </td>
+            <td class="placed">{{ c.createdAt | date:'d MMM yyyy' }}</td>
+            <td>
+              <a class="btn sm ghost" [routerLink]="['/customers', c.id]">View</a>
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</section>
+
+@if (totalPages() > 1) {
+  <div class="pagination">
+    <button class="btn ghost sm" (click)="prev()" [disabled]="page() <= 1 || loading()">← Prev</button>
+    <span class="page-info">Page {{ page() }} of {{ totalPages() }} · {{ totalCount() }} customers</span>
+    <button class="btn ghost sm" (click)="next()" [disabled]="page() >= totalPages() || loading()">Next →</button>
+  </div>
+}

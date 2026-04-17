@@ -1,0 +1,165 @@
+<header class="page-head">
+  <div>
+    <h1>Riders</h1>
+    <p>Approve, suspend and monitor delivery partners</p>
+  </div>
+  <div class="actions">
+    <button class="btn ghost" (click)="load()" [disabled]="loading()">
+      {{ loading() ? 'Refreshing…' : 'Refresh' }}
+    </button>
+    <button class="btn primary" (click)="openAdd()">+ Add rider</button>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab" [class.active]="tab() === 'all'" (click)="setTab('all')">
+    All <span class="count">{{ stats().all }}</span>
+  </button>
+  <button class="tab" [class.active]="tab() === 'Pending'" (click)="setTab('Pending')">
+    Pending <span class="count pending">{{ stats().pending }}</span>
+  </button>
+  <button class="tab" [class.active]="tab() === 'Approved'" (click)="setTab('Approved')">
+    Approved <span class="count">{{ stats().approved }}</span>
+  </button>
+  <button class="tab" [class.active]="tab() === 'Suspended'" (click)="setTab('Suspended')">
+    Suspended <span class="count">{{ stats().suspended }}</span>
+  </button>
+  <button class="tab" [class.active]="tab() === 'Rejected'" (click)="setTab('Rejected')">
+    Rejected <span class="count">{{ stats().rejected }}</span>
+  </button>
+</nav>
+
+<div class="filters">
+  <input
+    class="search"
+    type="text"
+    placeholder="Search name, phone or vehicle number"
+    [ngModel]="search()"
+    (ngModelChange)="onSearchInput($event)"
+  />
+</div>
+
+@if (error(); as e) {
+  <div class="alert">{{ e }}</div>
+}
+
+<section class="table-card">
+  <table>
+    <thead>
+      <tr>
+        <th>Rider</th>
+        <th>Phone</th>
+        <th>Vehicle</th>
+        <th>Status</th>
+        <th>Availability</th>
+        <th>Deliveries</th>
+        <th>Today earnings</th>
+        <th>Joined</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @if (loading() && items().length === 0) {
+        <tr><td colspan="9" class="empty">Loading…</td></tr>
+      } @else if (items().length === 0) {
+        <tr><td colspan="9" class="empty">No riders match these filters.</td></tr>
+      } @else {
+        @for (r of items(); track r.id) {
+          <tr>
+            <td class="rider-name">{{ r.name || '—' }}</td>
+            <td class="mono">{{ r.phone }}</td>
+            <td class="mono">{{ r.vehicleNumber || '—' }}</td>
+            <td>
+              <span class="chip"
+                    [style.background]="riderStatusColor(r.status) + '22'"
+                    [style.color]="riderStatusColor(r.status)">
+                {{ riderStatusLabel(r.status) }}
+              </span>
+            </td>
+            <td>
+              @if (r.status === 'Approved') {
+                <span class="dot" [class.online]="r.isAvailable"></span>
+                {{ r.isAvailable ? 'Online' : 'Offline' }}
+              } @else {
+                <span class="muted">—</span>
+              }
+            </td>
+            <td>{{ r.completedDeliveries }}</td>
+            <td class="amount">₹{{ r.todayEarnings | number:'1.0-0' }}</td>
+            <td class="placed">{{ r.createdAt | date:'d MMM yyyy' }}</td>
+            <td>
+              <a class="btn sm ghost" [routerLink]="['/riders', r.id]">View</a>
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</section>
+
+@if (addOpen()) {
+  <div class="modal-backdrop" (click)="closeAdd()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>Add a rider</h3>
+      <p class="modal-sub">
+        Creates a pre-approved rider. When they later log in on the rider app with
+        this phone number, they'll be matched to this account automatically.
+      </p>
+      <label class="field">
+        <span>Phone <span class="req">*</span></span>
+        <input
+          type="tel"
+          placeholder="+91 98765 43210"
+          [ngModel]="addPhone()"
+          (ngModelChange)="addPhone.set($event)"
+        />
+      </label>
+      <label class="field">
+        <span>Name</span>
+        <input
+          type="text"
+          placeholder="Rider's full name"
+          [ngModel]="addName()"
+          (ngModelChange)="addName.set($event)"
+        />
+      </label>
+      <label class="field">
+        <span>Vehicle number</span>
+        <input
+          type="text"
+          placeholder="MH12 AB 1234"
+          [ngModel]="addVehicle()"
+          (ngModelChange)="addVehicle.set($event)"
+        />
+      </label>
+      <label class="field">
+        <span>Admin notes</span>
+        <textarea
+          rows="2"
+          placeholder="Optional internal notes."
+          [ngModel]="addNotes()"
+          (ngModelChange)="addNotes.set($event)"
+        ></textarea>
+      </label>
+      @if (addError(); as e) {
+        <div class="alert">{{ e }}</div>
+      }
+      <div class="modal-actions">
+        <button class="btn ghost" (click)="closeAdd()" [disabled]="adding()">
+          Cancel
+        </button>
+        <button class="btn primary" (click)="submitAdd()" [disabled]="adding()">
+          {{ adding() ? 'Adding…' : 'Add rider' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (totalPages() > 1) {
+  <div class="pagination">
+    <button class="btn ghost sm" (click)="prev()" [disabled]="page() <= 1 || loading()">← Prev</button>
+    <span class="page-info">Page {{ page() }} of {{ totalPages() }} · {{ totalCount() }} riders</span>
+    <button class="btn ghost sm" (click)="next()" [disabled]="page() >= totalPages() || loading()">Next →</button>
+  </div>
+}

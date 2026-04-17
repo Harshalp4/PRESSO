@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Presso — Screen Wireframes</title>
+<style>
+  :root{
+    --bg:#0f1115; --panel:#171a21; --border:#262b36; --text:#e6e8ef;
+    --muted:#8a92a6; --accent:#ff6b35; --ok:#22c55e; --warn:#f59e0b;
+    --bad:#ef4444; --blue:#3b82f6; --purple:#a855f7;
+  }
+  *{box-sizing:border-box;font-family:-apple-system,Segoe UI,Inter,system-ui,sans-serif}
+  body{margin:0;background:var(--bg);color:var(--text);padding:32px}
+  h1{margin:0 0 6px}
+  .sub{color:var(--muted);margin-bottom:28px}
+  h2{margin:36px 0 14px;border-bottom:1px solid var(--border);padding-bottom:8px;font-size:18px}
+  h2 .tag{font-size:11px;padding:3px 8px;border-radius:6px;margin-left:10px;vertical-align:middle}
+  .tag.r{background:var(--accent);color:#fff}
+  .tag.f{background:var(--purple);color:#fff}
+  .tag.c{background:var(--blue);color:#fff}
+  .tag.g{background:var(--bad);color:#fff}
+
+  .row{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:20px}
+
+  /* Phone frame */
+  .phone{
+    background:#000;border:4px solid #2a2f3a;border-radius:34px;
+    padding:10px;aspect-ratio:9/19;position:relative;
+  }
+  .phone::before{
+    content:'';position:absolute;top:14px;left:50%;transform:translateX(-50%);
+    width:60px;height:5px;background:#2a2f3a;border-radius:3px;z-index:5;
+  }
+  .screen{
+    background:#0b0d12;border-radius:24px;height:100%;overflow:hidden;
+    display:flex;flex-direction:column;padding-top:22px;
+  }
+  .caption{text-align:center;color:var(--muted);font-size:12px;margin-top:10px;font-weight:600}
+
+  /* Common screen components */
+  .appbar{
+    background:var(--panel);padding:12px 14px;display:flex;align-items:center;
+    justify-content:space-between;border-bottom:1px solid var(--border);
+  }
+  .appbar .t{font-size:13px;font-weight:600}
+  .appbar .ic{color:var(--muted);font-size:14px}
+  .body{flex:1;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+  .card{
+    background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    padding:10px;font-size:10px;color:var(--muted);
+  }
+  .card b{color:var(--text);display:block;font-size:11px;margin-bottom:4px}
+  .card .row2{display:flex;justify-content:space-between;margin-top:4px;font-size:9px}
+  .pill{
+    display:inline-block;padding:2px 7px;border-radius:10px;font-size:9px;
+    background:#1f2937;color:var(--muted);font-weight:600;
+  }
+  .pill.ok{background:rgba(34,197,94,.15);color:var(--ok)}
+  .pill.warn{background:rgba(245,158,11,.15);color:var(--warn)}
+  .pill.new{background:rgba(255,107,53,.15);color:var(--accent)}
+  .pill.prog{background:rgba(59,130,246,.15);color:var(--blue)}
+  .pill.pur{background:rgba(168,85,247,.15);color:var(--purple)}
+
+  .btn{
+    background:var(--accent);color:#fff;text-align:center;padding:10px;
+    border-radius:8px;font-size:11px;font-weight:700;margin-top:auto;
+  }
+  .btn.f{background:var(--purple)}
+  .btn.g{background:var(--ok)}
+  .btn.ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+
+  .otp{display:flex;gap:6px;justify-content:center;margin:8px 0}
+  .otp div{
+    width:26px;height:32px;background:#000;border:1px solid var(--border);
+    border-radius:6px;display:flex;align-items:center;justify-content:center;
+    font-weight:700;color:var(--text);font-size:14px
+  }
+  .photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .photo-grid div{
+    background:#000;border:1px dashed var(--border);border-radius:6px;
+    aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+    font-size:18px
+  }
+  .map{
+    background:linear-gradient(135deg,#1a2332 0%,#0f1721 100%);
+    border-radius:8px;height:90px;position:relative;border:1px solid var(--border);
+  }
+  .map::after{
+    content:'📍';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    font-size:22px
+  }
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  .stats div{
+    background:var(--panel);border:1px solid var(--border);border-radius:8px;
+    padding:8px 4px;text-align:center;
+  }
+  .stats div b{color:var(--accent);font-size:16px;display:block}
+  .stats div span{font-size:8px;color:var(--muted)}
+  .navbar{
+    background:var(--panel);border-top:1px solid var(--border);
+    display:flex;justify-content:space-around;padding:8px 0;
+  }
+  .navbar div{font-size:8px;color:var(--muted);text-align:center}
+  .navbar div.active{color:var(--accent)}
+  .navbar div i{display:block;font-size:14px;margin-bottom:2px}
+  .scanframe{
+    background:#000;border-radius:10px;aspect-ratio:1;position:relative;
+    border:2px dashed var(--purple);
+  }
+  .scanframe::after{
+    content:'';position:absolute;top:50%;left:10%;right:10%;height:2px;
+    background:var(--purple);box-shadow:0 0 8px var(--purple)
+  }
+  .tracker{display:flex;flex-direction:column;gap:8px}
+  .tracker .step{display:flex;gap:8px;align-items:flex-start;font-size:10px}
+  .tracker .step .d{
+    width:14px;height:14px;border-radius:50%;border:2px solid var(--border);
+    flex-shrink:0;margin-top:1px;
+  }
+  .tracker .step.done .d{background:var(--ok);border-color:var(--ok)}
+  .tracker .step.cur .d{background:var(--accent);border-color:var(--accent);box-shadow:0 0 6px var(--accent)}
+  .tracker .step b{color:var(--text);display:block;font-size:10px}
+  .tracker .step .muted{color:var(--muted);font-size:9px}
+
+  .note{
+    background:rgba(239,68,68,.08);border:1px dashed var(--bad);
+    border-radius:10px;padding:8px;font-size:9px;color:var(--bad)
+  }
+  .note b{display:block;color:var(--bad);font-size:10px;margin-bottom:2px}
+
+  .input{
+    background:#000;border:1px solid var(--border);border-radius:6px;
+    padding:8px;font-size:10px;color:var(--muted)
+  }
+  .chip-row{display:flex;gap:4px;flex-wrap:wrap}
+  .chip{
+    background:#1f2937;color:var(--muted);font-size:9px;padding:3px 8px;
+    border-radius:10px;
+  }
+  .chip.active{background:var(--accent);color:#fff}
+</style>
+</head>
+<body>
+
+<h1>Presso — Screen Wireframes</h1>
+<p class="sub">Full screen-by-screen mockups for rider, facility, and customer — covering the whole order lifecycle.</p>
+
+<!-- =========== RIDER =========== -->
+<h2>Rider app <span class="tag r">RIDER</span></h2>
+
+<div class="row">
+
+  <!-- 1. Login -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">Sign in</div></div>
+    <div class="body" style="justify-content:center">
+      <div style="text-align:center;font-size:24px;margin:20px 0">🧺</div>
+      <div style="text-align:center;font-size:14px;font-weight:700">Presso Rider</div>
+      <div class="input">+91 · 98765 43210</div>
+      <div class="otp"><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div></div>
+      <div class="btn">Verify OTP</div>
+    </div>
+  </div></div>
+  <div class="caption">1. Login (phone + OTP)</div>
+  </div>
+
+  <!-- 2. Jobs list -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">My Jobs</div><div class="ic">🔔</div></div>
+    <div class="body">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:10px;color:var(--muted)">Available <span class="pill ok">● ON</span></div>
+        <div style="width:28px;height:16px;background:var(--ok);border-radius:10px;position:relative">
+          <div style="width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;right:2px;top:2px"></div>
+        </div>
+      </div>
+      <div class="chip-row"><div class="chip active">All</div><div class="chip">Pickup</div><div class="chip">Delivery</div></div>
+      <div class="card"><b>PR-1042 · Pickup <span class="pill new">NEW</span></b>Ravi K · 2.1 km<br>Slot 11:00–12:00<div class="row2"><span>8 garments</span><span>₹420</span></div></div>
+      <div class="card"><b>PR-1039 · Delivery <span class="pill prog">READY</span></b>Priya S · 1.4 km<br>Express<div class="row2"><span>6 garments</span><span>₹280</span></div></div>
+      <div class="card"><b>PR-1037 · Pickup</b>Amit J · 3.8 km<br>Slot 13:00–14:00</div>
+    </div>
+    <div class="navbar">
+      <div class="active"><i>📋</i>Jobs</div>
+      <div><i>💰</i>Earnings</div>
+      <div><i>👤</i>Account</div>
+    </div>
+  </div></div>
+  <div class="caption">2. Jobs list (Pickup + Delivery mixed)</div>
+  </div>
+
+  <!-- 3. Job detail -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">← PR-1042</div><div class="ic">📞</div></div>
+    <div class="body">
+      <div class="map"></div>
+      <div class="card"><b>Ravi Kumar</b>📞 XXXXX X1234<br>Flat 302, Aurora Heights<br>Baner, Pune 411045</div>
+      <div class="card"><b>Order</b>8 garments · Wash & Iron<br>Slot: Today 11:00–12:00<div class="row2"><span class="pill warn">Express</span><span>₹420</span></div></div>
+      <div class="card"><b>Notes</b>"Ring twice, dog inside"</div>
+      <div class="btn">Accept Pickup</div>
+    </div>
+  </div></div>
+  <div class="caption">3. Job detail (before accept)</div>
+  </div>
+
+  <!-- 4. Navigating / arrived -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">← On the way</div><div class="ic">🧭</div></div>
+    <div class="body">
+      <div class="map" style="height:140px"></div>
+      <div class="card"><b>Distance · 450 m</b>ETA 3 min<div class="row2"><span>Turn right at Baner Rd</span><span>→</span></div></div>
+      <div class="card"><b>Ravi Kumar</b>Flat 302, Aurora Heights</div>
+      <div class="btn">I've Arrived</div>
+    </div>
+  </div></div>
+  <div class="caption">4. Navigate + Arrived button</div>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <!-- 5. Photo capture -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">← Pickup photos</div></div>
+    <div class="body">
+      <div style="font-size:10px;color:var(--muted)">Capture garments before pickup</div>
+      <div class="photo-grid">
+        <div>📷 Front</div>
+        <div>📷 Back</div>
+        <div>📷 Tags</div>
+        <div>➕ Add</div>
+      </div>
+      <div class="card"><b>Garment count</b><div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span>–</span><b style="font-size:18px;color:var(--accent)">8</b><span>+</span></div></div>
+      <div class="btn">Next · Verify OTP</div>
+    </div>
+  </div></div>
+  <div class="caption">5. Photos + garment count</div>
+  </div>
+
+  <!-- 6. OTP confirm pickup -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">← Confirm pickup</div></div>
+    <div class="body">
+      <div style="text-align:center;font-size:28px;margin-top:12px">🔐</div>
+      <div style="text-align:center;font-size:12px;font-weight:600">Ask customer for OTP</div>
+      <div style="text-align:center;font-size:9px;color:var(--muted)">Customer received it via SMS</div>
+      <div class="otp"><div>•</div><div>•</div><div>•</div><div>•</div></div>
+      <div class="input">Notes (optional)</div>
+      <div class="btn">Confirm Pickup</div>
+    </div>
+  </div></div>
+  <div class="caption">6. Pickup OTP</div>
+  </div>
+
+  <!-- 7. NEW: Drop at facility -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">← Drop at facility</div></div>
+    <div class="body">
+      <div class="note"><b>⚠ Missing today</b>No screen exists between "Pickup Done" and facility. Order stuck at PickedUp.</div>
+      <div class="map" style="height:100px"></div>
+      <div class="card"><b>Nearest Facility</b>Presso Hub · Baner<br>1.2 km · ETA 5 min</div>
+      <div class="card"><b>Carrying</b>PR-1042 · 8 items<br>PR-1037 · 5 items</div>
+      <div class="btn g">Scan Intake QR</div>
+    </div>
+  </div></div>
+  <div class="caption">7. Drop at facility <span style="color:var(--bad)">NEW</span></div>
+  </div>
+
+  <!-- 8. Earnings -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">Earnings</div><div class="ic">📅</div></div>
+    <div class="body">
+      <div class="card" style="text-align:center;padding:14px"><b style="font-size:10px">Today</b><div style="font-size:24px;font-weight:800;color:var(--accent);margin:6px 0">₹1,240</div><div style="font-size:9px">12 jobs completed</div></div>
+      <div class="stats"><div><b>28</b><span>This week</span></div><div><b>₹4.2k</b><span>Earned</span></div><div><b>4.9★</b><span>Rating</span></div></div>
+      <div class="card"><b>PR-1042</b><div class="row2"><span>11:45 · Pickup</span><span style="color:var(--ok)">+₹80</span></div></div>
+      <div class="card"><b>PR-1039</b><div class="row2"><span>10:20 · Delivery</span><span style="color:var(--ok)">+₹120</span></div></div>
+      <div class="card"><b>PR-1035</b><div class="row2"><span>09:10 · Delivery</span><span style="color:var(--ok)">+₹95</span></div></div>
+    </div>
+    <div class="navbar">
+      <div><i>📋</i>Jobs</div>
+      <div class="active"><i>💰</i>Earnings</div>
+      <div><i>👤</i>Account</div>
+    </div>
+  </div></div>
+  <div class="caption">8. Earnings</div>
+  </div>
+
+</div>
+
+<!-- =========== FACILITY =========== -->
+<h2>Facility app <span class="tag f">FACILITY</span> <span class="tag g">API MISSING</span></h2>
+
+<div class="row">
+
+  <!-- 9. Scan intake -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">← Scan intake</div><div class="ic">💡</div></div>
+    <div class="body">
+      <div class="scanframe"></div>
+      <div style="text-align:center;font-size:10px;color:var(--muted)">Point at order QR on bag</div>
+      <div class="card"><b>Last scanned</b>PR-1037 · 5 items · Ravi</div>
+      <div class="btn ghost">Enter manually</div>
+    </div>
+  </div></div>
+  <div class="caption">9. Scan intake (QR)</div>
+  </div>
+
+  <!-- 10. Intake confirm -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">← Receive order</div></div>
+    <div class="body">
+      <div class="card" style="text-align:center;padding:14px"><div style="font-size:24px">📦</div><b style="font-size:14px">PR-1042</b><div style="font-size:9px;margin-top:4px">Ravi K · 8 garments</div></div>
+      <div class="card"><b>Expected items</b>3 shirts · 2 pants · 1 kurta · 2 shoes</div>
+      <div class="card"><b>Rider</b>Suresh M · 4.8★</div>
+      <div class="card"><b>Actual count</b><div style="display:flex;justify-content:space-between;align-items:center"><span>–</span><b style="font-size:18px;color:var(--purple)">8</b><span>+</span></div></div>
+      <div class="btn f">Confirm Receive</div>
+    </div>
+  </div></div>
+  <div class="caption">10. Receive confirmation</div>
+  </div>
+
+  <!-- 11. Orders board -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">Orders</div><div class="ic">📷</div></div>
+    <div class="body">
+      <div class="stats"><div><b>12</b><span>At facility</span></div><div><b>8</b><span>Washing</span></div><div><b>5</b><span>Ready</span></div></div>
+      <div class="chip-row"><div class="chip active">All</div><div class="chip">Received</div><div class="chip">Washing</div><div class="chip">Ironing</div><div class="chip">Ready</div></div>
+      <div class="card"><b>PR-1042 <span class="pill pur">AT FACILITY</span></b>Ravi · 8 items · 2m ago</div>
+      <div class="card"><b>PR-1040 <span class="pill prog">WASHING</span></b>Anu · 6 items · 22m</div>
+      <div class="card"><b>PR-1038 <span class="pill warn">IRONING</span></b>Vikram · 4 items · 1h</div>
+      <div class="card"><b>PR-1035 <span class="pill ok">READY</span></b>Priya · 10 items · 2h</div>
+    </div>
+    <div class="navbar">
+      <div class="active"><i>📋</i>Orders</div>
+      <div><i>📷</i>Scan</div>
+      <div><i>👤</i>Account</div>
+    </div>
+  </div></div>
+  <div class="caption">11. Orders board</div>
+  </div>
+
+  <!-- 12. Order detail + status -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">← PR-1042</div></div>
+    <div class="body">
+      <div class="card"><b>Ravi Kumar</b>8 garments · ₹420<div class="row2"><span class="pill pur">AT FACILITY</span><span>Express</span></div></div>
+      <div class="card"><b>Items</b>• 3 Shirts (Wash+Iron)<br>• 2 Pants (Wash+Iron)<br>• 1 Kurta (Dry clean)<br>• 2 Shoes (Clean)</div>
+      <div class="tracker">
+        <div class="step done"><div class="d"></div><div><b>Received</b><span class="muted">11:50 by Suresh</span></div></div>
+        <div class="step cur"><div class="d"></div><div><b>Washing</b><span class="muted">In progress</span></div></div>
+        <div class="step"><div class="d"></div><div><b>Ironing</b></div></div>
+        <div class="step"><div class="d"></div><div><b>Ready</b></div></div>
+      </div>
+      <div class="btn f">Move to Ironing</div>
+    </div>
+  </div></div>
+  <div class="caption">12. Order detail + status tracker</div>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <!-- 13. Shoe inspection -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">← Shoe inspection</div></div>
+    <div class="body">
+      <div class="card"><b>Nike Air · Item #1</b>Before photos</div>
+      <div class="photo-grid"><div>📷</div><div>📷</div></div>
+      <div class="card"><b>Condition</b><div class="chip-row" style="margin-top:4px"><div class="chip active">Good</div><div class="chip">Worn</div><div class="chip">Damaged</div></div></div>
+      <div class="card"><b>Notes</b>Minor scuff on right toe</div>
+      <div class="btn f">Save & Next Item</div>
+    </div>
+  </div></div>
+  <div class="caption">13. Shoe photo/condition</div>
+  </div>
+
+  <!-- 14. Ready for delivery / handoff -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">← Dispatch</div></div>
+    <div class="body">
+      <div class="card" style="text-align:center"><b style="font-size:14px">PR-1042 ready</b><div style="font-size:9px">All 8 items packed</div></div>
+      <div class="photo-grid"><div>📷 Packed</div><div>📷 Label</div></div>
+      <div class="note"><b>⚠ Missing today</b>No dispatcher creates a delivery job when status → ReadyForDelivery.</div>
+      <div class="card"><b>Assign rider</b>Suresh M · 4.8★ · 2.1 km</div>
+      <div class="btn f">Release for Delivery</div>
+    </div>
+  </div></div>
+  <div class="caption">14. Dispatch / handoff <span style="color:var(--bad)">NEW</span></div>
+  </div>
+
+  <!-- 15. Facility stats -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">Today's stats</div></div>
+    <div class="body">
+      <div class="stats"><div><b>47</b><span>Received</span></div><div><b>38</b><span>Processed</span></div><div><b>32</b><span>Dispatched</span></div></div>
+      <div class="card"><b>Turnaround avg</b>4h 12m<div class="row2"><span>Target 5h</span><span style="color:var(--ok)">✓ on track</span></div></div>
+      <div class="card"><b>SLA breaches</b>2 orders over 6h</div>
+      <div class="card"><b>Shoes in queue</b>6 pairs</div>
+      <div class="card"><b>Staff on shift</b>4 active</div>
+    </div>
+  </div></div>
+  <div class="caption">15. Stats</div>
+  </div>
+
+  <!-- 16. Exceptions -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">← Report issue</div></div>
+    <div class="body">
+      <div class="card"><b>PR-1042 · 8 items</b>Raise exception</div>
+      <div class="chip-row"><div class="chip active">Count mismatch</div><div class="chip">Damaged</div><div class="chip">Stain</div><div class="chip">Missing</div></div>
+      <div class="input">Describe the issue…</div>
+      <div class="photo-grid"><div>📷</div><div>📷</div></div>
+      <div class="btn f">Submit & Notify Customer</div>
+    </div>
+  </div></div>
+  <div class="caption">16. Exception / damage report</div>
+  </div>
+
+</div>
+
+<!-- =========== CUSTOMER =========== -->
+<h2>Customer app <span class="tag c">CUSTOMER</span></h2>
+
+<div class="row">
+
+  <!-- 17. Tracking live -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">← Track order</div></div>
+    <div class="body">
+      <div class="card"><b>PR-1042</b>8 garments · ₹420</div>
+      <div class="map" style="height:100px"></div>
+      <div class="tracker">
+        <div class="step done"><div class="d"></div><div><b>Order placed</b><span class="muted">Today 10:15</span></div></div>
+        <div class="step done"><div class="d"></div><div><b>Picked up</b><span class="muted">11:50</span></div></div>
+        <div class="step done"><div class="d"></div><div><b>At facility</b><span class="muted">12:05</span></div></div>
+        <div class="step cur"><div class="d"></div><div><b>Washing</b><span class="muted">In progress</span></div></div>
+        <div class="step"><div class="d"></div><div><b>Out for delivery</b></div></div>
+        <div class="step"><div class="d"></div><div><b>Delivered</b></div></div>
+      </div>
+    </div>
+  </div></div>
+  <div class="caption">17. Live tracking</div>
+  </div>
+
+  <!-- 18. Delivery OTP share -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">← Delivery OTP</div></div>
+    <div class="body">
+      <div style="text-align:center;font-size:28px;margin-top:16px">🚪</div>
+      <div style="text-align:center;font-size:12px;font-weight:600">Rider at your door</div>
+      <div style="text-align:center;font-size:9px;color:var(--muted)">Share this OTP to receive your order</div>
+      <div class="otp"><div>4</div><div>8</div><div>2</div><div>9</div></div>
+      <div class="card"><b>Suresh M</b>4.8★ · Presso Rider<div class="row2"><span>📞 Call</span><span>💬 Chat</span></div></div>
+    </div>
+  </div></div>
+  <div class="caption">18. Delivery OTP</div>
+  </div>
+
+  <!-- 19. Delivered + coins -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">Delivered ✓</div></div>
+    <div class="body">
+      <div style="text-align:center;font-size:32px;margin:12px 0">🎉</div>
+      <div style="text-align:center;font-size:14px;font-weight:700">Order complete</div>
+      <div class="card" style="text-align:center;background:rgba(255,107,53,.1);border-color:var(--accent)"><b style="color:var(--accent)">+21 coins earned</b>5% of ₹420</div>
+      <div class="card"><b>Rate your experience</b><div style="text-align:center;font-size:20px;margin-top:4px">⭐ ⭐ ⭐ ⭐ ⭐</div></div>
+      <div class="input">Tell us more (optional)</div>
+      <div class="btn">Submit & Repeat Order</div>
+    </div>
+  </div></div>
+  <div class="caption">19. Delivered + rating</div>
+  </div>
+
+  <!-- 20. Order history -->
+  <div>
+  <div class="phone"><div class="screen">
+    <div class="appbar"><div class="t">My orders</div></div>
+    <div class="body">
+      <div class="card"><b>PR-1042 <span class="pill prog">WASHING</span></b>8 items · ₹420<div class="row2"><span>Today</span><span>Track →</span></div></div>
+      <div class="card"><b>PR-1028 <span class="pill ok">DELIVERED</span></b>6 items · ₹310<div class="row2"><span>Yesterday</span><span>+15 coins</span></div></div>
+      <div class="card"><b>PR-1015 <span class="pill ok">DELIVERED</span></b>12 items · ₹640<div class="row2"><span>Apr 2</span><span>+32 coins</span></div></div>
+      <div class="card"><b>PR-1003 <span class="pill ok">DELIVERED</span></b>4 items · ₹190<div class="row2"><span>Mar 28</span><span>+9 coins</span></div></div>
+    </div>
+  </div></div>
+  <div class="caption">20. Order history</div>
+  </div>
+
+</div>
+
+<div style="margin-top:40px;padding:20px;background:var(--panel);border:1px solid var(--border);border-radius:12px;font-size:12px;color:var(--muted);line-height:1.6">
+  <b style="color:var(--text)">Notes</b><br>
+  • Screens marked <span style="color:var(--bad)">NEW</span> (7, 14) don't exist yet. These are the missing links: rider drop-at-facility, and facility dispatch-to-delivery.<br>
+  • All facility screens (9–16) currently 404 because <code style="color:#fca5a5">/api/facility/*</code> endpoints don't exist on the backend.<br>
+  • Status labels shown here use the facility app's vocabulary (AtFacility / Washing / Ironing / Ready). The API uses InProcess / ReadyForDelivery. Pick one before building.
+</div>
+
+</body>
+</html>

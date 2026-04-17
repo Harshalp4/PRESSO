@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <!-- Presso Icon — App icon / Favicon -->
+  <!-- Rounded square background -->
+  <rect width="120" height="120" rx="26" fill="#22C55E"/>
+
+  <!-- Hanger + steam in white -->
+  <g transform="translate(24, 12)">
+    <!-- Hook -->
+    <path d="M36 22 C36 12, 42 7, 48 7 C51 7, 54 9, 54 12" stroke="#fff" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <circle cx="54" cy="9" r="3.5" stroke="#fff" stroke-width="2.8" fill="none"/>
+    <!-- Shoulders -->
+    <path d="M36 22 L8 48 C6 50, 6 53.5, 9.5 53.5 L62.5 53.5 C66 53.5, 66 50, 64 48 L36 22" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="rgba(255,255,255,0.15)"/>
+    <!-- Steam -->
+    <path d="M22 60 C22 65, 27 65, 27 70 C27 75, 22 75, 22 80" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.6"/>
+    <path d="M36 60 C36 65, 41 65, 41 70 C41 75, 36 75, 36 80" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.45"/>
+    <path d="M50 60 C50 65, 55 65, 55 70 C55 75, 50 75, 50 80" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none" opacity="0.6"/>
+  </g>
+
+  <!-- Letter P watermark -->
+  <text x="60" y="108" font-family="'Inter','SF Pro Display',system-ui,sans-serif" font-size="16" font-weight="800" fill="rgba(255,255,255,0.25)" text-anchor="middle">P</text>
+</svg>

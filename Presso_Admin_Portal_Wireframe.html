@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presso Admin Portal — Wireframe</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Poppins',-apple-system,BlinkMacSystemFont,sans-serif;background:#0A1628;color:#E5EEF5;min-height:100vh;font-size:13px}
+
+/* ── Page header (for navigation between wireframe screens) ── */
+.wf-header{padding:22px 28px 10px;border-bottom:1px solid #16263B;background:#0A1628;position:sticky;top:0;z-index:100}
+.wf-header h1{font-size:1.1rem;font-weight:700;color:#00C6FF;margin-bottom:4px}
+.wf-header p{font-size:.75rem;color:#7A8FA8}
+.wf-tabs{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.wf-tab{padding:7px 14px;border-radius:18px;background:#16263B;color:#7A8FA8;cursor:pointer;font-size:.72rem;font-weight:600;border:1px solid transparent;transition:.15s;letter-spacing:.3px}
+.wf-tab:hover{color:#E5EEF5}
+.wf-tab.active{background:#00C6FF15;color:#00C6FF;border-color:#00C6FF50}
+
+/* ── Screen frame (mimics a desktop browser window) ── */
+.browser{max-width:1480px;margin:24px auto 60px;background:#0F1B2E;border-radius:12px;overflow:hidden;border:1px solid #1C2F48;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.browser-bar{background:#16263B;padding:10px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #1C2F48}
+.browser-dots{display:flex;gap:6px}
+.browser-dots span{width:11px;height:11px;border-radius:50%}
+.browser-dots span:nth-child(1){background:#FF5F57}
+.browser-dots span:nth-child(2){background:#FFBD2E}
+.browser-dots span:nth-child(3){background:#27C93F}
+.browser-url{flex:1;background:#0A1628;padding:6px 14px;border-radius:6px;font-size:.7rem;color:#7A8FA8;margin-left:12px;font-family:monospace}
+.browser-url span{color:#00C6FF}
+
+/* ── Layout: sidebar + main ── */
+.app-layout{display:flex;min-height:820px}
+.sidebar{width:230px;background:#0C1A2D;border-right:1px solid #16263B;padding:22px 0;flex-shrink:0}
+.logo{padding:0 22px 22px;border-bottom:1px solid #16263B;margin-bottom:14px}
+.logo .name{font-size:1.1rem;font-weight:700;color:#00C6FF}
+.logo .sub{font-size:.65rem;color:#55708C;margin-top:3px;letter-spacing:1px;text-transform:uppercase}
+.nav-section{padding:10px 0}
+.nav-label{font-size:.6rem;color:#55708C;letter-spacing:1.2px;text-transform:uppercase;padding:4px 22px 6px;font-weight:600}
+.nav-item{display:flex;align-items:center;gap:11px;padding:9px 22px;color:#7A8FA8;cursor:pointer;font-size:.78rem;font-weight:500;border-left:3px solid transparent;transition:.15s}
+.nav-item:hover{background:#0F1B2E;color:#E5EEF5}
+.nav-item.active{background:#00C6FF0F;color:#00C6FF;border-left-color:#00C6FF;font-weight:600}
+.nav-item .ico{font-size:1rem;width:18px;text-align:center}
+.nav-item .badge{margin-left:auto;background:#FF5F57;color:#fff;font-size:.58rem;padding:2px 7px;border-radius:10px;font-weight:700}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:#0F1B2E;border-bottom:1px solid #16263B;padding:14px 26px;display:flex;align-items:center;gap:18px}
+.topbar h2{font-size:1rem;font-weight:700;color:#E5EEF5}
+.topbar .crumb{font-size:.7rem;color:#55708C;margin-left:8px}
+.topbar .spacer{flex:1}
+.topbar .search{background:#0A1628;border:1px solid #1C2F48;border-radius:8px;padding:7px 12px;font-size:.72rem;color:#7A8FA8;width:280px}
+.topbar .iconbtn{width:32px;height:32px;border-radius:8px;background:#0A1628;border:1px solid #1C2F48;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#7A8FA8;font-size:.85rem;position:relative}
+.topbar .iconbtn .dot{position:absolute;top:5px;right:5px;width:7px;height:7px;background:#FF5F57;border-radius:50%;border:1.5px solid #0F1B2E}
+.topbar .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#00C6FF,#0077B6);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff}
+
+.content{padding:24px 26px;flex:1;overflow-y:auto;background:#0A1628}
+
+/* ── Shared UI elements ── */
+.page-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.page-title h3{font-size:1.15rem;font-weight:700;color:#E5EEF5}
+.page-title .sub{font-size:.72rem;color:#55708C;margin-top:3px}
+.btn{padding:8px 16px;border-radius:8px;font-size:.72rem;font-weight:600;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:#00C6FF;color:#0A1628}
+.btn-primary:hover{background:#00B0E8}
+.btn-ghost{background:transparent;border:1px solid #1C2F48;color:#7A8FA8}
+.btn-ghost:hover{color:#E5EEF5;border-color:#2A4160}
+.btn-success{background:#27C93F;color:#0A1628}
+.btn-danger{background:#FF5F57;color:#fff}
+.btn-sm{padding:5px 12px;font-size:.68rem}
+
+.card{background:#0F1B2E;border:1px solid #16263B;border-radius:10px;padding:18px;margin-bottom:16px}
+.card-title{font-size:.78rem;font-weight:700;color:#E5EEF5;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.card-title .link{font-size:.68rem;color:#00C6FF;cursor:pointer;font-weight:500}
+
+/* KPI cards */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.kpi{background:#0F1B2E;border:1px solid #16263B;border-radius:10px;padding:16px}
+.kpi .label{font-size:.65rem;color:#55708C;text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-bottom:8px}
+.kpi .value{font-size:1.5rem;font-weight:700;color:#E5EEF5}
+.kpi .delta{font-size:.65rem;margin-top:5px}
+.kpi .delta.up{color:#27C93F}
+.kpi .delta.down{color:#FF5F57}
+.kpi.accent{border-color:#00C6FF40;background:linear-gradient(135deg,#00C6FF0A,#0F1B2E)}
+
+/* Tables */
+table{width:100%;border-collapse:collapse}
+th{font-size:.62rem;color:#55708C;text-transform:uppercase;letter-spacing:.6px;font-weight:600;padding:10px 12px;text-align:left;border-bottom:1px solid #16263B}
+td{padding:12px;font-size:.74rem;color:#C5D4E4;border-bottom:1px solid #13223A}
+tr:hover td{background:#0C1A2D}
+tr:last-child td{border-bottom:none}
+
+.chip{display:inline-block;padding:3px 9px;border-radius:10px;font-size:.6rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+.chip-pending{background:#FFBD2E25;color:#FFBD2E}
+.chip-approved{background:#27C93F25;color:#27C93F}
+.chip-rejected{background:#FF5F5725;color:#FF5F57}
+.chip-active{background:#00C6FF25;color:#00C6FF}
+.chip-suspended{background:#7A8FA820;color:#7A8FA8}
+.chip-delivered{background:#27C93F25;color:#27C93F}
+.chip-inprocess{background:#00C6FF25;color:#00C6FF}
+.chip-pickup{background:#B15CFF25;color:#B15CFF}
+
+/* Forms */
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+.field label{font-size:.65rem;color:#7A8FA8;font-weight:600;letter-spacing:.3px}
+.field input,.field select,.field textarea{background:#0A1628;border:1px solid #1C2F48;border-radius:7px;padding:9px 11px;color:#E5EEF5;font-size:.75rem;font-family:inherit}
+.field textarea{min-height:80px;resize:vertical}
+.upload-box{background:#0A1628;border:1.5px dashed #1C2F48;border-radius:8px;padding:20px;text-align:center;color:#55708C;font-size:.7rem;cursor:pointer}
+.upload-box:hover{border-color:#00C6FF}
+
+/* Tabs inside pages */
+.tabs{display:flex;gap:4px;border-bottom:1px solid #16263B;margin-bottom:16px}
+.tabs .tab{padding:10px 18px;font-size:.73rem;color:#7A8FA8;cursor:pointer;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs .tab.active{color:#00C6FF;border-bottom-color:#00C6FF}
+.tabs .tab .count{background:#16263B;color:#7A8FA8;padding:2px 7px;border-radius:10px;font-size:.6rem;margin-left:5px}
+.tabs .tab.active .count{background:#00C6FF25;color:#00C6FF}
+
+/* Filter row */
+.filters{display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap}
+.filter-select{background:#0F1B2E;border:1px solid #1C2F48;border-radius:7px;padding:7px 11px;color:#C5D4E4;font-size:.7rem;font-family:inherit}
+
+/* Detail drawer mock */
+.drawer{position:absolute;top:0;right:0;width:420px;height:100%;background:#0F1B2E;border-left:1px solid #16263B;padding:22px;overflow-y:auto}
+.drawer h4{font-size:.95rem;color:#E5EEF5;margin-bottom:16px}
+
+/* Section split */
+.split-2{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.split-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+
+/* Timeline */
+.timeline{position:relative;padding-left:22px}
+.timeline::before{content:'';position:absolute;left:7px;top:4px;bottom:4px;width:2px;background:#16263B}
+.tl-item{position:relative;padding-bottom:14px}
+.tl-item::before{content:'';position:absolute;left:-20px;top:4px;width:12px;height:12px;border-radius:50%;background:#0F1B2E;border:2px solid #16263B}
+.tl-item.done::before{background:#27C93F;border-color:#27C93F}
+.tl-item.current::before{background:#00C6FF;border-color:#00C6FF;box-shadow:0 0 0 4px #00C6FF25}
+.tl-item .tl-title{font-size:.74rem;color:#E5EEF5;font-weight:600}
+.tl-item .tl-time{font-size:.65rem;color:#55708C;margin-top:2px}
+
+/* Screen (only one visible at a time) */
+.screen{display:none}
+.screen.active{display:flex}
+
+/* Login screen special layout */
+.login-wrap{flex:1;display:flex;align-items:center;justify-content:center;padding:40px;background:radial-gradient(ellipse at top right, #00C6FF15, transparent 60%),#0A1628}
+.login-card{background:#0F1B2E;border:1px solid #16263B;border-radius:14px;padding:36px;width:100%;max-width:380px}
+.login-card .logo{border:none;padding:0 0 18px}
+.login-card h3{font-size:1.1rem;color:#E5EEF5;margin-bottom:4px}
+.login-card .hint{font-size:.7rem;color:#55708C;margin-bottom:22px}
+.login-card .field{margin-bottom:14px}
+
+.note{background:#00C6FF0A;border:1px dashed #00C6FF40;border-radius:8px;padding:10px 14px;font-size:.7rem;color:#7FC4E5;margin-bottom:18px}
+.note b{color:#00C6FF}
+</style>
+</head>
+<body>
+
+<div class="wf-header">
+  <h1>🧰 Presso Admin Portal — Wireframe</h1>
+  <p>Click tabs below to preview each screen. Nothing is wired — this is just for layout review before we scaffold the Angular app.</p>
+  <div class="wf-tabs">
+    <div class="wf-tab active" data-screen="login">Login</div>
+    <div class="wf-tab" data-screen="dashboard">Dashboard</div>
+    <div class="wf-tab" data-screen="riders">Riders</div>
+    <div class="wf-tab" data-screen="rider-add">+ Add Rider</div>
+    <div class="wf-tab" data-screen="rider-detail">Rider Detail / Approval</div>
+    <div class="wf-tab" data-screen="orders">Orders</div>
+    <div class="wf-tab" data-screen="order-detail">Order Detail</div>
+    <div class="wf-tab" data-screen="customers">Customers</div>
+    <div class="wf-tab" data-screen="offers">Offers</div>
+    <div class="wf-tab" data-screen="offer-create">+ Create Offer</div>
+    <div class="wf-tab" data-screen="facilities">Facilities</div>
+    <div class="wf-tab" data-screen="slots">Pickup Slots</div>
+    <div class="wf-tab" data-screen="discounts">Discounts</div>
+    <div class="wf-tab" data-screen="payouts">Payouts</div>
+    <div class="wf-tab" data-screen="finance">💰 Finance / P&amp;L</div>
+    <div class="wf-tab" data-screen="expenses">+ Expenses</div>
+    <div class="wf-tab" data-screen="catalog">🧺 Catalog</div>
+    <div class="wf-tab" data-screen="pricing">💲 Pricing Matrix</div>
+    <div class="wf-tab" data-screen="messages">📢 Messages &amp; Banners</div>
+    <div class="wf-tab" data-screen="settings">Settings</div>
+  </div>
+</div>
+
+<div class="browser">
+  <div class="browser-bar">
+    <div class="browser-dots"><span></span><span></span><span></span></div>
+    <div class="browser-url">https://admin.<span>presso</span>.in</div>
+  </div>
+
+  <!-- ═══════════════ LOGIN ═══════════════ -->
+  <div class="screen active" id="s-login">
+    <div class="login-wrap">
+      <div class="login-card">
+        <div class="logo">
+          <div class="name">Presso</div>
+          <div class="sub">Admin Portal</div>
+        </div>
+        <h3>Sign in</h3>
+        <div class="hint">Use your admin phone number or email</div>
+        <div class="field">
+          <label>Phone or Email</label>
+          <input type="text" placeholder="admin@presso.in">
+        </div>
+        <div class="field">
+          <label>Password</label>
+          <input type="password" placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:11px">Sign in</button>
+        <div style="text-align:center;margin-top:14px"><a style="font-size:.7rem;color:#00C6FF;cursor:pointer">Forgot password?</a></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SHELL (used by every other screen) ═══════════════ -->
+  <div class="screen" id="shell">
+    <div class="app-layout" style="width:100%">
+
+      <!-- SIDEBAR -->
+      <div class="sidebar">
+        <div class="logo">
+          <div class="name">Presso</div>
+          <div class="sub">Admin Portal</div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-label">Overview</div>
+          <div class="nav-item" data-nav="dashboard"><span class="ico">📊</span> Dashboard</div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-label">Operations</div>
+          <div class="nav-item" data-nav="orders"><span class="ico">📦</span> Orders</div>
+          <div class="nav-item" data-nav="riders"><span class="ico">🛵</span> Riders <span class="badge">3</span></div>
+          <div class="nav-item" data-nav="customers"><span class="ico">👤</span> Customers</div>
+          <div class="nav-item" data-nav="facilities"><span class="ico">🏭</span> Facilities</div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-label">Growth</div>
+          <div class="nav-item" data-nav="offers"><span class="ico">🎁</span> Offers</div>
+          <div class="nav-item" data-nav="discounts"><span class="ico">🏷️</span> Discounts</div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-label">Finance</div>
+          <div class="nav-item" data-nav="finance"><span class="ico">💰</span> P&amp;L / Earnings</div>
+          <div class="nav-item" data-nav="expenses"><span class="ico">🧾</span> Expenses</div>
+          <div class="nav-item" data-nav="payouts"><span class="ico">💸</span> Payouts</div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-label">Catalog &amp; Content</div>
+          <div class="nav-item" data-nav="catalog"><span class="ico">🧺</span> Services &amp; Items</div>
+          <div class="nav-item" data-nav="pricing"><span class="ico">💲</span> Pricing Matrix</div>
+          <div class="nav-item" data-nav="messages"><span class="ico">📢</span> Messages &amp; Banners</div>
+        </div>
+
+        <div class="nav-section">
+          <div class="nav-label">Config</div>
+          <div class="nav-item" data-nav="slots"><span class="ico">⏰</span> Pickup Slots</div>
+          <div class="nav-item" data-nav="settings"><span class="ico">⚙️</span> Settings</div>
+        </div>
+      </div>
+
+      <!-- MAIN -->
+      <div class="main">
+        <div class="topbar">
+          <h2 id="topbar-title">Dashboard</h2>
+          <span class="crumb" id="topbar-crumb">/ Overview</span>
+          <div class="spacer"></div>
+          <input class="search" placeholder="🔍 Search orders, riders, customers…">
+          <div class="iconbtn">🔔<span class="dot"></span></div>
+          <div class="avatar">HP</div>
+        </div>
+
+        <div class="content" id="page-content">
+          <!-- PAGES INJECTED HERE -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ PAGE TEMPLATES ═══════════════ -->
+<template id="page-dashboard">
+  <div class="page-title">
+    <div>
+      <h3>Good morning, HP 👋</h3>
+      <div class="sub">Here's what's happening with Presso today</div>
+    </div>
+    <div>
+      <button class="btn btn-ghost">Export</button>
+      <button class="btn btn-primary">+ New Order</button>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi accent">
+      <div class="label">Today's Orders</div>
+      <div class="value">42</div>
+      <div class="delta up">▲ 12% vs yesterday</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Revenue</div>
+      <div class="value">₹18,420</div>
+      <div class="delta up">▲ 8%</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Active Riders</div>
+      <div class="value">8 / 12</div>
+      <div class="delta down">▼ 2 offline</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Pending Approvals</div>
+      <div class="value">3</div>
+      <div class="delta up">New riders waiting</div>
+    </div>
+  </div>
+
+  <div class="split-2">
+    <div class="card">
+      <div class="card-title">Orders pipeline (last 7 days) <span class="link">View report →</span></div>
+      <div style="height:200px;background:#0A1628;border-radius:8px;display:flex;align-items:end;justify-content:space-around;padding:14px">
+        <div style="width:28px;height:40%;background:#00C6FF40;border-radius:4px 4px 0 0"></div>
+        <div style="width:28px;height:62%;background:#00C6FF55;border-radius:4px 4px 0 0"></div>
+        <div style="width:28px;height:55%;background:#00C6FF55;border-radius:4px 4px 0 0"></div>
+        <div style="width:28px;height:78%;background:#00C6FF70;border-radius:4px 4px 0 0"></div>
+        <div style="width:28px;height:48%;background:#00C6FF55;border-radius:4px 4px 0 0"></div>
+        <div style="width:28px;height:70%;background:#00C6FF70;border-radius:4px 4px 0 0"></div>
+        <div style="width:28px;height:92%;background:#00C6FF;border-radius:4px 4px 0 0"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Status breakdown</div>
+      <div style="font-size:.72rem">
+        <div style="display:flex;justify-content:space-between;padding:7px 0"><span>🟡 Pending</span><b>4</b></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0"><span>🛵 Picked Up</span><b>6</b></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0"><span>🏭 At Facility</span><b>12</b></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0"><span>💧 Washing</span><b>8</b></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0"><span>♨️ Ironing</span><b>5</b></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0"><span>✅ Ready</span><b>3</b></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0"><span>🚚 Out for delivery</span><b>2</b></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 0"><span>🎉 Delivered today</span><b>2</b></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Recent activity <span class="link">See all →</span></div>
+    <table>
+      <thead><tr><th>Time</th><th>Event</th><th>Actor</th><th>Ref</th></tr></thead>
+      <tbody>
+        <tr><td>3:42 PM</td><td>Order delivered</td><td>Rider Amit</td><td style="color:#00C6FF">#PRE-20260409-0014</td></tr>
+        <tr><td>3:18 PM</td><td>Rider signup awaiting approval</td><td>+91 9876543210</td><td style="color:#FFBD2E">Pending</td></tr>
+        <tr><td>2:55 PM</td><td>New order placed</td><td>HP</td><td style="color:#00C6FF">#PRE-20260409-0015</td></tr>
+        <tr><td>2:40 PM</td><td>Flash deal applied</td><td>Customer Ria</td><td>FLASH30</td></tr>
+        <tr><td>1:12 PM</td><td>Order cancelled (customer)</td><td>Raj</td><td style="color:#FF5F57">#PRE-20260409-0013</td></tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template id="page-riders">
+  <div class="page-title">
+    <div>
+      <h3>Riders</h3>
+      <div class="sub">Manage rider accounts, approvals and KYC</div>
+    </div>
+    <div>
+      <button class="btn btn-ghost">Export CSV</button>
+      <button class="btn btn-primary" data-goto="rider-add">+ Add Rider</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab">All <span class="count">14</span></div>
+    <div class="tab active">Pending <span class="count">3</span></div>
+    <div class="tab">Approved <span class="count">9</span></div>
+    <div class="tab">Suspended <span class="count">2</span></div>
+  </div>
+
+  <div class="filters">
+    <input class="topbar search" placeholder="🔍 Search name or phone" style="width:auto;flex:1;max-width:340px">
+    <select class="filter-select"><option>All zones</option><option>Koregaon Park</option><option>Kalyani Nagar</option></select>
+    <select class="filter-select"><option>All vehicles</option><option>Bike</option><option>Scooter</option><option>EV</option></select>
+  </div>
+
+  <div class="card" style="padding:0">
+    <table>
+      <thead>
+        <tr>
+          <th>Rider</th><th>Phone</th><th>Vehicle</th><th>Zone</th><th>Applied</th><th>Status</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>Amit Sharma</b></td><td>+91 98765 43210</td><td>MH-12-AB-4521 · Bike</td><td>Koregaon Park</td>
+          <td>9 Apr 2026</td><td><span class="chip chip-pending">Pending</span></td>
+          <td><button class="btn btn-sm btn-ghost" data-goto="rider-detail">Review</button></td>
+        </tr>
+        <tr>
+          <td><b>Ravi Kumar</b></td><td>+91 91234 56789</td><td>MH-14-CD-7812 · Scooter</td><td>Kalyani Nagar</td>
+          <td>9 Apr 2026</td><td><span class="chip chip-pending">Pending</span></td>
+          <td><button class="btn btn-sm btn-ghost" data-goto="rider-detail">Review</button></td>
+        </tr>
+        <tr>
+          <td><b>Suresh P</b></td><td>+91 99887 76655</td><td>MH-12-EF-3344 · EV</td><td>Viman Nagar</td>
+          <td>8 Apr 2026</td><td><span class="chip chip-pending">Pending</span></td>
+          <td><button class="btn btn-sm btn-ghost" data-goto="rider-detail">Review</button></td>
+        </tr>
+        <tr>
+          <td><b>Vikas Joshi</b></td><td>+91 90000 11111</td><td>MH-12-GH-1212 · Bike</td><td>Koregaon Park</td>
+          <td>5 Apr 2026</td><td><span class="chip chip-approved">Approved</span></td>
+          <td><button class="btn btn-sm btn-ghost" data-goto="rider-detail">View</button></td>
+        </tr>
+        <tr>
+          <td><b>Deepak M</b></td><td>+91 93333 44444</td><td>MH-12-JK-5656 · Bike</td><td>Kalyani Nagar</td>
+          <td>3 Apr 2026</td><td><span class="chip chip-suspended">Suspended</span></td>
+          <td><button class="btn btn-sm btn-ghost" data-goto="rider-detail">View</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template id="page-rider-add">
+  <div class="page-title">
+    <div>
+      <h3>Add Rider</h3>
+      <div class="sub">Create a new rider account. Rider can log in only after approval.</div>
+    </div>
+    <div>
+      <button class="btn btn-ghost" data-goto="riders">Cancel</button>
+      <button class="btn btn-primary">Save & Mark Pending</button>
+    </div>
+  </div>
+
+  <div class="note"><b>Note:</b> Rider cannot self-register from the mobile app. Only admin-created accounts can log in.</div>
+
+  <div class="card">
+    <div class="card-title">Personal details</div>
+    <div class="form-grid">
+      <div class="field"><label>Full name</label><input placeholder="Amit Sharma"></div>
+      <div class="field"><label>Phone number</label><input placeholder="+91 98765 43210"></div>
+      <div class="field"><label>Email (optional)</label><input placeholder="amit@example.com"></div>
+      <div class="field"><label>Date of birth</label><input type="date"></div>
+      <div class="field full"><label>Residential address</label><textarea placeholder="Street, area, city, pincode"></textarea></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Vehicle & zone</div>
+    <div class="form-grid">
+      <div class="field"><label>Vehicle type</label><select><option>Bike</option><option>Scooter</option><option>EV</option><option>Cycle</option></select></div>
+      <div class="field"><label>Vehicle number</label><input placeholder="MH-12-AB-4521"></div>
+      <div class="field"><label>Service zone</label><select><option>Koregaon Park</option><option>Kalyani Nagar</option><option>Viman Nagar</option></select></div>
+      <div class="field"><label>Base facility</label><select><option>KP Facility</option><option>KN Facility</option></select></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">KYC documents</div>
+    <div class="form-grid">
+      <div class="field"><label>Driving license number</label><input placeholder="MH1220211234567"></div>
+      <div class="field"><label>Aadhaar last 4</label><input placeholder="1234"></div>
+      <div class="field"><label>Upload DL photo</label><div class="upload-box">📤 Click or drop license image</div></div>
+      <div class="field"><label>Upload ID proof</label><div class="upload-box">📤 Click or drop Aadhaar / ID</div></div>
+      <div class="field full"><label>Profile photo</label><div class="upload-box">📤 Upload rider selfie</div></div>
+    </div>
+  </div>
+</template>
+
+<template id="page-rider-detail">
+  <div class="page-title">
+    <div>
+      <h3>Amit Sharma <span class="chip chip-pending" style="margin-left:8px;vertical-align:middle">Pending</span></h3>
+      <div class="sub">+91 98765 43210 · Applied 9 Apr 2026 · Koregaon Park</div>
+    </div>
+    <div>
+      <button class="btn btn-ghost" data-goto="riders">← Back</button>
+      <button class="btn btn-danger">Reject</button>
+      <button class="btn btn-success">✓ Approve Rider</button>
+    </div>
+  </div>
+
+  <div class="split-2">
+    <div>
+      <div class="card">
+        <div class="card-title">KYC documents</div>
+        <div class="form-grid">
+          <div class="field"><label>Driving License (DL1220211234567)</label><div class="upload-box" style="padding:40px;background:#0A1628">📷 DL photo preview</div></div>
+          <div class="field"><label>Aadhaar (ending 1234)</label><div class="upload-box" style="padding:40px;background:#0A1628">📷 ID proof preview</div></div>
+          <div class="field full"><label>Profile photo</label><div class="upload-box" style="padding:40px;background:#0A1628">🧍 Selfie preview</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Vehicle</div>
+        <div class="form-grid">
+          <div class="field"><label>Type</label><div style="color:#E5EEF5;font-size:.78rem">Bike</div></div>
+          <div class="field"><label>Number</label><div style="color:#E5EEF5;font-size:.78rem">MH-12-AB-4521</div></div>
+          <div class="field"><label>Zone</label><div style="color:#E5EEF5;font-size:.78rem">Koregaon Park</div></div>
+          <div class="field"><label>Base facility</label><div style="color:#E5EEF5;font-size:.78rem">KP Facility</div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="card">
+        <div class="card-title">Verification checklist</div>
+        <div style="font-size:.73rem;line-height:2">
+          <div>☑️ Phone OTP verified</div>
+          <div>☑️ DL image uploaded</div>
+          <div>☑️ ID proof uploaded</div>
+          <div>☑️ Selfie uploaded</div>
+          <div>⬜ DL number validated (manual)</div>
+          <div>⬜ Background check (optional)</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Admin notes</div>
+        <textarea class="field" style="width:100%;background:#0A1628;border:1px solid #1C2F48;border-radius:7px;padding:10px;color:#E5EEF5;font-family:inherit;font-size:.75rem;min-height:90px" placeholder="Internal notes about this rider…"></textarea>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="page-orders">
+  <div class="page-title">
+    <div>
+      <h3>Orders</h3>
+      <div class="sub">Full order history across all customers</div>
+    </div>
+    <div>
+      <button class="btn btn-ghost">Export CSV</button>
+      <button class="btn btn-primary">+ Manual Order</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active">All <span class="count">1,284</span></div>
+    <div class="tab">Active <span class="count">37</span></div>
+    <div class="tab">Delivered <span class="count">1,221</span></div>
+    <div class="tab">Cancelled <span class="count">26</span></div>
+  </div>
+
+  <div class="filters">
+    <input class="topbar search" placeholder="🔍 Order number, customer, phone" style="width:auto;flex:1;max-width:340px">
+    <select class="filter-select"><option>Any status</option><option>Pending</option><option>Picked Up</option><option>At Facility</option><option>Washing</option><option>Ironing</option><option>Ready</option><option>Out for Delivery</option><option>Delivered</option></select>
+    <select class="filter-select"><option>Any facility</option><option>KP Facility</option><option>KN Facility</option></select>
+    <select class="filter-select"><option>Last 7 days</option><option>Last 30 days</option><option>This month</option><option>Custom…</option></select>
+  </div>
+
+  <div class="card" style="padding:0">
+    <table>
+      <thead>
+        <tr><th>Order #</th><th>Customer</th><th>Items</th><th>Amount</th><th>Status</th><th>Placed</th><th></th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:#00C6FF"><b>PRE-20260409-0015</b></td><td>HP · +91 99999 11111</td>
+          <td>4 items</td><td>₹156</td><td><span class="chip chip-pickup">Picked Up</span></td>
+          <td>2:55 PM today</td>
+          <td><button class="btn btn-sm btn-ghost" data-goto="order-detail">View</button></td>
+        </tr>
+        <tr>
+          <td style="color:#00C6FF"><b>PRE-20260408-0013</b></td><td>Ria · +91 88888 22222</td>
+          <td>6 items</td><td>₹414</td><td><span class="chip chip-inprocess">Washing</span></td>
+          <td>8 Apr 2026</td>
+          <td><button class="btn btn-sm btn-ghost" data-goto="order-detail">View</button></td>
+        </tr>
+        <tr>
+          <td style="color:#00C6FF"><b>PRE-20260405-0012</b></td><td>HP · +91 99999 11111</td>
+          <td>6 items</td><td>₹734</td><td><span class="chip chip-delivered">Delivered</span></td>
+          <td>5 Apr 2026</td>
+          <td><button class="btn btn-sm btn-ghost" data-goto="order-detail">View</button></td>
+        </tr>
+        <tr>
+          <td style="color:#00C6FF"><b>PRE-20260405-0005</b></td><td>Raj · +91 77777 33333</td>
+          <td>4 items</td><td>₹734</td><td><span class="chip chip-pickup">Rider Assigned</span></td>
+          <td>5 Apr 2026</td>
+          <td><button class="btn btn-sm btn-ghost" data-goto="order-detail">View</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template id="page-order-detail">
+  <div class="page-title">
+    <div>
+      <h3>#PRE-20260405-0012 <span class="chip chip-delivered" style="margin-left:8px">Delivered</span></h3>
+      <div class="sub">Placed 5 Apr 2026 · HP · +91 99999 11111 · ₹734 · Paid</div>
+    </div>
+    <div>
+      <button class="btn btn-ghost" data-goto="orders">← Back</button>
+      <button class="btn btn-ghost">Refund</button>
+      <button class="btn btn-primary">Reassign Rider</button>
+    </div>
+  </div>
+
+  <div class="split-2">
+    <div>
+      <div class="card">
+        <div class="card-title">Items (6)</div>
+        <table>
+          <thead><tr><th>Service</th><th>Garment</th><th>Qty</th><th>Price</th></tr></thead>
+          <tbody>
+            <tr><td>Wash + Iron</td><td>Shirt</td><td>2</td><td>₹58</td></tr>
+            <tr><td>Dry Clean</td><td>Trouser</td><td>2</td><td>₹298</td></tr>
+            <tr><td>Wash + Fold</td><td>T-Shirt</td><td>2</td><td>₹38</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Charges</div>
+        <div style="font-size:.74rem">
+          <div style="display:flex;justify-content:space-between;padding:6px 0"><span>Subtotal</span><span>₹734</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;color:#55708C"><span>Coin discount</span><span>-₹0</span></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid #16263B;margin-top:6px;font-weight:700;color:#E5EEF5"><span>Total paid</span><span>₹734</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Assignments</div>
+        <div style="font-size:.74rem;line-height:1.8">
+          <div>🛵 <b>Pickup</b> — Amit Sharma · Completed 5 Apr 10:04 AM</div>
+          <div>🚚 <b>Delivery</b> — Amit Sharma · Completed 9 Apr 3:11 PM</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title">Timeline</div>
+        <div class="timeline">
+          <div class="tl-item done"><div class="tl-title">Placed</div><div class="tl-time">5 Apr · 9:40 AM</div></div>
+          <div class="tl-item done"><div class="tl-title">Rider assigned</div><div class="tl-time">5 Apr · 9:42 AM</div></div>
+          <div class="tl-item done"><div class="tl-title">Picked up</div><div class="tl-time">5 Apr · 10:04 AM</div></div>
+          <div class="tl-item done"><div class="tl-title">At facility</div><div class="tl-time">5 Apr · 10:35 AM</div></div>
+          <div class="tl-item done"><div class="tl-title">Washing</div><div class="tl-time">5 Apr · 11:20 AM</div></div>
+          <div class="tl-item done"><div class="tl-title">Ironing</div><div class="tl-time">6 Apr · 9:15 AM</div></div>
+          <div class="tl-item done"><div class="tl-title">Ready for delivery</div><div class="tl-time">6 Apr · 2:00 PM</div></div>
+          <div class="tl-item done"><div class="tl-title">Out for delivery</div><div class="tl-time">9 Apr · 2:40 PM</div></div>
+          <div class="tl-item current"><div class="tl-title">Delivered ✓</div><div class="tl-time">9 Apr · 3:11 PM</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="page-customers">
+  <div class="page-title">
+    <div>
+      <h3>Customers</h3>
+      <div class="sub">Lifetime customer list</div>
+    </div>
+    <div><button class="btn btn-ghost">Export CSV</button></div>
+  </div>
+
+  <div class="filters">
+    <input class="topbar search" placeholder="🔍 Name, phone, or email" style="width:auto;flex:1;max-width:340px">
+    <select class="filter-select"><option>All tiers</option><option>Silver</option><option>Gold</option><option>Platinum</option></select>
+  </div>
+
+  <div class="card" style="padding:0">
+    <table>
+      <thead><tr><th>Customer</th><th>Phone</th><th>Orders</th><th>Lifetime value</th><th>Coins</th><th>Tier</th><th>Joined</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><b>HP</b></td><td>+91 99999 11111</td><td>6</td><td>₹3,475</td><td>73</td><td><span class="chip chip-active">Silver</span></td><td>5 Apr 2026</td><td><button class="btn btn-sm btn-ghost">View</button></td></tr>
+        <tr><td><b>Ria Desai</b></td><td>+91 88888 22222</td><td>12</td><td>₹9,820</td><td>420</td><td><span class="chip chip-active">Gold</span></td><td>28 Mar 2026</td><td><button class="btn btn-sm btn-ghost">View</button></td></tr>
+        <tr><td><b>Raj P</b></td><td>+91 77777 33333</td><td>3</td><td>₹1,418</td><td>14</td><td><span class="chip chip-active">Silver</span></td><td>2 Apr 2026</td><td><button class="btn btn-sm btn-ghost">View</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template id="page-offers">
+  <div class="page-title">
+    <div>
+      <h3>Offers</h3>
+      <div class="sub">Flash deals, promo codes & loyalty rewards shown on the customer home screen</div>
+    </div>
+    <div>
+      <button class="btn btn-ghost">History</button>
+      <button class="btn btn-primary" data-goto="offer-create">+ New Offer</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active">Live <span class="count">2</span></div>
+    <div class="tab">Scheduled <span class="count">4</span></div>
+    <div class="tab">Expired <span class="count">27</span></div>
+    <div class="tab">Drafts <span class="count">1</span></div>
+  </div>
+
+  <div class="split-3">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px">
+        <span class="chip chip-active">FLASH DEAL</span>
+        <span style="font-size:.65rem;color:#55708C">Ends in 2h 11m</span>
+      </div>
+      <div style="font-size:1rem;font-weight:700;color:#E5EEF5;margin-bottom:4px">30% off Dry Clean</div>
+      <div style="font-size:.7rem;color:#7A8FA8;margin-bottom:10px">Code: <b style="color:#00C6FF">FLASH30</b></div>
+      <div style="font-size:.65rem;color:#55708C;line-height:1.8">
+        • Min order ₹299<br>
+        • 142 redemptions so far<br>
+        • Active across all zones
+      </div>
+      <div style="display:flex;gap:6px;margin-top:12px">
+        <button class="btn btn-sm btn-ghost">Edit</button>
+        <button class="btn btn-sm btn-danger">End now</button>
+      </div>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px">
+        <span class="chip chip-approved">FIRST ORDER</span>
+        <span style="font-size:.65rem;color:#55708C">Evergreen</span>
+      </div>
+      <div style="font-size:1rem;font-weight:700;color:#E5EEF5;margin-bottom:4px">₹100 off first order</div>
+      <div style="font-size:.7rem;color:#7A8FA8;margin-bottom:10px">Code: <b style="color:#00C6FF">WELCOME100</b></div>
+      <div style="font-size:.65rem;color:#55708C;line-height:1.8">
+        • New customers only<br>
+        • 68 redemptions<br>
+        • No min order
+      </div>
+      <div style="display:flex;gap:6px;margin-top:12px">
+        <button class="btn btn-sm btn-ghost">Edit</button>
+        <button class="btn btn-sm btn-danger">Pause</button>
+      </div>
+    </div>
+    <div class="card" style="border:1.5px dashed #1C2F48;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer" data-goto="offer-create">
+      <div style="font-size:2rem;color:#55708C">+</div>
+      <div style="font-size:.75rem;color:#7A8FA8;margin-top:6px">Create new offer</div>
+    </div>
+  </div>
+</template>
+
+<template id="page-offer-create">
+  <div class="page-title">
+    <div>
+      <h3>Create Offer</h3>
+      <div class="sub">Shown on the customer home "Offers for you" strip when active</div>
+    </div>
+    <div>
+      <button class="btn btn-ghost" data-goto="offers">Cancel</button>
+      <button class="btn btn-ghost">Save draft</button>
+      <button class="btn btn-primary">Publish</button>
+    </div>
+  </div>
+
+  <div class="split-2">
+    <div>
+      <div class="card">
+        <div class="card-title">Basics</div>
+        <div class="form-grid">
+          <div class="field"><label>Offer type</label><select><option>Flash Deal</option><option>Percentage off</option><option>Flat off</option><option>Free delivery</option><option>First order</option></select></div>
+          <div class="field"><label>Promo code</label><input placeholder="FLASH30"></div>
+          <div class="field full"><label>Headline</label><input placeholder="30% off dry clean"></div>
+          <div class="field full"><label>Description</label><textarea placeholder="Short pitch shown under the headline"></textarea></div>
+          <div class="field"><label>Discount type</label><select><option>Percentage</option><option>Flat amount</option></select></div>
+          <div class="field"><label>Value</label><input placeholder="30"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Rules</div>
+        <div class="form-grid">
+          <div class="field"><label>Min order amount</label><input placeholder="299"></div>
+          <div class="field"><label>Max discount cap</label><input placeholder="200"></div>
+          <div class="field"><label>Usage limit per user</label><input placeholder="1"></div>
+          <div class="field"><label>Total usage cap</label><input placeholder="500"></div>
+          <div class="field"><label>Applies to service</label><select><option>All services</option><option>Dry Clean only</option><option>Wash + Iron only</option></select></div>
+          <div class="field"><label>Customer segment</label><select><option>All</option><option>New customers</option><option>Returning</option><option>Gold tier+</option></select></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Schedule</div>
+        <div class="form-grid">
+          <div class="field"><label>Start</label><input type="datetime-local"></div>
+          <div class="field"><label>End</label><input type="datetime-local"></div>
+          <div class="field full"><label>Service zones</label><select multiple style="height:70px"><option selected>Koregaon Park</option><option selected>Kalyani Nagar</option><option>Viman Nagar</option></select></div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title">Live preview <span class="link">Customer home</span></div>
+        <div style="background:#0A1628;border:1px solid #1C2F48;border-radius:10px;padding:16px">
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+            <span class="chip" style="background:#FFBD2E25;color:#FFBD2E">⚡ FLASH DEAL</span>
+          </div>
+          <div style="font-size:1rem;font-weight:700;color:#E5EEF5">30% off dry clean</div>
+          <div style="font-size:.7rem;color:#55708C;margin-top:4px">⏱ Ends in 2h 11m</div>
+          <div style="margin-top:10px;display:flex;justify-content:space-between;align-items:end">
+            <div style="background:#0F1B2E;border:1px solid #1C2F48;padding:6px 14px;border-radius:6px;font-size:.7rem;font-weight:600;color:#FFBD2E;letter-spacing:1px">FLASH30 📋</div>
+            <div style="font-size:1.8rem;font-weight:800;color:#FFBD2E">30%<span style="font-size:.7rem;display:block;letter-spacing:1px">OFF</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="page-facilities">
+  <div class="page-title">
+    <div><h3>Facilities</h3><div class="sub">Wash centres that receive and process orders</div></div>
+    <div><button class="btn btn-primary">+ Add Facility</button></div>
+  </div>
+  <div class="card" style="padding:0">
+    <table>
+      <thead><tr><th>Name</th><th>Zone</th><th>Staff</th><th>Active orders</th><th>Today's capacity</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><b>KP Facility</b></td><td>Koregaon Park</td><td>4</td><td>12</td><td>38 / 60</td><td><span class="chip chip-approved">Open</span></td><td><button class="btn btn-sm btn-ghost">Manage</button></td></tr>
+        <tr><td><b>KN Facility</b></td><td>Kalyani Nagar</td><td>3</td><td>6</td><td>21 / 40</td><td><span class="chip chip-approved">Open</span></td><td><button class="btn btn-sm btn-ghost">Manage</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template id="page-slots">
+  <div class="page-title">
+    <div><h3>Pickup Slots</h3><div class="sub">Control time slots customers can book for pickup</div></div>
+    <div><button class="btn btn-primary">+ Bulk Create</button></div>
+  </div>
+  <div class="card" style="padding:0">
+    <table>
+      <thead><tr><th>Date</th><th>Window</th><th>Zone</th><th>Capacity</th><th>Booked</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <tr><td>10 Apr 2026</td><td>9:00 – 11:00</td><td>Koregaon Park</td><td>20</td><td>14</td><td><span class="chip chip-approved">Open</span></td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+        <tr><td>10 Apr 2026</td><td>11:00 – 13:00</td><td>Koregaon Park</td><td>20</td><td>20</td><td><span class="chip chip-pending">Full</span></td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+        <tr><td>10 Apr 2026</td><td>17:00 – 19:00</td><td>Kalyani Nagar</td><td>15</td><td>6</td><td><span class="chip chip-approved">Open</span></td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template id="page-discounts">
+  <div class="page-title">
+    <div><h3>Discounts</h3><div class="sub">Admin-granted discounts (different from promo offers)</div></div>
+    <div><button class="btn btn-primary">+ Grant Discount</button></div>
+  </div>
+  <div class="card" style="padding:0">
+    <table>
+      <thead><tr><th>Customer</th><th>Type</th><th>Amount</th><th>Reason</th><th>Granted by</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>HP · +91 99999 11111</td><td>Flat ₹</td><td>₹50</td><td>Goodwill (late delivery)</td><td>Admin</td><td><span class="chip chip-active">Applied</span></td></tr>
+        <tr><td>Ria Desai</td><td>Percent</td><td>10%</td><td>Student verified</td><td>Auto</td><td><span class="chip chip-active">Active</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template id="page-payouts">
+  <div class="page-title">
+    <div><h3>Payouts</h3><div class="sub">Rider earnings & settlements</div></div>
+    <div><button class="btn btn-ghost">Export</button><button class="btn btn-primary">Run Weekly Payout</button></div>
+  </div>
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi"><div class="label">Pending settlement</div><div class="value">₹12,340</div></div>
+    <div class="kpi"><div class="label">Paid this month</div><div class="value">₹48,200</div></div>
+    <div class="kpi"><div class="label">Riders due</div><div class="value">9</div></div>
+  </div>
+  <div class="card" style="padding:0">
+    <table>
+      <thead><tr><th>Rider</th><th>Deliveries</th><th>Earnings</th><th>Period</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><b>Amit Sharma</b></td><td>48</td><td>₹1,440</td><td>3 Apr – 9 Apr</td><td><span class="chip chip-pending">Pending</span></td><td><button class="btn btn-sm btn-ghost">Pay</button></td></tr>
+        <tr><td><b>Vikas Joshi</b></td><td>32</td><td>₹960</td><td>3 Apr – 9 Apr</td><td><span class="chip chip-pending">Pending</span></td><td><button class="btn btn-sm btn-ghost">Pay</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template id="page-finance">
+  <div class="page-title">
+    <div>
+      <h3>Finance / P&amp;L</h3>
+      <div class="sub">Earnings, expenses and net profit — daily / weekly / monthly / all-time</div>
+    </div>
+    <div>
+      <button class="btn btn-ghost">Export CSV</button>
+      <button class="btn btn-ghost">Download PDF</button>
+      <button class="btn btn-primary" data-goto="expenses">+ Log Expense</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab">Today</div>
+    <div class="tab">This week</div>
+    <div class="tab active">This month</div>
+    <div class="tab">This year</div>
+    <div class="tab">All time</div>
+    <div class="tab">Custom…</div>
+  </div>
+
+  <!-- Hero P&L summary -->
+  <div class="kpi-grid">
+    <div class="kpi accent">
+      <div class="label">Revenue</div>
+      <div class="value">₹2,48,420</div>
+      <div class="delta up">▲ 18% vs last month</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Total expenses</div>
+      <div class="value" style="color:#FF9180">₹1,62,300</div>
+      <div class="delta down">▲ 11% vs last month</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Net profit</div>
+      <div class="value" style="color:#27C93F">₹86,120</div>
+      <div class="delta up">▲ 34% · 34.7% margin</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Capital invested (total)</div>
+      <div class="value">₹8,50,000</div>
+      <div class="delta">Recovered: ₹3,12,000 (37%)</div>
+    </div>
+  </div>
+
+  <!-- Per-period summary strip -->
+  <div class="split-2" style="grid-template-columns:3fr 2fr">
+    <div class="card">
+      <div class="card-title">Revenue vs expenses (last 30 days) <span class="link">Full report →</span></div>
+      <div style="height:220px;background:#0A1628;border-radius:8px;display:flex;align-items:end;justify-content:space-around;padding:14px;gap:3px">
+        <div style="display:flex;gap:2px;align-items:end;height:100%"><div style="width:10px;height:55%;background:#00C6FF70"></div><div style="width:10px;height:42%;background:#FF918070"></div></div>
+        <div style="display:flex;gap:2px;align-items:end;height:100%"><div style="width:10px;height:60%;background:#00C6FF70"></div><div style="width:10px;height:44%;background:#FF918070"></div></div>
+        <div style="display:flex;gap:2px;align-items:end;height:100%"><div style="width:10px;height:65%;background:#00C6FF70"></div><div style="width:10px;height:46%;background:#FF918070"></div></div>
+        <div style="display:flex;gap:2px;align-items:end;height:100%"><div style="width:10px;height:72%;background:#00C6FF"></div><div style="width:10px;height:48%;background:#FF9180"></div></div>
+        <div style="display:flex;gap:2px;align-items:end;height:100%"><div style="width:10px;height:68%;background:#00C6FF70"></div><div style="width:10px;height:50%;background:#FF918070"></div></div>
+        <div style="display:flex;gap:2px;align-items:end;height:100%"><div style="width:10px;height:75%;background:#00C6FF70"></div><div style="width:10px;height:52%;background:#FF918070"></div></div>
+        <div style="display:flex;gap:2px;align-items:end;height:100%"><div style="width:10px;height:85%;background:#00C6FF"></div><div style="width:10px;height:55%;background:#FF9180"></div></div>
+        <div style="display:flex;gap:2px;align-items:end;height:100%"><div style="width:10px;height:90%;background:#00C6FF"></div><div style="width:10px;height:58%;background:#FF9180"></div></div>
+        <div style="display:flex;gap:2px;align-items:end;height:100%"><div style="width:10px;height:78%;background:#00C6FF70"></div><div style="width:10px;height:54%;background:#FF918070"></div></div>
+        <div style="display:flex;gap:2px;align-items:end;height:100%"><div style="width:10px;height:82%;background:#00C6FF70"></div><div style="width:10px;height:56%;background:#FF918070"></div></div>
+      </div>
+      <div style="display:flex;gap:18px;margin-top:10px;font-size:.65rem;color:#7A8FA8">
+        <div><span style="display:inline-block;width:10px;height:10px;background:#00C6FF;border-radius:2px;vertical-align:middle"></span> Revenue</div>
+        <div><span style="display:inline-block;width:10px;height:10px;background:#FF9180;border-radius:2px;vertical-align:middle"></span> Expenses</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Earnings by period</div>
+      <div style="font-size:.74rem">
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #16263B"><span>Today</span><b style="color:#27C93F">₹18,420</b></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #16263B"><span>This week</span><b style="color:#27C93F">₹72,140</b></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #16263B"><span>This month</span><b style="color:#27C93F">₹2,48,420</b></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #16263B"><span>Last month</span><b>₹2,10,550</b></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #16263B"><span>This year (YTD)</span><b>₹12,84,600</b></div>
+        <div style="display:flex;justify-content:space-between;padding:9px 0"><span style="color:#E5EEF5;font-weight:600">All time</span><b style="color:#00C6FF">₹18,42,100</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expense breakdown -->
+  <div class="split-2">
+    <div class="card">
+      <div class="card-title">Expense breakdown (this month) <span class="link">Manage →</span></div>
+      <table>
+        <thead><tr><th>Category</th><th>Amount</th><th>% of total</th><th>vs last month</th></tr></thead>
+        <tbody>
+          <tr><td>🧑‍💼 Salaries (facility + ops)</td><td><b>₹72,000</b></td><td>44%</td><td><span style="color:#27C93F">▲ 4%</span></td></tr>
+          <tr><td>🛵 Rider payouts</td><td><b>₹38,400</b></td><td>24%</td><td><span style="color:#27C93F">▲ 22%</span></td></tr>
+          <tr><td>🧴 Detergent &amp; chemicals</td><td><b>₹12,800</b></td><td>8%</td><td><span style="color:#55708C">= 0%</span></td></tr>
+          <tr><td>⚡ Electricity + water</td><td><b>₹14,200</b></td><td>9%</td><td><span style="color:#FF5F57">▲ 7%</span></td></tr>
+          <tr><td>🏢 Facility rent</td><td><b>₹18,000</b></td><td>11%</td><td><span style="color:#55708C">= 0%</span></td></tr>
+          <tr><td>⛽ Fuel / vehicle maint.</td><td><b>₹4,900</b></td><td>3%</td><td><span style="color:#FF5F57">▲ 11%</span></td></tr>
+          <tr><td>📣 Marketing (ads, flyers)</td><td><b>₹2,000</b></td><td>1%</td><td><span style="color:#FF5F57">▼ 50%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Capital / investment</div>
+      <div style="font-size:.74rem;line-height:1.9">
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #16263B"><span>Initial capital</span><b>₹5,00,000</b></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #16263B"><span>Seed round (Mar 2026)</span><b>₹3,00,000</b></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #16263B"><span>Equipment loan</span><b>₹50,000</b></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #16263B;color:#E5EEF5;font-weight:600"><span>Total invested</span><b style="color:#E5EEF5">₹8,50,000</b></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #16263B"><span>Recovered (cumulative profit)</span><b style="color:#27C93F">₹3,12,000</b></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0"><span>Remaining to break-even</span><b style="color:#FFBD2E">₹5,38,000</b></div>
+      </div>
+      <div style="margin-top:14px">
+        <div style="font-size:.62rem;color:#55708C;letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px">Break-even progress</div>
+        <div style="height:10px;background:#0A1628;border-radius:5px;overflow:hidden;border:1px solid #16263B">
+          <div style="width:37%;height:100%;background:linear-gradient(90deg,#00C6FF,#27C93F)"></div>
+        </div>
+        <div style="font-size:.65rem;color:#7A8FA8;margin-top:5px">37% recovered · est. break-even Oct 2026</div>
+      </div>
+      <button class="btn btn-ghost" style="width:100%;margin-top:14px;justify-content:center">+ Record Investment</button>
+    </div>
+  </div>
+
+  <!-- Salary / payroll summary -->
+  <div class="card">
+    <div class="card-title">Salaries paid (this month) <span class="link">Run payroll →</span></div>
+    <table>
+      <thead><tr><th>Person</th><th>Role</th><th>Monthly salary</th><th>Paid on</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><b>Ramesh K</b></td><td>Facility Manager · KP</td><td>₹22,000</td><td>1 Apr 2026</td><td><span class="chip chip-delivered">Paid</span></td><td><button class="btn btn-sm btn-ghost">Slip</button></td></tr>
+        <tr><td><b>Suman D</b></td><td>Washer · KP</td><td>₹14,000</td><td>1 Apr 2026</td><td><span class="chip chip-delivered">Paid</span></td><td><button class="btn btn-sm btn-ghost">Slip</button></td></tr>
+        <tr><td><b>Pooja S</b></td><td>Ironing · KP</td><td>₹13,000</td><td>1 Apr 2026</td><td><span class="chip chip-delivered">Paid</span></td><td><button class="btn btn-sm btn-ghost">Slip</button></td></tr>
+        <tr><td><b>Anil V</b></td><td>Facility Manager · KN</td><td>₹20,000</td><td>1 Apr 2026</td><td><span class="chip chip-delivered">Paid</span></td><td><button class="btn btn-sm btn-ghost">Slip</button></td></tr>
+        <tr><td><b>Dev K</b></td><td>Washer · KN</td><td>₹13,000</td><td>—</td><td><span class="chip chip-pending">Due</span></td><td><button class="btn btn-sm btn-primary">Pay</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template id="page-expenses">
+  <div class="page-title">
+    <div>
+      <h3>Expenses</h3>
+      <div class="sub">Log and track every outgoing — salaries, rent, supplies, marketing</div>
+    </div>
+    <div>
+      <button class="btn btn-ghost" data-goto="finance">← Back to P&amp;L</button>
+      <button class="btn btn-primary">+ Log Expense</button>
+    </div>
+  </div>
+
+  <div class="filters">
+    <input class="topbar search" placeholder="🔍 Search description or vendor" style="width:auto;flex:1;max-width:340px">
+    <select class="filter-select"><option>All categories</option><option>Salaries</option><option>Rider payouts</option><option>Detergent</option><option>Electricity</option><option>Rent</option><option>Fuel</option><option>Marketing</option><option>Misc</option></select>
+    <select class="filter-select"><option>Any facility</option><option>KP Facility</option><option>KN Facility</option><option>Head office</option></select>
+    <select class="filter-select"><option>This month</option><option>Last 30 days</option><option>This quarter</option><option>This year</option></select>
+  </div>
+
+  <div class="split-2" style="grid-template-columns:2fr 1fr">
+    <div class="card" style="padding:0">
+      <table>
+        <thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Vendor</th><th>Facility</th><th>Amount</th><th>Mode</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>9 Apr 2026</td><td>⚡ Electricity</td><td>MSEB bill — April cycle</td><td>MSEB</td><td>KP Facility</td><td><b>₹8,200</b></td><td>UPI</td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+          <tr><td>8 Apr 2026</td><td>🧴 Detergent</td><td>Surf + softener 50kg</td><td>Local supplier</td><td>KP Facility</td><td><b>₹6,400</b></td><td>Cash</td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+          <tr><td>5 Apr 2026</td><td>⛽ Fuel</td><td>Rider refills (weekly)</td><td>HP Petrol</td><td>—</td><td><b>₹2,100</b></td><td>UPI</td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+          <tr><td>3 Apr 2026</td><td>🏢 Rent</td><td>Facility rent — Apr</td><td>Landlord KP</td><td>KP Facility</td><td><b>₹12,000</b></td><td>Bank transfer</td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+          <tr><td>1 Apr 2026</td><td>🧑‍💼 Salary</td><td>Staff payroll (4 people)</td><td>—</td><td>KP Facility</td><td><b>₹59,000</b></td><td>Bank transfer</td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+          <tr><td>1 Apr 2026</td><td>📣 Marketing</td><td>Local flyers + WhatsApp ads</td><td>PrintShop</td><td>—</td><td><b>₹2,000</b></td><td>Cash</td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title">Quick log expense</div>
+        <div class="form-grid" style="grid-template-columns:1fr">
+          <div class="field"><label>Category</label><select><option>Salaries</option><option>Rider payouts</option><option>Detergent</option><option>Electricity</option><option>Rent</option><option>Fuel</option><option>Marketing</option><option>Repairs</option><option>Misc</option></select></div>
+          <div class="field"><label>Amount (₹)</label><input placeholder="0"></div>
+          <div class="field"><label>Paid to</label><input placeholder="Vendor / person"></div>
+          <div class="field"><label>Facility</label><select><option>—</option><option>KP Facility</option><option>KN Facility</option><option>Head office</option></select></div>
+          <div class="field"><label>Payment mode</label><select><option>Cash</option><option>UPI</option><option>Bank transfer</option><option>Card</option></select></div>
+          <div class="field"><label>Date</label><input type="date"></div>
+          <div class="field"><label>Notes</label><textarea placeholder="Bill number, remarks…"></textarea></div>
+          <div class="field"><label>Receipt / bill (optional)</label><div class="upload-box">📤 Upload photo of bill</div></div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;margin-top:12px;justify-content:center">Save Expense</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">This month total</div>
+        <div style="font-size:1.8rem;font-weight:700;color:#FF9180">₹1,62,300</div>
+        <div style="font-size:.68rem;color:#55708C;margin-top:4px">6 categories · 24 entries</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="page-catalog">
+  <div class="page-title">
+    <div>
+      <h3>Services &amp; Items</h3>
+      <div class="sub">Everything the customer can order — services, garments, treatments. Changes go live instantly in the app.</div>
+    </div>
+    <div>
+      <button class="btn btn-ghost">Bulk import CSV</button>
+      <button class="btn btn-primary">+ Add</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active">Services <span class="count">4</span></div>
+    <div class="tab">Garment Types <span class="count">12</span></div>
+    <div class="tab">Treatments <span class="count">5</span></div>
+  </div>
+
+  <!-- SERVICES GRID -->
+  <div class="split-3">
+
+    <div class="card">
+      <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:10px;background:#00C6FF15;display:flex;align-items:center;justify-content:center;font-size:1.6rem">👕</div>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-sm btn-ghost">✏️</button>
+          <button class="btn btn-sm btn-ghost">👁</button>
+          <button class="btn btn-sm btn-danger">🗑</button>
+        </div>
+      </div>
+      <div style="font-size:.95rem;font-weight:700;color:#E5EEF5;margin-bottom:2px">Wash + Iron</div>
+      <div style="font-size:.65rem;color:#55708C;margin-bottom:10px">slug: wash-iron · from ₹29</div>
+      <div style="font-size:.7rem;color:#7A8FA8;line-height:1.7">
+        Everyday wash &amp; press — best for shirts, trousers, kurtas.
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid #16263B">
+        <span style="font-size:.65rem;color:#55708C">12 garments linked</span>
+        <span class="chip chip-approved">Live</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:10px;background:#B15CFF15;display:flex;align-items:center;justify-content:center;font-size:1.6rem">👔</div>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-sm btn-ghost">✏️</button>
+          <button class="btn btn-sm btn-ghost">👁</button>
+          <button class="btn btn-sm btn-danger">🗑</button>
+        </div>
+      </div>
+      <div style="font-size:.95rem;font-weight:700;color:#E5EEF5;margin-bottom:2px">Wash + Fold</div>
+      <div style="font-size:.65rem;color:#55708C;margin-bottom:10px">slug: wash-fold · from ₹19</div>
+      <div style="font-size:.7rem;color:#7A8FA8;line-height:1.7">Budget option — washed and neatly folded, no ironing.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid #16263B">
+        <span style="font-size:.65rem;color:#55708C">10 garments linked</span>
+        <span class="chip chip-approved">Live</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:10px;background:#FFBD2E15;display:flex;align-items:center;justify-content:center;font-size:1.6rem">✨</div>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-sm btn-ghost">✏️</button>
+          <button class="btn btn-sm btn-ghost">👁</button>
+          <button class="btn btn-sm btn-danger">🗑</button>
+        </div>
+      </div>
+      <div style="font-size:.95rem;font-weight:700;color:#E5EEF5;margin-bottom:2px">Dry Clean</div>
+      <div style="font-size:.65rem;color:#55708C;margin-bottom:10px">slug: dry-clean · from ₹149</div>
+      <div style="font-size:.7rem;color:#7A8FA8;line-height:1.7">Premium solvent clean — suits, sarees, delicate fabrics.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid #16263B">
+        <span style="font-size:.65rem;color:#55708C">8 garments linked</span>
+        <span class="chip chip-approved">Live</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div style="display:flex;align-items:start;justify-content:space-between;margin-bottom:10px">
+        <div style="width:48px;height:48px;border-radius:10px;background:#FF918015;display:flex;align-items:center;justify-content:center;font-size:1.6rem">♨️</div>
+        <div style="display:flex;gap:4px">
+          <button class="btn btn-sm btn-ghost">✏️</button>
+          <button class="btn btn-sm btn-ghost">👁</button>
+          <button class="btn btn-sm btn-danger">🗑</button>
+        </div>
+      </div>
+      <div style="font-size:.95rem;font-weight:700;color:#E5EEF5;margin-bottom:2px">Iron Only</div>
+      <div style="font-size:.65rem;color:#55708C;margin-bottom:10px">slug: iron-only · from ₹12</div>
+      <div style="font-size:.7rem;color:#7A8FA8;line-height:1.7">Pre-washed clothes → we just press them.</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:10px;border-top:1px solid #16263B">
+        <span style="font-size:.65rem;color:#55708C">9 garments linked</span>
+        <span class="chip chip-approved">Live</span>
+      </div>
+    </div>
+
+    <div class="card" style="border:1.5px dashed #1C2F48;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;cursor:pointer;min-height:220px">
+      <div style="font-size:2.2rem;color:#55708C">+</div>
+      <div style="font-size:.78rem;color:#7A8FA8;margin-top:6px">Add new service</div>
+      <div style="font-size:.6rem;color:#55708C;margin-top:4px">Shoe cleaning, curtains, carpets…</div>
+    </div>
+
+  </div>
+
+  <!-- GARMENT TYPES -->
+  <div class="card" style="margin-top:20px">
+    <div class="card-title">Garment Types <span class="link">+ Add garment →</span></div>
+    <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px">
+      <div style="background:#0A1628;border:1px solid #1C2F48;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:1.6rem">👕</div>
+        <div style="font-size:.72rem;color:#E5EEF5;font-weight:600;margin-top:4px">Shirt</div>
+        <div style="font-size:.6rem;color:#55708C">base ×1.0</div>
+      </div>
+      <div style="background:#0A1628;border:1px solid #1C2F48;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:1.6rem">👖</div>
+        <div style="font-size:.72rem;color:#E5EEF5;font-weight:600;margin-top:4px">Trouser</div>
+        <div style="font-size:.6rem;color:#55708C">base ×1.2</div>
+      </div>
+      <div style="background:#0A1628;border:1px solid #1C2F48;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:1.6rem">👔</div>
+        <div style="font-size:.72rem;color:#E5EEF5;font-weight:600;margin-top:4px">Suit</div>
+        <div style="font-size:.6rem;color:#55708C">base ×3.5</div>
+      </div>
+      <div style="background:#0A1628;border:1px solid #1C2F48;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:1.6rem">👗</div>
+        <div style="font-size:.72rem;color:#E5EEF5;font-weight:600;margin-top:4px">Dress</div>
+        <div style="font-size:.6rem;color:#55708C">base ×2.0</div>
+      </div>
+      <div style="background:#0A1628;border:1px solid #1C2F48;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:1.6rem">🥼</div>
+        <div style="font-size:.72rem;color:#E5EEF5;font-weight:600;margin-top:4px">Kurta</div>
+        <div style="font-size:.6rem;color:#55708C">base ×1.3</div>
+      </div>
+      <div style="background:#0A1628;border:1px solid #1C2F48;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:1.6rem">🧥</div>
+        <div style="font-size:.72rem;color:#E5EEF5;font-weight:600;margin-top:4px">Jacket</div>
+        <div style="font-size:.6rem;color:#55708C">base ×2.5</div>
+      </div>
+      <div style="background:#0A1628;border:1px solid #1C2F48;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:1.6rem">🧣</div>
+        <div style="font-size:.72rem;color:#E5EEF5;font-weight:600;margin-top:4px">Saree</div>
+        <div style="font-size:.6rem;color:#55708C">base ×2.2</div>
+      </div>
+      <div style="background:#0A1628;border:1px solid #1C2F48;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:1.6rem">🛏️</div>
+        <div style="font-size:.72rem;color:#E5EEF5;font-weight:600;margin-top:4px">Bedsheet</div>
+        <div style="font-size:.6rem;color:#55708C">base ×1.8</div>
+      </div>
+      <div style="background:#0A1628;border:1px solid #1C2F48;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:1.6rem">🧻</div>
+        <div style="font-size:.72rem;color:#E5EEF5;font-weight:600;margin-top:4px">Curtain</div>
+        <div style="font-size:.6rem;color:#55708C">base ×3.0</div>
+      </div>
+      <div style="background:#0A1628;border:1px solid #1C2F48;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:1.6rem">🧦</div>
+        <div style="font-size:.72rem;color:#E5EEF5;font-weight:600;margin-top:4px">Socks</div>
+        <div style="font-size:.6rem;color:#55708C">base ×0.3</div>
+      </div>
+      <div style="background:#0A1628;border:1px solid #1C2F48;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:1.6rem">👟</div>
+        <div style="font-size:.72rem;color:#E5EEF5;font-weight:600;margin-top:4px">Shoes</div>
+        <div style="font-size:.6rem;color:#55708C">base ×4.0</div>
+      </div>
+      <div style="background:#0A1628;border:1.5px dashed #1C2F48;border-radius:8px;padding:12px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <div style="font-size:1.6rem;color:#55708C">+</div>
+        <div style="font-size:.68rem;color:#7A8FA8;margin-top:2px">Add</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TREATMENTS -->
+  <div class="card">
+    <div class="card-title">Treatments <span class="link">+ Add treatment →</span></div>
+    <table>
+      <thead><tr><th>Icon</th><th>Name</th><th>Multiplier</th><th>Applies to</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <tr><td style="font-size:1.2rem">💎</td><td><b>Premium Starch</b></td><td>×1.3</td><td>Wash + Iron</td><td><span class="chip chip-approved">Live</span></td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+        <tr><td style="font-size:1.2rem">🌸</td><td><b>Scented Wash</b></td><td>×1.15</td><td>All services</td><td><span class="chip chip-approved">Live</span></td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+        <tr><td style="font-size:1.2rem">🧼</td><td><b>Anti-bacterial</b></td><td>×1.25</td><td>Wash + Iron, Wash + Fold</td><td><span class="chip chip-approved">Live</span></td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+        <tr><td style="font-size:1.2rem">🌿</td><td><b>Eco wash (cold)</b></td><td>×1.0</td><td>Wash + Iron, Wash + Fold</td><td><span class="chip chip-approved">Live</span></td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+        <tr><td style="font-size:1.2rem">⚡</td><td><b>Express 6h</b></td><td>×1.5</td><td>All services</td><td><span class="chip chip-pending">Paused</span></td><td><button class="btn btn-sm btn-ghost">Edit</button></td></tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<template id="page-pricing">
+  <div class="page-title">
+    <div>
+      <h3>Pricing Matrix</h3>
+      <div class="sub">Per-piece price for each Service × Garment combination. Click any cell to edit.</div>
+    </div>
+    <div>
+      <button class="btn btn-ghost">Export</button>
+      <button class="btn btn-ghost">Bulk update %</button>
+      <button class="btn btn-primary">Save Changes</button>
+    </div>
+  </div>
+
+  <div class="note"><b>Heads up:</b> price changes go live immediately. Orders already placed are not affected.</div>
+
+  <div class="filters">
+    <select class="filter-select"><option>All facilities (default pricing)</option><option>KP Facility override</option><option>KN Facility override</option></select>
+    <select class="filter-select"><option>All zones</option><option>Koregaon Park</option><option>Kalyani Nagar</option></select>
+  </div>
+
+  <div class="card" style="padding:0;overflow-x:auto">
+    <table style="min-width:800px">
+      <thead>
+        <tr>
+          <th style="background:#0C1A2D;position:sticky;left:0;min-width:160px">Garment ↓ / Service →</th>
+          <th style="text-align:center">👕 Wash + Iron</th>
+          <th style="text-align:center">👔 Wash + Fold</th>
+          <th style="text-align:center">✨ Dry Clean</th>
+          <th style="text-align:center">♨️ Iron Only</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="background:#0C1A2D;position:sticky;left:0"><b>👕 Shirt</b></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="29"></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="19"></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="149"></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="12"></td>
+        </tr>
+        <tr><td style="background:#0C1A2D;position:sticky;left:0"><b>👖 Trouser</b></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="35"></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="22"></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="149"></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="15"></td>
+        </tr>
+        <tr><td style="background:#0C1A2D;position:sticky;left:0"><b>👔 Suit</b></td>
+          <td style="text-align:center;color:#55708C">—</td>
+          <td style="text-align:center;color:#55708C">—</td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="399"></td>
+          <td style="text-align:center;color:#55708C">—</td>
+        </tr>
+        <tr><td style="background:#0C1A2D;position:sticky;left:0"><b>👗 Dress</b></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="58"></td>
+          <td style="text-align:center;color:#55708C">—</td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="229"></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="25"></td>
+        </tr>
+        <tr><td style="background:#0C1A2D;position:sticky;left:0"><b>🧣 Saree</b></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="75"></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="45"></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="299"></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="35"></td>
+        </tr>
+        <tr><td style="background:#0C1A2D;position:sticky;left:0"><b>🛏️ Bedsheet</b></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="49"></td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="35"></td>
+          <td style="text-align:center;color:#55708C">—</td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="20"></td>
+        </tr>
+        <tr><td style="background:#0C1A2D;position:sticky;left:0"><b>👟 Shoes</b></td>
+          <td style="text-align:center;color:#55708C">—</td>
+          <td style="text-align:center;color:#55708C">—</td>
+          <td style="text-align:center"><input style="width:80px;text-align:center;background:#0A1628;border:1px solid #1C2F48;color:#E5EEF5;padding:6px;border-radius:6px" value="249"></td>
+          <td style="text-align:center;color:#55708C">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="split-2" style="margin-top:16px">
+    <div class="card">
+      <div class="card-title">Treatment multipliers</div>
+      <div style="font-size:.72rem;line-height:2">
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #16263B;padding:6px 0">💎 Premium Starch <b>×1.3</b></div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #16263B;padding:6px 0">🌸 Scented Wash <b>×1.15</b></div>
+        <div style="display:flex;justify-content:space-between;border-bottom:1px solid #16263B;padding:6px 0">🧼 Anti-bacterial <b>×1.25</b></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 0">⚡ Express 6h <b>×1.5</b></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Bulk update</div>
+      <div class="form-grid">
+        <div class="field"><label>Apply to</label><select><option>All services</option><option>Wash + Iron only</option><option>Dry Clean only</option></select></div>
+        <div class="field"><label>Change type</label><select><option>Increase by %</option><option>Decrease by %</option><option>Set flat ₹</option></select></div>
+        <div class="field"><label>Amount</label><input placeholder="10"></div>
+        <div class="field"><label>Effective from</label><input type="date"></div>
+      </div>
+      <button class="btn btn-primary" style="width:100%;margin-top:12px;justify-content:center">Apply Bulk Update</button>
+    </div>
+  </div>
+</template>
+
+<template id="page-messages">
+  <div class="page-title">
+    <div>
+      <h3>Messages &amp; Banners</h3>
+      <div class="sub">Everything the customer sees outside of order flow — daily messages, home banners, notifications, system status.</div>
+    </div>
+    <div><button class="btn btn-primary">+ New Message</button></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active">Daily Suvichar</div>
+    <div class="tab">Home Banner</div>
+    <div class="tab">Push Notifications</div>
+    <div class="tab">System Status</div>
+    <div class="tab">Email Templates</div>
+  </div>
+
+  <div class="split-2">
+    <div>
+      <div class="card">
+        <div class="card-title">🪔 Daily Suvichar (shown at top of customer home)</div>
+        <div style="font-size:.7rem;color:#7A8FA8;margin-bottom:12px">
+          Picks one message per day based on schedule. Can be scheduled ahead or shown randomly.
+        </div>
+        <div class="form-grid">
+          <div class="field full"><label>Hindi text</label><textarea placeholder="जो मन को शांत रखे, वही सच्चा ज्ञान है।">जो मन को शांत रखे, वही सच्चा ज्ञान है। स्वच्छता मन और घर दोनों की शोभा है।</textarea></div>
+          <div class="field full"><label>English translation</label><textarea placeholder="What keeps the mind calm is true wisdom…">What keeps the mind calm is true wisdom. Cleanliness adorns both the mind and home.</textarea></div>
+          <div class="field"><label>Category</label><select><option>Motivation</option><option>Cleanliness</option><option>Festival</option><option>Wellness</option></select></div>
+          <div class="field"><label>Show on date</label><input type="date" value="2026-04-10"></div>
+          <div class="field"><label>Valid till</label><input type="date"></div>
+          <div class="field"><label>Status</label><select><option>Scheduled</option><option>Live</option><option>Draft</option></select></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn btn-ghost">Save Draft</button>
+          <button class="btn btn-primary">Publish</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Upcoming schedule <span class="link">View all 24 →</span></div>
+        <table>
+          <thead><tr><th>Date</th><th>Preview</th><th>Category</th><th></th></tr></thead>
+          <tbody>
+            <tr><td>10 Apr</td><td style="color:#C5D4E4">जो मन को शांत रखे…</td><td><span class="chip chip-active">Motivation</span></td><td><button class="btn btn-sm btn-ghost">✏️</button></td></tr>
+            <tr><td>11 Apr</td><td style="color:#C5D4E4">हर सुबह एक नया अवसर…</td><td><span class="chip chip-active">Motivation</span></td><td><button class="btn btn-sm btn-ghost">✏️</button></td></tr>
+            <tr><td>12 Apr</td><td style="color:#C5D4E4">स्वच्छता ही स्वास्थ्य का…</td><td><span class="chip chip-approved">Cleanliness</span></td><td><button class="btn btn-sm btn-ghost">✏️</button></td></tr>
+            <tr><td>14 Apr</td><td style="color:#C5D4E4">आंबेडकर जयंती की हार्दिक…</td><td><span class="chip chip-pending">Festival</span></td><td><button class="btn btn-sm btn-ghost">✏️</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title">Live preview — Customer home</div>
+        <div style="background:#0A1628;border:1px solid #1C2F48;border-radius:12px;padding:16px">
+          <div style="font-size:.7rem;color:#00C6FF;font-weight:600;margin-bottom:4px">🪔 Good morning, HP</div>
+          <div style="font-size:.72rem;color:#E5EEF5;font-weight:500;line-height:1.5;margin-bottom:3px">जो मन को शांत रखे, वही सच्चा ज्ञान है। स्वच्छता मन और घर दोनों की शोभा है।</div>
+          <div style="font-size:.62rem;color:#7A8FA8;font-style:italic">What keeps the mind calm is true wisdom. Cleanliness adorns both the mind and home.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Push notification templates</div>
+        <div style="font-size:.72rem;line-height:2">
+          <div style="padding:8px 0;border-bottom:1px solid #16263B">📦 <b>Order placed</b><br><span style="color:#7A8FA8;font-size:.68rem">Your order #{order} is confirmed!</span></div>
+          <div style="padding:8px 0;border-bottom:1px solid #16263B">🛵 <b>Rider assigned</b><br><span style="color:#7A8FA8;font-size:.68rem">{rider} is on the way to pick up…</span></div>
+          <div style="padding:8px 0;border-bottom:1px solid #16263B">✅ <b>Order delivered</b><br><span style="color:#7A8FA8;font-size:.68rem">Enjoy fresh clothes! Rate your order.</span></div>
+          <div style="padding:8px 0">🎁 <b>Flash deal live</b><br><span style="color:#7A8FA8;font-size:.68rem">30% off dry clean today only!</span></div>
+        </div>
+        <button class="btn btn-ghost" style="width:100%;margin-top:10px;justify-content:center">Edit templates</button>
+      </div>
+
+      <div class="card">
+        <div class="card-title">System status banner</div>
+        <div style="font-size:.72rem;color:#7A8FA8;margin-bottom:10px">Shown at top of every screen when active.</div>
+        <div class="field"><label>Message</label><input placeholder="We're processing orders normally today."></div>
+        <div class="field" style="margin-top:8px"><label>Type</label><select><option>Info (blue)</option><option>Warning (yellow)</option><option>Critical (red)</option><option>Success (green)</option></select></div>
+        <div style="display:flex;gap:6px;margin-top:10px">
+          <button class="btn btn-ghost" style="flex:1">Off</button>
+          <button class="btn btn-primary" style="flex:1">Activate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template id="page-settings">
+  <div class="page-title">
+    <div><h3>Settings</h3><div class="sub">Global app configuration</div></div>
+  </div>
+  <div class="split-2">
+    <div class="card">
+      <div class="card-title">Pricing & coins</div>
+      <div class="form-grid">
+        <div class="field"><label>Coins per rupee</label><input value="10"></div>
+        <div class="field"><label>Coin earn %</label><input value="1"></div>
+        <div class="field"><label>Max redemption %</label><input value="20"></div>
+        <div class="field"><label>Student discount %</label><input value="10"></div>
+        <div class="field"><label>Express charge %</label><input value="25"></div>
+        <div class="field"><label>Rider pay per delivery</label><input value="30"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Loyalty tiers</div>
+      <div class="form-grid">
+        <div class="field"><label>Gold threshold (coins)</label><input value="500"></div>
+        <div class="field"><label>Platinum threshold</label><input value="1500"></div>
+        <div class="field"><label>Diamond threshold</label><input value="3000"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title">Ops</div>
+    <div style="font-size:.75rem;line-height:2.2">
+      <div>🟢 Accept new orders — <b style="color:#27C93F">ON</b></div>
+      <div>🟢 Rider auto-assignment — <b style="color:#27C93F">ON</b></div>
+      <div>🟡 Express mode — <b style="color:#FFBD2E">OFF</b></div>
+      <div>🔴 Maintenance banner — <b style="color:#FF5F57">OFF</b></div>
+    </div>
+  </div>
+</template>
+
+<script>
+const titles = {
+  dashboard: ['Dashboard', '/ Overview'],
+  orders: ['Orders', '/ Operations'],
+  'order-detail': ['Order Detail', '/ Operations / Orders'],
+  riders: ['Riders', '/ Operations'],
+  'rider-add': ['Add Rider', '/ Operations / Riders'],
+  'rider-detail': ['Rider Detail', '/ Operations / Riders'],
+  customers: ['Customers', '/ Operations'],
+  offers: ['Offers', '/ Growth'],
+  'offer-create': ['Create Offer', '/ Growth / Offers'],
+  facilities: ['Facilities', '/ Operations'],
+  slots: ['Pickup Slots', '/ Config'],
+  discounts: ['Discounts', '/ Growth'],
+  payouts: ['Payouts', '/ Finance'],
+  finance: ['Finance / P&L', '/ Finance'],
+  expenses: ['Expenses', '/ Finance'],
+  catalog: ['Services & Items', '/ Catalog'],
+  pricing: ['Pricing Matrix', '/ Catalog'],
+  messages: ['Messages & Banners', '/ Catalog'],
+  settings: ['Settings', '/ Config'],
+};
+
+const navMap = {
+  dashboard:'dashboard', orders:'orders', 'order-detail':'orders',
+  riders:'riders', 'rider-add':'riders', 'rider-detail':'riders',
+  customers:'customers', offers:'offers', 'offer-create':'offers',
+  facilities:'facilities', slots:'slots', discounts:'discounts',
+  payouts:'payouts', finance:'finance', expenses:'expenses',
+  catalog:'catalog', pricing:'pricing', messages:'messages',
+  settings:'settings',
+};
+
+function goto(screen){
+  document.querySelectorAll('.wf-tab').forEach(t=>t.classList.toggle('active', t.dataset.screen===screen));
+
+  if(screen==='login'){
+    document.getElementById('s-login').classList.add('active');
+    document.getElementById('shell').classList.remove('active');
+    return;
+  }
+  document.getElementById('s-login').classList.remove('active');
+  document.getElementById('shell').classList.add('active');
+
+  const [title,crumb]=titles[screen]||['','/'];
+  document.getElementById('topbar-title').textContent=title;
+  document.getElementById('topbar-crumb').textContent=crumb;
+
+  const navKey=navMap[screen];
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active', n.dataset.nav===navKey));
+
+  const tpl=document.getElementById('page-'+screen);
+  const content=document.getElementById('page-content');
+  content.innerHTML='';
+  if(tpl) content.appendChild(tpl.content.cloneNode(true));
+
+  content.querySelectorAll('[data-goto]').forEach(el=>{
+    el.addEventListener('click', ()=>goto(el.dataset.goto));
+  });
+}
+
+document.querySelectorAll('.wf-tab').forEach(t=>{
+  t.addEventListener('click', ()=>goto(t.dataset.screen));
+});
+document.querySelectorAll('.nav-item').forEach(n=>{
+  n.addEventListener('click', ()=>goto(n.dataset.nav));
+});
+
+// Default
+goto('login');
+</script>
+</body>
+</html>

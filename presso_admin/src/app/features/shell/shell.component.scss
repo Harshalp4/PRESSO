@@ -1,0 +1,147 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #06101f;
+  color: #e2e8f0;
+}
+
+.shell {
+  display: grid;
+  grid-template-columns: 248px 1fr;
+  min-height: 100vh;
+}
+
+.sidebar {
+  background: #0a1628;
+  border-right: 1px solid rgba(148, 163, 184, 0.12);
+  padding: 20px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 4px 8px 12px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.brand-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #38bdf8, #0ea5e9);
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  color: #04121f;
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.brand p {
+  margin: 0;
+  font-size: 11px;
+  color: #64748b;
+}
+
+.nav-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-heading {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #64748b;
+  padding: 0 10px 6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  color: #cbd5e1;
+  font-size: 13px;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+  .icon {
+    font-size: 15px;
+    width: 20px;
+    text-align: center;
+  }
+  &:hover {
+    background: rgba(56, 189, 248, 0.08);
+    color: #f1f5f9;
+  }
+  &.active {
+    background: rgba(56, 189, 248, 0.14);
+    color: #38bdf8;
+    font-weight: 600;
+  }
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(148, 163, 184, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.user {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 4px 8px;
+  .avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0891b2, #0e7490);
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    color: #fff;
+    font-size: 13px;
+  }
+  .user-name {
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .user-role {
+    font-size: 11px;
+    color: #64748b;
+  }
+}
+
+.sidebar-footer button {
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: #94a3b8;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  &:hover {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: rgba(220, 38, 38, 0.3);
+    color: #fca5a5;
+  }
+}
+
+.content {
+  padding: 28px 32px;
+  overflow-y: auto;
+}

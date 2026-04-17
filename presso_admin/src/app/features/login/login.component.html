@@ -1,0 +1,39 @@
+<div class="login-shell">
+  <div class="login-card">
+    <div class="brand">
+      <div class="brand-logo">P</div>
+      <div>
+        <h1>Presso Admin</h1>
+        <p>Operations control center</p>
+      </div>
+    </div>
+
+    <label>Username</label>
+    <input
+      type="text"
+      [(ngModel)]="username"
+      placeholder="admin"
+      autocomplete="username"
+      (keyup.enter)="submit()"
+    />
+
+    <label>Password</label>
+    <input
+      type="password"
+      [(ngModel)]="password"
+      placeholder="••••••••"
+      autocomplete="current-password"
+      (keyup.enter)="submit()"
+    />
+
+    <button class="primary" (click)="submit()" [disabled]="loading()">
+      {{ loading() ? 'Signing in…' : 'Sign in' }}
+    </button>
+
+    @if (error(); as e) {
+      <div class="error">{{ e }}</div>
+    }
+
+    <p class="hint">Admin access only. Default: <code>admin</code> / <code>admin123</code></p>
+  </div>
+</div>

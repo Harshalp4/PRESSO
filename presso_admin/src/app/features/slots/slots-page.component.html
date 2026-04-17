@@ -1,0 +1,170 @@
+<div class="breadcrumb">
+  <h1>Pickup Slots</h1>
+  <span class="crumb">/ Operations</span>
+</div>
+
+<div class="page-head">
+  <div>
+    <h2>Pickup Slot Templates</h2>
+    <p>
+      Reusable time windows customers can book for pickup on any day. Close a
+      slot to stop new bookings without affecting existing orders.
+    </p>
+  </div>
+  <div class="head-actions">
+    <button class="btn btn-primary" (click)="openNew()">+ Add Slot</button>
+  </div>
+</div>
+
+<!-- Stat tiles -->
+<div class="stats">
+  <div class="stat">
+    <div class="stat-label">Total Slots</div>
+    <div class="stat-value">{{ totalSlots() }}</div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">Active</div>
+    <div class="stat-value accent">{{ activeSlots() }}</div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">Daily Capacity</div>
+    <div class="stat-value">{{ totalCapacity() }}</div>
+  </div>
+</div>
+
+@if (error(); as e) {
+  <div class="alert">{{ e }}</div>
+}
+
+@if (loading() && slots().length === 0) {
+  <div class="empty">Loading slots…</div>
+} @else if (sortedSlots().length === 0) {
+  <div class="empty">
+    No pickup slot templates yet.
+    <div>
+      <button class="btn btn-ghost btn-sm" (click)="openNew()">
+        + Create the first slot
+      </button>
+    </div>
+  </div>
+} @else {
+  <div class="slot-grid">
+    @for (s of sortedSlots(); track s.id) {
+      <div class="slot-tile" [class.off]="!s.isActive">
+        <div class="slot-head">
+          <div class="slot-time">
+            {{ timeLabel(s.startTime) }} – {{ timeLabel(s.endTime) }}
+          </div>
+          @if (s.isActive) {
+            <span class="chip chip-live">LIVE</span>
+          } @else {
+            <span class="chip chip-off">OFF</span>
+          }
+        </div>
+        <div class="slot-body">
+          <div class="cap">
+            <div class="cap-label">Max per day</div>
+            <div class="cap-value">{{ s.maxOrders }}</div>
+          </div>
+        </div>
+        <div class="slot-actions">
+          <button class="btn btn-ghost btn-sm" (click)="openEdit(s)">
+            Edit
+          </button>
+          <button class="btn btn-ghost btn-sm" (click)="toggleActive(s)">
+            {{ s.isActive ? 'Disable' : 'Enable' }}
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+}
+
+<!-- ===== Modal ===== -->
+@if (modalOpen()) {
+  <div class="modal-backdrop" (click)="close()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>{{ editing() ? 'Edit Slot' : 'New Slot' }}</h3>
+      <p class="modal-sub">
+        @if (editing()) {
+          You can change capacity and toggle availability. Time window is
+          locked once a slot exists.
+        } @else {
+          Create a new pickup window. It applies to every day and customers
+          can book it up to the capacity limit per day.
+        }
+      </p>
+      @if (formError(); as e) {
+        <div class="alert">{{ e }}</div>
+      }
+
+      @if (editing()) {
+        <div class="field-row">
+          <div class="field">
+            <span>Start</span>
+            <div class="readonly">{{ formStart() }}</div>
+          </div>
+          <div class="field">
+            <span>End</span>
+            <div class="readonly">{{ formEnd() }}</div>
+          </div>
+        </div>
+      } @else {
+        <div class="field-row">
+          <label class="field">
+            <span>Start <span class="req">*</span></span>
+            <input
+              type="time"
+              [ngModel]="formStart()"
+              (ngModelChange)="formStart.set($event)"
+            />
+          </label>
+          <label class="field">
+            <span>End <span class="req">*</span></span>
+            <input
+              type="time"
+              [ngModel]="formEnd()"
+              (ngModelChange)="formEnd.set($event)"
+            />
+          </label>
+        </div>
+      }
+
+      <label class="field">
+        <span>Capacity per day <span class="req">*</span></span>
+        <input
+          type="number"
+          min="1"
+          max="100"
+          step="1"
+          [ngModel]="formMax()"
+          (ngModelChange)="formMax.set($event)"
+        />
+      </label>
+
+      @if (editing()) {
+        <label class="check">
+          <input
+            type="checkbox"
+            [checked]="formActive()"
+            (change)="formActive.set($any($event.target).checked)"
+          />
+          <span>Open for bookings</span>
+        </label>
+      }
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" (click)="close()" [disabled]="saving()">
+          Cancel
+        </button>
+        <button
+          class="btn btn-primary"
+          (click)="submit()"
+          [disabled]="saving()"
+        >
+          {{ saving() ? 'Saving…' : 'Save' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

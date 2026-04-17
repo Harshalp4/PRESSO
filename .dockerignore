@@ -1,0 +1,17 @@
+**/bin/
+**/obj/
+**/logs/
+**/.git
+**/.vs
+**/node_modules/
+*.md
+*.html
+*.pptx
+*.docx
+*.xlsx
+logo/
+tests/
+presso_admin/
+presso_app/
+resso_app/
+presso_operations/

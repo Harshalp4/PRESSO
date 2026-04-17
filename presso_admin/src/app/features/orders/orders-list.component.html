@@ -1,0 +1,130 @@
+<header class="page-head">
+  <div>
+    <h1>Orders</h1>
+    <p>Full order history across all customers</p>
+  </div>
+  <div class="actions">
+    <button class="btn ghost" (click)="load()" [disabled]="loading()">
+      {{ loading() ? 'Refreshing…' : 'Refresh' }}
+    </button>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="tab" [class.active]="tab() === 'all'" (click)="setTab('all')">
+    All <span class="count">{{ stats().all }}</span>
+  </button>
+  <button class="tab" [class.active]="tab() === 'active'" (click)="setTab('active')">
+    Active <span class="count">{{ stats().active }}</span>
+  </button>
+  <button class="tab" [class.active]="tab() === 'delivered'" (click)="setTab('delivered')">
+    Delivered <span class="count">{{ stats().delivered }}</span>
+  </button>
+  <button class="tab" [class.active]="tab() === 'cancelled'" (click)="setTab('cancelled')">
+    Cancelled <span class="count">{{ stats().cancelled }}</span>
+  </button>
+</nav>
+
+<div class="filters">
+  <input
+    class="search"
+    type="text"
+    placeholder="Search order #, customer name or phone"
+    [ngModel]="search()"
+    (ngModelChange)="onSearchInput($event)"
+  />
+  <label class="field">
+    <span class="field-label">Status</span>
+    <select [ngModel]="statusFilter()" (ngModelChange)="setStatus($event)">
+      @for (opt of statusOptions; track opt.value) {
+        <option [value]="opt.value">{{ opt.label }}</option>
+      }
+    </select>
+  </label>
+  <label class="field">
+    <span class="field-label">Date range</span>
+    <select [ngModel]="dateRange()" (ngModelChange)="setRange($event)">
+      <option value="7d">Last 7 days</option>
+      <option value="30d">Last 30 days</option>
+      <option value="month">This month</option>
+      <option value="all">All time</option>
+      <option value="custom">Custom…</option>
+    </select>
+  </label>
+  @if (dateRange() === 'custom') {
+    <label class="field">
+      <span class="field-label">From</span>
+      <input
+        type="date"
+        [ngModel]="customFrom()"
+        (ngModelChange)="setCustomFrom($event)"
+      />
+    </label>
+    <label class="field">
+      <span class="field-label">To</span>
+      <input
+        type="date"
+        [ngModel]="customTo()"
+        (ngModelChange)="setCustomTo($event)"
+      />
+    </label>
+  }
+</div>
+
+@if (error(); as e) {
+  <div class="alert">{{ e }}</div>
+}
+
+<section class="table-card">
+  <table>
+    <thead>
+      <tr>
+        <th>Order #</th>
+        <th>Customer</th>
+        <th>Items</th>
+        <th>Amount</th>
+        <th>Status</th>
+        <th>Rider</th>
+        <th>Placed</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @if (loading() && items().length === 0) {
+        <tr><td colspan="8" class="empty">Loading…</td></tr>
+      } @else if (items().length === 0) {
+        <tr><td colspan="8" class="empty">No orders match these filters.</td></tr>
+      } @else {
+        @for (o of items(); track o.id) {
+          <tr>
+            <td class="order-num">{{ o.orderNumber }}</td>
+            <td>
+              <div class="cust-name">{{ o.customerName || '—' }}</div>
+              <div class="cust-phone">{{ o.customerPhone }}</div>
+            </td>
+            <td>{{ o.itemCount }}</td>
+            <td class="amount">₹{{ o.totalAmount | number:'1.0-0' }}</td>
+            <td>
+              <span class="chip" [style.background]="statusColor(o.status) + '22'" [style.color]="statusColor(o.status)">
+                {{ statusLabel(o.status) }}
+              </span>
+            </td>
+            <td class="rider">{{ o.currentRiderName || '—' }}</td>
+            <td class="placed">{{ o.createdAt | date:'d MMM, h:mm a' }}</td>
+            <td>
+              <a class="btn sm ghost" [routerLink]="['/orders', o.id]">View</a>
+            </td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+</section>
+
+@if (totalPages() > 1) {
+  <div class="pagination">
+    <button class="btn ghost sm" (click)="prev()" [disabled]="page() <= 1 || loading()">← Prev</button>
+    <span class="page-info">Page {{ page() }} of {{ totalPages() }} · {{ totalCount() }} orders</span>
+    <button class="btn ghost sm" (click)="next()" [disabled]="page() >= totalPages() || loading()">Next →</button>
+  </div>
+}

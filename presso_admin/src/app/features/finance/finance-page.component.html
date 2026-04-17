@@ -1,0 +1,216 @@
+<div class="breadcrumb">
+  <h1>P&L / Earnings</h1>
+  <span class="crumb">/ Finance</span>
+</div>
+
+<div class="page-head">
+  <div>
+    <h2>Profit & Loss</h2>
+    <p>Revenue, expenses, rider payouts, and net earnings at a glance.</p>
+  </div>
+</div>
+
+@if (pnlError(); as e) {
+  <div class="alert">{{ e }}</div>
+}
+
+@if (pnl(); as p) {
+  <!-- Revenue cards -->
+  <div class="rev-cards">
+    <div class="rev-card primary">
+      <div class="rev-label">Total Revenue</div>
+      <div class="rev-value">{{ formatCurrency(p.totalRevenue) }}</div>
+      <div class="rev-sub">{{ p.capturedCount }} captured orders</div>
+    </div>
+    <div class="rev-card">
+      <div class="rev-label">Today</div>
+      <div class="rev-value">{{ formatCurrency(p.todayRevenue) }}</div>
+    </div>
+    <div class="rev-card">
+      <div class="rev-label">This Week</div>
+      <div class="rev-value">{{ formatCurrency(p.weekRevenue) }}</div>
+    </div>
+    <div class="rev-card">
+      <div class="rev-label">This Month</div>
+      <div class="rev-value">{{ formatCurrency(p.monthRevenue) }}</div>
+    </div>
+    <div class="rev-card">
+      <div class="rev-label">Avg Order Value</div>
+      <div class="rev-value">{{ formatCurrency(p.avgOrderValue) }}</div>
+    </div>
+  </div>
+
+  <!-- Net earnings banner -->
+  <div class="net-banner">
+    <div class="net-item">
+      <span class="net-label">Revenue</span>
+      <span class="net-val pos">{{ formatCurrency(p.totalRevenue) }}</span>
+    </div>
+    <span class="net-op">-</span>
+    <div class="net-item">
+      <span class="net-label">Expenses</span>
+      <span class="net-val neg">{{ formatCurrency(p.totalExpenses) }}</span>
+    </div>
+    <span class="net-op">-</span>
+    <div class="net-item">
+      <span class="net-label">Rider Payouts</span>
+      <span class="net-val neg">{{ formatCurrency(p.totalRiderPayouts) }}</span>
+    </div>
+    <span class="net-op">=</span>
+    <div class="net-item net-result">
+      <span class="net-label">Net Earnings</span>
+      <span class="net-val" [class.pos]="p.netEarnings >= 0" [class.neg]="p.netEarnings < 0">
+        {{ formatCurrency(p.netEarnings) }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Status + Discounts -->
+  <div class="section-row">
+    <section class="card">
+      <h3>Payment Status</h3>
+      <div class="status-grid">
+        <div class="status-item">
+          <span class="dot dot-captured"></span>
+          <span class="status-label">Captured</span>
+          <span class="status-count">{{ p.capturedCount }}</span>
+        </div>
+        <div class="status-item">
+          <span class="dot dot-pending"></span>
+          <span class="status-label">Pending</span>
+          <span class="status-count">{{ p.pendingCount }}</span>
+        </div>
+        <div class="status-item">
+          <span class="dot dot-failed"></span>
+          <span class="status-label">Failed</span>
+          <span class="status-count">{{ p.failedCount }}</span>
+        </div>
+        <div class="status-item">
+          <span class="dot dot-refunded"></span>
+          <span class="status-label">Refunded</span>
+          <span class="status-count">{{ p.refundedCount }}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h3>Discounts & Charges</h3>
+      <div class="disc-grid">
+        <div class="disc-row">
+          <span>Coin Discounts</span>
+          <span class="disc-val neg">-{{ formatCurrency(p.totalCoinDiscount) }}</span>
+        </div>
+        <div class="disc-row">
+          <span>Student Discounts</span>
+          <span class="disc-val neg">-{{ formatCurrency(p.totalStudentDiscount) }}</span>
+        </div>
+        <div class="disc-row">
+          <span>Admin Discounts</span>
+          <span class="disc-val neg">-{{ formatCurrency(p.totalAdminDiscount) }}</span>
+        </div>
+        <div class="disc-row total">
+          <span>Total Discounts</span>
+          <span class="disc-val neg">-{{ formatCurrency(discountTotal()) }}</span>
+        </div>
+        <div class="disc-row">
+          <span>Express Charges</span>
+          <span class="disc-val pos">+{{ formatCurrency(p.totalExpressCharge) }}</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Daily revenue chart -->
+  <section class="card chart-section">
+    <div class="chart-head">
+      <h3>Daily Revenue</h3>
+      <div class="range-seg">
+        <button class="seg" [class.active]="pnlDays() === 7" (click)="setDays(7)">7d</button>
+        <button class="seg" [class.active]="pnlDays() === 14" (click)="setDays(14)">14d</button>
+        <button class="seg" [class.active]="pnlDays() === 30" (click)="setDays(30)">30d</button>
+      </div>
+    </div>
+    @if (chartBars().length === 0) {
+      <div class="chart-empty">No revenue data in this period.</div>
+    } @else {
+      <div class="chart">
+        @for (bar of chartBars(); track bar.date) {
+          <div class="bar-col" [title]="bar.label + ': ' + formatCurrency(bar.revenue) + ' (' + bar.orders + ' orders)'">
+            <div class="bar-amount">{{ formatCurrency(bar.revenue) }}</div>
+            <div class="bar-fill" [style.height.%]="bar.pct"></div>
+            <div class="bar-label">{{ bar.label }}</div>
+          </div>
+        }
+      </div>
+    }
+  </section>
+} @else if (loadingPnl()) {
+  <div class="empty">Loading P&L data…</div>
+}
+
+<!-- Payments table -->
+<section class="card payments-section">
+  <div class="payments-head">
+    <h3>Payment Transactions</h3>
+    <div class="payments-controls">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search order # or Razorpay ID…"
+        [ngModel]="paymentSearch()"
+        (ngModelChange)="searchPayments($event)"
+      />
+      <div class="range-seg">
+        <button class="seg" [class.active]="paymentStatus() === ''" (click)="filterStatus('')">All</button>
+        <button class="seg" [class.active]="paymentStatus() === 'Captured'" (click)="filterStatus('Captured')">Captured</button>
+        <button class="seg" [class.active]="paymentStatus() === 'Failed'" (click)="filterStatus('Failed')">Failed</button>
+        <button class="seg" [class.active]="paymentStatus() === 'Refunded'" (click)="filterStatus('Refunded')">Refunded</button>
+      </div>
+    </div>
+  </div>
+
+  @if (paymentsError(); as e) {
+    <div class="alert">{{ e }}</div>
+  }
+
+  @if (loadingPayments() && !payments()) {
+    <div class="empty">Loading payments…</div>
+  } @else {
+    @if (payments()!.items.length === 0) {
+      <div class="empty">No payments found.</div>
+    } @else {
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Order</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Razorpay ID</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of payments()!.items; track p.orderId) {
+              <tr>
+                <td><a class="link" [routerLink]="['/orders', p.orderId]">{{ p.orderNumber }}</a></td>
+                <td class="mono">{{ formatCurrency(p.amount) }}</td>
+                <td><span class="chip" [ngClass]="statusClass(p.paymentStatus)">{{ p.paymentStatus }}</span></td>
+                <td class="mono dim">{{ p.razorpayPaymentId || '—' }}</td>
+                <td class="dim">{{ formatDate(p.createdAt) }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <div class="pager">
+      <span class="pager-info">Page {{ payments()!.page }} of {{ payments()!.totalPages }} ({{ payments()!.totalCount }} total)</span>
+      <div class="pager-btns">
+        <button class="btn btn-ghost btn-sm" [disabled]="!payments()!.hasPrevious" (click)="goPage(payments()!.page - 1)">‹ Prev</button>
+        <button class="btn btn-ghost btn-sm" [disabled]="!payments()!.hasNext" (click)="goPage(payments()!.page + 1)">Next ›</button>
+      </div>
+    </div>
+  }
+</section>

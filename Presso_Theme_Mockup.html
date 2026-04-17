@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presso - Theme Comparison</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#111;color:#fff;min-height:100vh}
+.header{text-align:center;padding:30px 20px 10px}
+.header h1{font-size:1.6rem;color:#fff}
+.header p{color:#888;font-size:.85rem;margin-top:4px}
+.toggle-row{display:flex;justify-content:center;gap:10px;padding:16px;flex-wrap:wrap}
+.toggle-btn{padding:8px 20px;border-radius:20px;border:2px solid #333;background:transparent;color:#aaa;cursor:pointer;font-size:.8rem;font-weight:600;transition:.2s}
+.toggle-btn.active{border-color:#0891B2;color:#0891B2;background:#0891B220}
+.compare{display:flex;gap:24px;max-width:900px;margin:0 auto;padding:0 20px 40px;justify-content:center;flex-wrap:wrap}
+.phone{width:375px;height:780px;border-radius:40px;overflow:hidden;position:relative;flex-shrink:0;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.phone-label{text-align:center;font-size:.75rem;color:#666;margin-bottom:8px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.notch{width:150px;height:28px;background:#000;border-radius:0 0 20px 20px;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:10}
+.status-bar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;font-size:11px;font-weight:600}
+.screen{height:100%;overflow-y:auto;scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+
+/* ══ CURRENT DARK THEME ══ */
+.current .screen{background:#0A1628;font-family:system-ui,sans-serif}
+.current .status-bar{background:#0A1628;color:#fff}
+.current .app-bar{background:#0D1F35;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.current .app-bar h2{color:#fff;font-size:1.1rem;font-weight:700}
+.current .app-bar .icon{color:#00C6FF}
+.current .greeting{padding:16px 20px 8px;color:#888;font-size:.8rem}
+.current .greeting strong{color:#fff;font-size:1rem}
+.current .section{padding:12px 20px}
+.current .section-title{color:#888;font-size:.7rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px}
+.current .service-card{background:#0D1F35;border:1px solid #1A3050;border-radius:12px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.current .service-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.current .service-card h4{color:#fff;font-size:.85rem;font-weight:500}
+.current .service-card p{color:#888;font-size:.7rem}
+.current .service-card .price{color:#00C6FF;font-size:.8rem;font-weight:600;margin-left:auto}
+.current .cta-btn{margin:12px 20px;padding:14px;border-radius:10px;text-align:center;font-weight:600;font-size:.85rem;color:#0A1628;background:linear-gradient(90deg,#00C6FF,#0072FF)}
+.current .zone-banner{margin:0 20px 10px;padding:10px 14px;border-radius:8px;background:#4CAF8220;border:1px solid #4CAF8250;display:flex;align-items:center;gap:8px;font-size:.75rem;color:#4CAF82}
+.current .bottom-nav{position:sticky;bottom:0;background:#060E1A;display:flex;justify-content:space-around;padding:8px 0 20px;border-top:1px solid #1A3050}
+.current .nav-item{text-align:center;font-size:.6rem;color:#888}
+.current .nav-item.active{color:#00C6FF}
+.current .nav-item .nav-icon{font-size:1.2rem;margin-bottom:2px}
+
+/* ══ PROPOSED LIGHT THEME ══ */
+.proposed .screen{background:#F7F8FC;font-family:'Poppins',sans-serif}
+.proposed .status-bar{background:#fff;color:#1e293b}
+.proposed .app-bar{background:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.proposed .app-bar h2{color:#0f172a;font-size:1.1rem;font-weight:700;letter-spacing:-.3px}
+.proposed .app-bar .icon{color:#0891B2}
+.proposed .greeting{padding:16px 20px 8px;color:#64748b;font-size:.8rem}
+.proposed .greeting strong{color:#0f172a;font-size:1rem}
+.proposed .section{padding:12px 20px}
+.proposed .section-title{color:#94a3b8;font-size:.7rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px}
+.proposed .service-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.03)}
+.proposed .service-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.proposed .service-card h4{color:#0f172a;font-size:.85rem;font-weight:600}
+.proposed .service-card p{color:#64748b;font-size:.7rem}
+.proposed .service-card .price{color:#0891B2;font-size:.8rem;font-weight:700;margin-left:auto}
+.proposed .cta-btn{margin:12px 20px;padding:14px;border-radius:12px;text-align:center;font-weight:600;font-size:.85rem;color:#fff;background:linear-gradient(135deg,#0891B2,#0E7490);box-shadow:0 4px 14px rgba(8,145,178,.3)}
+.proposed .zone-banner{margin:0 20px 10px;padding:10px 14px;border-radius:10px;background:#ecfdf5;border:1px solid #a7f3d0;display:flex;align-items:center;gap:8px;font-size:.75rem;color:#059669}
+.proposed .bottom-nav{position:sticky;bottom:0;background:#fff;display:flex;justify-content:space-around;padding:8px 0 20px;border-top:1px solid #f1f5f9;box-shadow:0 -2px 10px rgba(0,0,0,.03)}
+.proposed .nav-item{text-align:center;font-size:.6rem;color:#94a3b8;font-weight:500}
+.proposed .nav-item.active{color:#0891B2}
+.proposed .nav-item .nav-icon{font-size:1.2rem;margin-bottom:2px}
+
+/* ══ PROPOSED DARK OPTION ══ */
+.proposed-dark .screen{background:#0C1220;font-family:'Poppins',sans-serif}
+.proposed-dark .status-bar{background:#0C1220;color:#e2e8f0}
+.proposed-dark .app-bar{background:#131B2E;padding:14px 20px;display:flex;align-items:center;justify-content:space-between}
+.proposed-dark .app-bar h2{color:#f1f5f9;font-size:1.1rem;font-weight:700;letter-spacing:-.3px}
+.proposed-dark .app-bar .icon{color:#22D3EE}
+.proposed-dark .greeting{padding:16px 20px 8px;color:#94a3b8;font-size:.8rem}
+.proposed-dark .greeting strong{color:#f1f5f9;font-size:1rem}
+.proposed-dark .section{padding:12px 20px}
+.proposed-dark .section-title{color:#64748b;font-size:.7rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px}
+.proposed-dark .service-card{background:#131B2E;border:1px solid #1e293b;border-radius:14px;padding:14px;margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.proposed-dark .service-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.proposed-dark .service-card h4{color:#f1f5f9;font-size:.85rem;font-weight:600}
+.proposed-dark .service-card p{color:#94a3b8;font-size:.7rem}
+.proposed-dark .service-card .price{color:#22D3EE;font-size:.8rem;font-weight:700;margin-left:auto}
+.proposed-dark .cta-btn{margin:12px 20px;padding:14px;border-radius:12px;text-align:center;font-weight:600;font-size:.85rem;color:#fff;background:linear-gradient(135deg,#0891B2,#0E7490);box-shadow:0 4px 14px rgba(8,145,178,.25)}
+.proposed-dark .zone-banner{margin:0 20px 10px;padding:10px 14px;border-radius:10px;background:#05966920;border:1px solid #05966950;display:flex;align-items:center;gap:8px;font-size:.75rem;color:#34d399}
+.proposed-dark .bottom-nav{position:sticky;bottom:0;background:#0A0F1C;display:flex;justify-content:space-around;padding:8px 0 20px;border-top:1px solid #1e293b}
+.proposed-dark .nav-item{text-align:center;font-size:.6rem;color:#64748b;font-weight:500}
+.proposed-dark .nav-item.active{color:#22D3EE}
+.proposed-dark .nav-item .nav-icon{font-size:1.2rem;margin-bottom:2px}
+
+.hidden{display:none!important}
+
+/* Color palette section */
+.palette-section{max-width:900px;margin:20px auto 40px;padding:0 20px}
+.palette-section h3{font-size:1rem;margin-bottom:14px;color:#ccc}
+.palette-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.swatch{width:80px;height:70px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:6px;font-size:.55rem;font-weight:600;border:1px solid #333}
+.swatch span{margin-top:2px;opacity:.8}
+
+/* Changes list */
+.changes{max-width:900px;margin:0 auto 40px;padding:0 20px}
+.changes h3{font-size:1rem;margin-bottom:12px;color:#ccc}
+.change-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.change-grid{grid-template-columns:1fr}}
+.change-item{background:#1a1a2e;border-radius:10px;padding:14px;border:1px solid #333}
+.change-item h4{font-size:.8rem;color:#22D3EE;margin-bottom:4px}
+.change-item .old{font-size:.72rem;color:#ef4444;text-decoration:line-through}
+.change-item .new{font-size:.72rem;color:#22c55e}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Presso Theme Comparison</h1>
+  <p>Current vs Proposed &mdash; pick the direction you like</p>
+</div>
+
+<div class="toggle-row">
+  <div class="toggle-btn active" onclick="show('light')">Current vs Light</div>
+  <div class="toggle-btn" onclick="show('dark')">Current vs Dark</div>
+</div>
+
+<!-- ══════════ LIGHT COMPARISON ══════════ -->
+<div id="light-view" class="compare">
+  <div>
+    <div class="phone-label">Current</div>
+    <div class="phone current">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status-bar"><span>9:41</span><span>5G</span></div>
+        <div class="app-bar"><h2>Presso</h2><span class="icon">&#9881;</span></div>
+        <div class="greeting">Good morning,<br><strong>Harshal</strong></div>
+        <div class="zone-banner">&#10003; Serviceable &mdash; Nerul (400706)</div>
+        <div class="section">
+          <div class="section-title">Our Services</div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#00C6FF20">&#128085;</div>
+            <div><h4>Wash & Fold</h4><p>Machine wash, tumble dry</p></div>
+            <div class="price">&#8377;49</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#7B4FCC20">&#128084;</div>
+            <div><h4>Wash & Iron</h4><p>Washed and pressed crisp</p></div>
+            <div class="price">&#8377;79</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#4CAF8220">&#129509;</div>
+            <div><h4>Dry Clean</h4><p>Premium solvent cleaning</p></div>
+            <div class="price">&#8377;199</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#FFB34720">&#128090;</div>
+            <div><h4>Steam Iron</h4><p>Steam press only</p></div>
+            <div class="price">&#8377;29</div>
+          </div>
+        </div>
+        <div class="cta-btn">Schedule Pickup</div>
+        <div class="section">
+          <div class="section-title">Recent Orders</div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#4CAF8230">&#128230;</div>
+            <div><h4>Order #PR-1042</h4><p>Processing &bull; 5 items</p></div>
+            <div class="price">&#8377;395</div>
+          </div>
+        </div>
+        <div style="height:20px"></div>
+        <div class="bottom-nav">
+          <div class="nav-item active"><div class="nav-icon">&#127968;</div>Home</div>
+          <div class="nav-item"><div class="nav-icon">&#128230;</div>Orders</div>
+          <div class="nav-item"><div class="nav-icon">&#128722;</div>Cart</div>
+          <div class="nav-item"><div class="nav-icon">&#128176;</div>Savings</div>
+          <div class="nav-item"><div class="nav-icon">&#128100;</div>Profile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="phone-label">Proposed Light</div>
+    <div class="phone proposed">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status-bar"><span>9:41</span><span>5G</span></div>
+        <div class="app-bar"><h2>Presso</h2><span class="icon">&#9881;</span></div>
+        <div class="greeting">Good morning,<br><strong>Harshal</strong></div>
+        <div class="zone-banner">&#10003; Serviceable &mdash; Nerul (400706)</div>
+        <div class="section">
+          <div class="section-title">Our Services</div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#0891B215">&#128085;</div>
+            <div><h4>Wash & Fold</h4><p>Machine wash, tumble dry</p></div>
+            <div class="price">&#8377;49</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#7c3aed15">&#128084;</div>
+            <div><h4>Wash & Iron</h4><p>Washed and pressed crisp</p></div>
+            <div class="price">&#8377;79</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#05966915">&#129509;</div>
+            <div><h4>Dry Clean</h4><p>Premium solvent cleaning</p></div>
+            <div class="price">&#8377;199</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#d9770620">&#128090;</div>
+            <div><h4>Steam Iron</h4><p>Steam press only</p></div>
+            <div class="price">&#8377;29</div>
+          </div>
+        </div>
+        <div class="cta-btn">Schedule Pickup</div>
+        <div class="section">
+          <div class="section-title">Recent Orders</div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#05966915">&#128230;</div>
+            <div><h4>Order #PR-1042</h4><p>Processing &bull; 5 items</p></div>
+            <div class="price">&#8377;395</div>
+          </div>
+        </div>
+        <div style="height:20px"></div>
+        <div class="bottom-nav">
+          <div class="nav-item active"><div class="nav-icon">&#127968;</div>Home</div>
+          <div class="nav-item"><div class="nav-icon">&#128230;</div>Orders</div>
+          <div class="nav-item"><div class="nav-icon">&#128722;</div>Cart</div>
+          <div class="nav-item"><div class="nav-icon">&#128176;</div>Savings</div>
+          <div class="nav-item"><div class="nav-icon">&#128100;</div>Profile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ DARK COMPARISON ══════════ -->
+<div id="dark-view" class="compare hidden">
+  <div>
+    <div class="phone-label">Current</div>
+    <div class="phone current">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status-bar"><span>9:41</span><span>5G</span></div>
+        <div class="app-bar"><h2>Presso</h2><span class="icon">&#9881;</span></div>
+        <div class="greeting">Good morning,<br><strong>Harshal</strong></div>
+        <div class="zone-banner">&#10003; Serviceable &mdash; Nerul (400706)</div>
+        <div class="section">
+          <div class="section-title">Our Services</div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#00C6FF20">&#128085;</div>
+            <div><h4>Wash & Fold</h4><p>Machine wash, tumble dry</p></div>
+            <div class="price">&#8377;49</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#7B4FCC20">&#128084;</div>
+            <div><h4>Wash & Iron</h4><p>Washed and pressed crisp</p></div>
+            <div class="price">&#8377;79</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#4CAF8220">&#129509;</div>
+            <div><h4>Dry Clean</h4><p>Premium solvent cleaning</p></div>
+            <div class="price">&#8377;199</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#FFB34720">&#128090;</div>
+            <div><h4>Steam Iron</h4><p>Steam press only</p></div>
+            <div class="price">&#8377;29</div>
+          </div>
+        </div>
+        <div class="cta-btn">Schedule Pickup</div>
+        <div class="section">
+          <div class="section-title">Recent Orders</div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#4CAF8230">&#128230;</div>
+            <div><h4>Order #PR-1042</h4><p>Processing &bull; 5 items</p></div>
+            <div class="price">&#8377;395</div>
+          </div>
+        </div>
+        <div style="height:20px"></div>
+        <div class="bottom-nav">
+          <div class="nav-item active"><div class="nav-icon">&#127968;</div>Home</div>
+          <div class="nav-item"><div class="nav-icon">&#128230;</div>Orders</div>
+          <div class="nav-item"><div class="nav-icon">&#128722;</div>Cart</div>
+          <div class="nav-item"><div class="nav-icon">&#128176;</div>Savings</div>
+          <div class="nav-item"><div class="nav-icon">&#128100;</div>Profile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="phone-label">Proposed Dark</div>
+    <div class="phone proposed-dark">
+      <div class="notch"></div>
+      <div class="screen">
+        <div class="status-bar"><span>9:41</span><span>5G</span></div>
+        <div class="app-bar"><h2>Presso</h2><span class="icon">&#9881;</span></div>
+        <div class="greeting">Good morning,<br><strong>Harshal</strong></div>
+        <div class="zone-banner">&#10003; Serviceable &mdash; Nerul (400706)</div>
+        <div class="section">
+          <div class="section-title">Our Services</div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#22D3EE15">&#128085;</div>
+            <div><h4>Wash & Fold</h4><p>Machine wash, tumble dry</p></div>
+            <div class="price">&#8377;49</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#a78bfa15">&#128084;</div>
+            <div><h4>Wash & Iron</h4><p>Washed and pressed crisp</p></div>
+            <div class="price">&#8377;79</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#34d39915">&#129509;</div>
+            <div><h4>Dry Clean</h4><p>Premium solvent cleaning</p></div>
+            <div class="price">&#8377;199</div>
+          </div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#fbbf2415">&#128090;</div>
+            <div><h4>Steam Iron</h4><p>Steam press only</p></div>
+            <div class="price">&#8377;29</div>
+          </div>
+        </div>
+        <div class="cta-btn">Schedule Pickup</div>
+        <div class="section">
+          <div class="section-title">Recent Orders</div>
+          <div class="service-card">
+            <div class="service-icon" style="background:#34d39920">&#128230;</div>
+            <div><h4>Order #PR-1042</h4><p>Processing &bull; 5 items</p></div>
+            <div class="price">&#8377;395</div>
+          </div>
+        </div>
+        <div style="height:20px"></div>
+        <div class="bottom-nav">
+          <div class="nav-item active"><div class="nav-icon">&#127968;</div>Home</div>
+          <div class="nav-item"><div class="nav-icon">&#128230;</div>Orders</div>
+          <div class="nav-item"><div class="nav-icon">&#128722;</div>Cart</div>
+          <div class="nav-item"><div class="nav-icon">&#128176;</div>Savings</div>
+          <div class="nav-item"><div class="nav-icon">&#128100;</div>Profile</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ COLOR PALETTES ══════════ -->
+<div class="palette-section">
+  <h3>Proposed Color Palette</h3>
+  <div class="palette-row">
+    <div class="swatch" style="background:#0891B2;color:#fff">Primary<span>#0891B2</span></div>
+    <div class="swatch" style="background:#0E7490;color:#fff">Primary Dark<span>#0E7490</span></div>
+    <div class="swatch" style="background:#22D3EE;color:#0f172a">Primary Light<span>#22D3EE</span></div>
+    <div class="swatch" style="background:#059669;color:#fff">Success<span>#059669</span></div>
+    <div class="swatch" style="background:#D97706;color:#fff">Warning<span>#D97706</span></div>
+    <div class="swatch" style="background:#DC2626;color:#fff">Error<span>#DC2626</span></div>
+    <div class="swatch" style="background:#7C3AED;color:#fff">Accent<span>#7C3AED</span></div>
+  </div>
+  <div class="palette-row">
+    <div class="swatch" style="background:#F7F8FC;color:#333;border-color:#ddd">Light BG<span>#F7F8FC</span></div>
+    <div class="swatch" style="background:#FFFFFF;color:#333;border-color:#ddd">Light Surface<span>#FFFFFF</span></div>
+    <div class="swatch" style="background:#0C1220;color:#fff">Dark BG<span>#0C1220</span></div>
+    <div class="swatch" style="background:#131B2E;color:#fff">Dark Surface<span>#131B2E</span></div>
+    <div class="swatch" style="background:#0f172a;color:#fff">Text Dark<span>#0F172A</span></div>
+    <div class="swatch" style="background:#64748b;color:#fff">Text Muted<span>#64748B</span></div>
+    <div class="swatch" style="background:#e2e8f0;color:#333;border-color:#ccc">Border<span>#E2E8F0</span></div>
+  </div>
+</div>
+
+<!-- ══════════ KEY CHANGES ══════════ -->
+<div class="changes">
+  <h3>Key Changes Summary</h3>
+  <div class="change-grid">
+    <div class="change-item">
+      <h4>Primary Color</h4>
+      <div class="old">#00C6FF (neon cyan)</div>
+      <div class="new">#0891B2 (teal) &mdash; premium, calmer, trustworthy</div>
+    </div>
+    <div class="change-item">
+      <h4>Default Theme</h4>
+      <div class="old">Dark only</div>
+      <div class="new">Light default + improved dark option</div>
+    </div>
+    <div class="change-item">
+      <h4>Font</h4>
+      <div class="old">System default (Roboto/SF Pro)</div>
+      <div class="new">Poppins &mdash; modern, friendly, branded</div>
+    </div>
+    <div class="change-item">
+      <h4>App Label (Android)</h4>
+      <div class="old">presso_app / presso_operations</div>
+      <div class="new">Presso / Presso Ops</div>
+    </div>
+    <div class="change-item">
+      <h4>Card Radius</h4>
+      <div class="old">12px flat, no shadow</div>
+      <div class="new">14px with subtle shadow &mdash; depth &amp; polish</div>
+    </div>
+    <div class="change-item">
+      <h4>CTA Button</h4>
+      <div class="old">Cyan-to-blue gradient, dark text</div>
+      <div class="new">Teal gradient, white text, glow shadow</div>
+    </div>
+    <div class="change-item">
+      <h4>Secondary Colors</h4>
+      <div class="old">#7B4FCC purple, #4CAF82 green</div>
+      <div class="new">#7C3AED violet, #059669 emerald &mdash; more vibrant</div>
+    </div>
+    <div class="change-item">
+      <h4>Launcher Icon</h4>
+      <div class="old">Flutter default placeholder</div>
+      <div class="new">Needs custom branded icon (iron/droplet motif)</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(mode){
+  document.querySelectorAll('.toggle-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('light-view').classList.toggle('hidden',mode!=='light');
+  document.getElementById('dark-view').classList.toggle('hidden',mode!=='dark');
+}
+</script>
+</body>
+</html>

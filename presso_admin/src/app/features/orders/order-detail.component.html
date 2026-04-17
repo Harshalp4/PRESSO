@@ -1,0 +1,185 @@
+@if (loading()) {
+  <div class="loading">Loading order…</div>
+} @else if (error()) {
+  <div class="alert">{{ error() }}</div>
+  <a class="btn ghost" routerLink="/orders">← Back to orders</a>
+} @else if (order()) {
+  <header class="page-head">
+    <div>
+      <a class="back" routerLink="/orders">← Orders</a>
+      <h1>
+        {{ o().orderNumber }}
+        <span class="chip" [style.background]="statusColor(o().status) + '22'" [style.color]="statusColor(o().status)">
+          {{ statusLabel(o().status) }}
+        </span>
+      </h1>
+      <p class="subtitle">
+        Placed {{ o().createdAt | date:'d MMM yyyy, h:mm a' }}
+        · ₹{{ o().totalAmount | number:'1.0-0' }}
+        · {{ o().paymentStatus }}
+      </p>
+    </div>
+    <div class="actions">
+      <button class="btn ghost" disabled title="Slice B">Refund</button>
+      <button class="btn primary" disabled title="Slice B">Reassign Rider</button>
+    </div>
+  </header>
+
+  <div class="split">
+    <!-- ── LEFT COLUMN ─────────────────────────────────────────── -->
+    <div class="col-main">
+      <!-- Items -->
+      <section class="card">
+        <h2>Items ({{ o().items.length }})</h2>
+        <table class="items">
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Garment</th>
+              <th>Treatment</th>
+              <th class="r">Qty</th>
+              <th class="r">Price</th>
+              <th class="r">Subtotal</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (it of o().items; track it.id) {
+              <tr>
+                <td>{{ it.serviceName }}</td>
+                <td>{{ it.garmentTypeName || '—' }}</td>
+                <td>{{ it.treatmentName || '—' }}</td>
+                <td class="r">{{ it.quantity }}</td>
+                <td class="r">₹{{ it.pricePerPiece | number:'1.0-2' }}</td>
+                <td class="r">₹{{ it.subtotal | number:'1.0-0' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Charges -->
+      <section class="card">
+        <h2>Charges</h2>
+        <div class="charges">
+          <div class="row">
+            <span>Subtotal</span>
+            <span>₹{{ o().subTotal | number:'1.0-0' }}</span>
+          </div>
+          @if (o().expressCharge > 0) {
+            <div class="row">
+              <span>Express charge</span>
+              <span>+₹{{ o().expressCharge | number:'1.0-0' }}</span>
+            </div>
+          }
+          @if (o().coinDiscount > 0) {
+            <div class="row discount">
+              <span>Coin discount ({{ o().coinsRedeemed }} coins)</span>
+              <span>−₹{{ o().coinDiscount | number:'1.0-0' }}</span>
+            </div>
+          }
+          @if (o().studentDiscount > 0) {
+            <div class="row discount">
+              <span>Student discount</span>
+              <span>−₹{{ o().studentDiscount | number:'1.0-0' }}</span>
+            </div>
+          }
+          @if (o().adminDiscount > 0) {
+            <div class="row discount">
+              <span>Admin discount</span>
+              <span>−₹{{ o().adminDiscount | number:'1.0-0' }}</span>
+            </div>
+          }
+          <div class="row total">
+            <span>Total paid</span>
+            <span>₹{{ o().totalAmount | number:'1.0-0' }}</span>
+          </div>
+          @if (o().coinsEarned > 0) {
+            <div class="row earned">
+              <span>Coins earned on this order</span>
+              <span>+{{ o().coinsEarned }} 🧩</span>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Pickup / Delivery assignments -->
+      <section class="card">
+        <h2>Assignments</h2>
+        @if (o().assignments.length === 0) {
+          <p class="muted">No rider assigned yet.</p>
+        } @else {
+          <ul class="assignments">
+            @for (a of o().assignments; track a.assignedAt + a.riderId) {
+              <li>
+                <span class="tag" [class.delivery]="a.type === 'Delivery'">
+                  {{ a.type === 'Delivery' ? '🚚' : '🛵' }} {{ a.type }}
+                </span>
+                <span class="rider-name">{{ a.riderName || 'Unassigned' }}</span>
+                <span class="a-status">{{ a.status }}</span>
+                <span class="a-time">{{ a.assignedAt | date:'d MMM, h:mm a' }}</span>
+              </li>
+            }
+          </ul>
+        }
+      </section>
+
+      <!-- Address + slot -->
+      <section class="card">
+        <h2>Pickup address</h2>
+        <div class="address">
+          @if (o().address.label) {
+            <div class="label">{{ o().address.label }}</div>
+          }
+          <div>{{ o().address.addressLine1 }}</div>
+          @if (o().address.addressLine2) {
+            <div>{{ o().address.addressLine2 }}</div>
+          }
+          <div>{{ o().address.city }} — {{ o().address.pincode }}</div>
+        </div>
+        @if (o().pickupSlot; as s) {
+          <div class="slot">
+            📅 {{ s.date }} · {{ s.startTime }} – {{ s.endTime }}
+          </div>
+        }
+        @if (o().specialInstructions; as si) {
+          <div class="instructions">
+            <strong>Instructions:</strong> {{ si }}
+          </div>
+        }
+      </section>
+    </div>
+
+    <!-- ── RIGHT COLUMN (timeline) ─────────────────────────────── -->
+    <div class="col-side">
+      <section class="card">
+        <h2>Timeline</h2>
+        <ol class="timeline">
+          @for (step of timeline(); track step.status) {
+            <li class="step" [class.done]="step.done" [class.current]="step.current">
+              <div class="dot"></div>
+              <div class="step-body">
+                <div class="step-title">{{ step.label }}</div>
+                @if (step.at) {
+                  <div class="step-time">{{ step.at | date:'d MMM · h:mm a' }}</div>
+                }
+              </div>
+            </li>
+          }
+        </ol>
+        @if (o().status === 'Cancelled') {
+          <div class="cancelled">Order cancelled</div>
+        }
+      </section>
+
+      @if (o().facilityInfo; as fi) {
+        <section class="card">
+          <h2>Facility</h2>
+          <div class="facility">{{ fi.name }}</div>
+          @if (o().facilityStage; as stage) {
+            <div class="sub">Stage: {{ stage }}</div>
+          }
+        </section>
+      }
+    </div>
+  </div>
+}

@@ -1,0 +1,137 @@
+---
+title: "Presso Platform - Complete System Flow"
+---
+flowchart TB
+    subgraph CUSTOMER["CUSTOMER APP (Flutter)"]
+        direction TB
+        CA_AUTH["Phone Auth\n(Firebase OTP)"]
+        CA_PROFILE["Profile Setup\n+ Student Verify"]
+        CA_HOME["Home Dashboard\n+ Daily Messages"]
+        CA_BROWSE["Browse Services\n& Treatments"]
+        CA_CART["Cart\n(Items + Garments)"]
+        CA_SLOT["Select Pickup Slot"]
+        CA_ADDR["Select Address\n+ Serviceability Check"]
+        CA_SUMMARY["Order Summary\n+ Apply Coins/Discount"]
+        CA_PAY["Razorpay Payment"]
+        CA_TRACK["Order Tracking\n(Real-time)"]
+        CA_HISTORY["Order History"]
+        CA_NOTIFY["Notifications"]
+        CA_REFER["Referrals"]
+        CA_COINS["Coins/Savings"]
+
+        CA_AUTH --> CA_PROFILE --> CA_HOME
+        CA_HOME --> CA_BROWSE --> CA_CART
+        CA_CART --> CA_SLOT --> CA_ADDR
+        CA_ADDR --> CA_SUMMARY --> CA_PAY
+        CA_PAY --> CA_TRACK --> CA_HISTORY
+        CA_HOME --> CA_NOTIFY
+        CA_HOME --> CA_REFER
+        CA_HOME --> CA_COINS
+    end
+
+    subgraph API["PRESSO API (ASP.NET Core)"]
+        direction TB
+        subgraph AUTH_LAYER["Auth & Security"]
+            JWT["Firebase JWT\nValidation"]
+            ROLES["Role-Based Auth\n(Customer/Rider/\nFacility/Admin)"]
+        end
+        subgraph CORE_SERVICES["Core Business Logic"]
+            ORDER_SVC["OrderService\n- Create Order\n- Geo-fence Check\n- Status Updates\n- Pricing Calc"]
+            PAY_SVC["PaymentService\n- Razorpay Create\n- Signature Verify\n- Webhook Handle"]
+            NOTIFY_SVC["NotificationService\n- FCM Push\n- In-app Alerts"]
+            COINS_SVC["CoinsService\n- Earn/Redeem\n- Referral Rewards"]
+        end
+        subgraph ENDPOINTS["19 API Endpoints"]
+            EP_AUTH["Auth"]
+            EP_USER["User/Profile"]
+            EP_ADDR["Address"]
+            EP_SVC["Services"]
+            EP_ZONE["ServiceZones"]
+            EP_SLOT["Slots"]
+            EP_ORDER["Orders"]
+            EP_PAY["Payments"]
+            EP_RIDER["Rider"]
+            EP_COINS["Coins"]
+            EP_REFER["Referrals"]
+            EP_NOTIFY["Notifications"]
+            EP_PHOTO["Photos"]
+            EP_STORE["Stores"]
+            EP_ADMIN["Admin"]
+            EP_DISC["AdminDiscounts"]
+            EP_CONFIG["Config"]
+            EP_HEALTH["Health"]
+            EP_HOME["Home"]
+        end
+        subgraph EXTERNAL["External Services"]
+            FIREBASE["Firebase\n(Auth + FCM)"]
+            RAZORPAY["Razorpay\n(Payments)"]
+            AZURE["Azure Blob\n(Photos)"]
+            FIRESTORE["Firestore\n(Real-time)"]
+        end
+        subgraph DATA["Data Layer"]
+            DBCTX["AppDbContext\n(20 Entities)"]
+            PG["PostgreSQL"]
+        end
+
+        AUTH_LAYER --> CORE_SERVICES
+        CORE_SERVICES --> ENDPOINTS
+        CORE_SERVICES --> EXTERNAL
+        ENDPOINTS --> DATA
+        DBCTX --> PG
+    end
+
+    subgraph OPS["OPERATIONS APP (Flutter)"]
+        direction TB
+        subgraph RIDER_FLOW["Rider Module"]
+            R_DASH["Rider Dashboard\n(Active Jobs)"]
+            R_PICKUP["Pickup Job\n+ Navigate"]
+            R_PHOTO["Capture Photos\n(Garments/Shoes)"]
+            R_CONFIRM["Garment Count\nConfirmation"]
+            R_OTP["Verify OTP\n(Customer)"]
+            R_COMPLETE["Complete Pickup"]
+            R_DELIVER["Delivery Job"]
+            R_DOTP["Delivery OTP"]
+            R_EARN["Earnings View"]
+
+            R_DASH --> R_PICKUP --> R_PHOTO
+            R_PHOTO --> R_CONFIRM --> R_OTP
+            R_OTP --> R_COMPLETE
+            R_DASH --> R_DELIVER --> R_DOTP
+            R_DASH --> R_EARN
+        end
+        subgraph FACILITY_FLOW["Facility Module"]
+            F_DASH["Facility Dashboard\n(Order Queue)"]
+            F_SCAN["Scan/Receive\nOrders"]
+            F_PROCESS["Process Orders\n(Wash/Iron/etc)"]
+            F_READY["Mark Ready\nfor Delivery"]
+
+            F_DASH --> F_SCAN --> F_PROCESS --> F_READY
+        end
+        subgraph ADMIN_FLOW["Admin Module"]
+            A_ZONES["Service Zone\nManagement"]
+            A_CREATE["Create/Edit\nZones"]
+            A_BULK["Bulk Toggle\nZones"]
+
+            A_ZONES --> A_CREATE
+            A_ZONES --> A_BULK
+        end
+        OPS_AUTH["Login\n(Role-based)"]
+        OPS_AUTH --> RIDER_FLOW
+        OPS_AUTH --> FACILITY_FLOW
+        OPS_AUTH --> ADMIN_FLOW
+    end
+
+    CUSTOMER <--> |"REST API\n+ SignalR"| API
+    OPS <--> |"REST API\n+ SignalR"| API
+
+    classDef customer fill:#E3F2FD,stroke:#1565C0,stroke-width:2px,color:#0D47A1
+    classDef api fill:#FFF3E0,stroke:#E65100,stroke-width:2px,color:#BF360C
+    classDef ops fill:#E8F5E9,stroke:#2E7D32,stroke-width:2px,color:#1B5E20
+    classDef external fill:#F3E5F5,stroke:#6A1B9A,stroke-width:2px,color:#4A148C
+    classDef data fill:#ECEFF1,stroke:#37474F,stroke-width:2px,color:#263238
+
+    class CUSTOMER customer
+    class API api
+    class OPS ops
+    class EXTERNAL external
+    class DATA data

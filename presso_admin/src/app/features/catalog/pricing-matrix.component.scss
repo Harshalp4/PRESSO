@@ -1,0 +1,429 @@
+:host {
+  display: block;
+}
+
+$accent: #00c6ff;
+$card: #0f1b2e;
+$border: #16263b;
+$border-soft: #1c2f48;
+$muted: #7a8fa8;
+$muted-dim: #55708c;
+$text: #e5eef5;
+$text-soft: #c5d4e4;
+$bg: #0a1628;
+
+.breadcrumb {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 24px;
+  h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: $text;
+    margin: 0;
+  }
+  .crumb {
+    font-size: 12px;
+    color: $muted-dim;
+  }
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 700;
+    color: $text;
+  }
+  p {
+    margin: 0;
+    font-size: 12px;
+    color: $muted-dim;
+    max-width: 640px;
+    line-height: 1.5;
+  }
+  .head-actions {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  transition: filter 0.15s, background 0.15s, border-color 0.15s;
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+.btn-primary {
+  background: $accent;
+  color: $bg;
+  &:hover:not(:disabled) {
+    filter: brightness(1.1);
+  }
+}
+.btn-ghost {
+  background: transparent;
+  border: 1px solid $border-soft;
+  color: $muted;
+  &:hover:not(:disabled) {
+    color: $text;
+    border-color: rgba(0, 198, 255, 0.4);
+  }
+  &.danger-btn:hover:not(:disabled) {
+    color: #fca5a5;
+    border-color: rgba(220, 38, 38, 0.45);
+    background: rgba(220, 38, 38, 0.08);
+  }
+}
+.btn-sm {
+  padding: 5px 12px;
+  font-size: 11px;
+}
+
+.alert {
+  padding: 10px 14px;
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 8px;
+  color: #fca5a5;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
+.empty {
+  text-align: center;
+  padding: 60px 16px;
+  color: $muted-dim;
+  font-size: 13px;
+  background: $card;
+  border: 1px solid $border;
+  border-radius: 10px;
+  &.small {
+    padding: 28px 16px;
+    background: transparent;
+    border: 1px dashed $border-soft;
+  }
+}
+
+.card-section {
+  background: $card;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 24px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  h2 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    color: $text;
+  }
+}
+
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  span {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: $muted;
+    font-weight: 600;
+  }
+  select {
+    padding: 7px 10px;
+    background: $bg;
+    border: 1px solid $border-soft;
+    color: $text;
+    border-radius: 8px;
+    font-size: 12px;
+    font-family: inherit;
+    outline: none;
+    &:focus {
+      border-color: $accent;
+    }
+  }
+}
+
+.link-add {
+  background: transparent;
+  border: none;
+  color: $accent;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  &:hover {
+    filter: brightness(1.15);
+  }
+}
+
+.readonly-note {
+  font-size: 11px;
+  color: $muted-dim;
+  background: rgba(0, 198, 255, 0.05);
+  border: 1px solid rgba(0, 198, 255, 0.15);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+// ============ Matrix ============
+.matrix-scroll {
+  overflow-x: auto;
+  border: 1px solid $border;
+  border-radius: 10px;
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+  th,
+  td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #13223a;
+    font-size: 13px;
+    color: $text-soft;
+    text-align: left;
+    white-space: nowrap;
+  }
+  th {
+    font-size: 10px;
+    color: $muted-dim;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+    background: rgba(0, 0, 0, 0.15);
+    .th-sub {
+      font-size: 10px;
+      color: $muted-dim;
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 500;
+      margin-top: 2px;
+      font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    }
+  }
+  td.num,
+  th.num {
+    text-align: right;
+  }
+  td.price {
+    color: $accent;
+    font-weight: 700;
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  .sticky-col {
+    position: sticky;
+    left: 0;
+    background: $card;
+    z-index: 1;
+  }
+  thead .sticky-col {
+    background: #0c1828;
+  }
+  .grm-emoji-sm {
+    display: inline-block;
+    margin-right: 8px;
+    font-size: 1.1rem;
+    vertical-align: middle;
+  }
+  .tag {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 1px 6px;
+    font-size: 9px;
+    border-radius: 4px;
+    background: rgba(122, 143, 168, 0.15);
+    color: $muted;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+}
+
+// ============ Zones table ============
+.zones-table {
+  width: 100%;
+  border-collapse: collapse;
+  th {
+    font-size: 10px;
+    color: $muted-dim;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid $border;
+  }
+  td {
+    padding: 14px 12px;
+    font-size: 13px;
+    color: $text-soft;
+    border-bottom: 1px solid #13223a;
+    vertical-align: middle;
+  }
+  tr.inactive td {
+    opacity: 0.55;
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  .item-name {
+    color: $text;
+    font-weight: 600;
+  }
+  .mono {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    color: $text;
+  }
+  .muted-sm {
+    color: $muted;
+    font-size: 12px;
+  }
+  .actions-col {
+    text-align: right;
+    white-space: nowrap;
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+}
+
+.chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.chip-live {
+  background: rgba(39, 201, 63, 0.18);
+  color: #27c93f;
+}
+.chip-off {
+  background: rgba(122, 143, 168, 0.15);
+  color: $muted;
+}
+
+// ============ Modal ============
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(3px);
+}
+
+.modal {
+  background: $card;
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 14px;
+  padding: 22px;
+  width: min(520px, 92vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  h3 {
+    margin: 0 0 6px;
+    font-size: 16px;
+    font-weight: 600;
+    color: $text;
+  }
+  .modal-sub {
+    margin: 0 0 16px;
+    font-size: 12px;
+    color: $muted-dim;
+    line-height: 1.5;
+  }
+  .field {
+    display: block;
+    margin-bottom: 12px;
+    & > span {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: $muted;
+      margin-bottom: 6px;
+      font-weight: 600;
+      .req {
+        color: #ef4444;
+      }
+    }
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 9px 12px;
+      background: $bg;
+      border: 1px solid $border-soft;
+      color: $text;
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      box-sizing: border-box;
+      &:focus {
+        border-color: $accent;
+      }
+    }
+    textarea {
+      resize: vertical;
+    }
+  }
+  .field-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+  }
+  .check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: $text-soft;
+    margin-bottom: 12px;
+    cursor: pointer;
+    input {
+      width: 16px;
+      height: 16px;
+      accent-color: $accent;
+    }
+  }
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+  }
+}

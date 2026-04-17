@@ -1,0 +1,33 @@
+# .NET
+**/bin/
+**/obj/
+**/logs/
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Secrets
+appsettings.Development.json
+firebase-service-account.json
+*.pfx
+*.pem
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Flutter
+**/build/
+**/.dart_tool/
+**/.packages
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+
+# Node
+**/node_modules/
+
+# Misc
+*.log

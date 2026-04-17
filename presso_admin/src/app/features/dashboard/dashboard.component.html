@@ -1,0 +1,47 @@
+<header class="page-head">
+  <div>
+    <h1>Dashboard</h1>
+    <p>Overview of today's operations</p>
+  </div>
+  <button (click)="load()" [disabled]="loading()">
+    {{ loading() ? 'Refreshing…' : 'Refresh' }}
+  </button>
+</header>
+
+@if (error(); as e) {
+  <div class="alert">{{ e }}</div>
+}
+
+<section class="kpi-grid">
+  <div class="kpi">
+    <div class="kpi-label">Total orders</div>
+    <div class="kpi-value">{{ stats()?.totalOrders ?? '—' }}</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Active orders</div>
+    <div class="kpi-value">{{ stats()?.activeOrders ?? '—' }}</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Today's revenue</div>
+    <div class="kpi-value">₹{{ stats()?.todayRevenue ?? '—' }}</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Total riders</div>
+    <div class="kpi-value">{{ stats()?.totalRiders ?? '—' }}</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Total customers</div>
+    <div class="kpi-value">{{ stats()?.totalCustomers ?? '—' }}</div>
+  </div>
+</section>
+
+<section class="placeholder">
+  <h2>Coming next</h2>
+  <ul>
+    <li>Rider approval workflow</li>
+    <li>Orders live feed</li>
+    <li>Pricing matrix editor</li>
+    <li>Offers & messages management</li>
+    <li>Finance (P&L, expenses, salaries)</li>
+  </ul>
+</section>

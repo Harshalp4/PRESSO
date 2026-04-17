@@ -1,0 +1,538 @@
+:host {
+  display: block;
+}
+
+$accent: #00c6ff;
+$card: #0f1b2e;
+$border: #16263b;
+$border-soft: #1c2f48;
+$muted: #7a8fa8;
+$muted-dim: #55708c;
+$text: #e5eef5;
+$text-soft: #c5d4e4;
+$bg: #0a1628;
+$green: #27c93f;
+$red: #ef4444;
+$yellow: #ffbd2e;
+$orange: #ff8c42;
+
+.breadcrumb {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 24px;
+  h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: $text;
+    margin: 0;
+  }
+  .crumb {
+    font-size: 12px;
+    color: $muted-dim;
+  }
+}
+
+.page-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 22px;
+  h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 700;
+    color: $text;
+  }
+  p {
+    margin: 0;
+    font-size: 12px;
+    color: $muted-dim;
+    line-height: 1.5;
+  }
+}
+
+.alert {
+  padding: 10px 14px;
+  background: rgba(220, 38, 38, 0.1);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 8px;
+  color: #fca5a5;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
+.empty {
+  text-align: center;
+  padding: 48px 16px;
+  color: $muted-dim;
+  font-size: 13px;
+  background: $card;
+  border: 1px solid $border;
+  border-radius: 10px;
+}
+
+// ========= Net earnings banner =========
+.net-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: $card;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 18px 24px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.net-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.net-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: $muted-dim;
+  font-weight: 600;
+}
+
+.net-val {
+  font-size: 18px;
+  font-weight: 700;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  &.pos { color: $green; }
+  &.neg { color: $red; }
+}
+
+.net-result .net-val {
+  font-size: 22px;
+}
+
+.net-op {
+  font-size: 20px;
+  font-weight: 700;
+  color: $muted;
+}
+
+// ========= Revenue cards =========
+.rev-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.rev-card {
+  background: $card;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 16px 18px;
+  &.primary {
+    border-color: rgba(0, 198, 255, 0.3);
+  }
+}
+
+.rev-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: $muted-dim;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.rev-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: $text;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  .primary & {
+    color: $accent;
+  }
+}
+
+.rev-sub {
+  font-size: 11px;
+  color: $muted;
+  margin-top: 4px;
+}
+
+// ========= Section row =========
+.section-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 20px;
+  @media (max-width: 800px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: $card;
+  border: 1px solid $border;
+  border-radius: 12px;
+  padding: 18px 20px;
+  h3 {
+    margin: 0 0 14px;
+    font-size: 14px;
+    font-weight: 700;
+    color: $text;
+  }
+}
+
+// ========= Payment status grid =========
+.status-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  &.dot-captured {
+    background: $green;
+  }
+  &.dot-pending {
+    background: $yellow;
+  }
+  &.dot-failed {
+    background: $red;
+  }
+  &.dot-refunded {
+    background: $orange;
+  }
+}
+
+.status-label {
+  flex: 1;
+  font-size: 13px;
+  color: $text-soft;
+}
+
+.status-count {
+  font-size: 16px;
+  font-weight: 700;
+  color: $text;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+// ========= Discounts grid =========
+.disc-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.disc-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: $text-soft;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba($border-soft, 0.5);
+  &.total {
+    font-weight: 700;
+    color: $text;
+    border-bottom: none;
+    padding-top: 4px;
+  }
+  &:last-child {
+    border-bottom: none;
+    padding-top: 8px;
+  }
+}
+
+.disc-val {
+  font-weight: 700;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  &.neg {
+    color: $red;
+  }
+  &.pos {
+    color: $green;
+  }
+}
+
+// ========= Chart =========
+.chart-section {
+  margin-bottom: 20px;
+}
+
+.chart-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  h3 {
+    margin: 0;
+  }
+}
+
+.range-seg {
+  display: flex;
+  background: $bg;
+  border: 1px solid $border-soft;
+  border-radius: 8px;
+  overflow: hidden;
+  .seg {
+    background: transparent;
+    border: none;
+    padding: 6px 14px;
+    font-size: 11px;
+    color: $muted;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    &:hover {
+      color: $text;
+    }
+    &.active {
+      background: rgba(0, 198, 255, 0.15);
+      color: $accent;
+    }
+    & + .seg {
+      border-left: 1px solid $border-soft;
+    }
+  }
+}
+
+.chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 180px;
+  padding-top: 24px;
+  overflow-x: auto;
+}
+
+.bar-col {
+  flex: 1;
+  min-width: 28px;
+  max-width: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+  cursor: default;
+}
+
+.bar-amount {
+  font-size: 9px;
+  color: $muted;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+}
+
+.bar-fill {
+  width: 100%;
+  background: linear-gradient(180deg, $accent, rgba(0, 198, 255, 0.4));
+  border-radius: 4px 4px 0 0;
+  min-height: 2px;
+  transition: height 0.3s ease;
+}
+
+.bar-label {
+  font-size: 9px;
+  color: $muted-dim;
+  margin-top: 6px;
+  white-space: nowrap;
+}
+
+.chart-empty {
+  text-align: center;
+  padding: 40px;
+  color: $muted-dim;
+  font-size: 13px;
+}
+
+// ========= Payments section =========
+.payments-section {
+  margin-bottom: 20px;
+}
+
+.payments-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  h3 {
+    margin: 0;
+  }
+}
+
+.payments-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  background: $bg;
+  border: 1px solid $border-soft;
+  color: $text;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-family: inherit;
+  outline: none;
+  width: 240px;
+  &:focus {
+    border-color: $accent;
+  }
+  &::placeholder {
+    color: $muted-dim;
+  }
+}
+
+// ========= Table =========
+.table-wrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+th {
+  text-align: left;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: $muted-dim;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-bottom: 1px solid $border;
+}
+
+td {
+  padding: 10px 12px;
+  color: $text-soft;
+  border-bottom: 1px solid rgba($border, 0.5);
+}
+
+tr:hover td {
+  background: rgba(0, 198, 255, 0.03);
+}
+
+.mono {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 12px;
+}
+
+.dim {
+  color: $muted;
+  font-size: 12px;
+}
+
+.link {
+  color: $accent;
+  text-decoration: none;
+  font-weight: 600;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.st-captured {
+  background: rgba($green, 0.15);
+  color: $green;
+}
+.st-failed {
+  background: rgba($red, 0.15);
+  color: $red;
+}
+.st-refunded {
+  background: rgba($orange, 0.15);
+  color: $orange;
+}
+.st-authorized {
+  background: rgba($yellow, 0.15);
+  color: $yellow;
+}
+.st-pending {
+  background: rgba($muted, 0.12);
+  color: $muted;
+}
+
+// ========= Pagination =========
+.pager {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid $border;
+}
+
+.pager-info {
+  font-size: 12px;
+  color: $muted;
+}
+
+.pager-btns {
+  display: flex;
+  gap: 6px;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+.btn-ghost {
+  background: transparent;
+  border: 1px solid $border-soft;
+  color: $muted;
+  &:hover:not(:disabled) {
+    color: $text;
+    border-color: rgba(0, 198, 255, 0.4);
+  }
+}
+.btn-sm {
+  padding: 5px 12px;
+  font-size: 11px;
+}

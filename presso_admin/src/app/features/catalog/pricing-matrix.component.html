@@ -1,0 +1,250 @@
+<div class="breadcrumb">
+  <h1>Pricing Matrix</h1>
+  <span class="crumb">/ Catalog</span>
+</div>
+
+<div class="page-head">
+  <div>
+    <h2>Pricing Matrix</h2>
+    <p>
+      Base prices per garment across delivery zones. Today all zones share the
+      same base price — per-zone overrides ship when the order pipeline starts
+      applying them. Zones themselves can be managed below.
+    </p>
+  </div>
+  <div class="head-actions">
+    <button class="btn btn-ghost" disabled title="Coming soon">
+      % Bulk Adjust
+    </button>
+    <button class="btn btn-primary" (click)="openNewZone()">+ Add Zone</button>
+  </div>
+</div>
+
+@if (error(); as e) {
+  <div class="alert">{{ e }}</div>
+}
+
+@if (loading() && services().length === 0) {
+  <div class="empty">Loading pricing data…</div>
+}
+
+<!-- ================ Matrix card ================ -->
+<section class="card-section matrix-card">
+  <div class="section-head">
+    <h2>Base Prices by Zone</h2>
+    <label class="filter">
+      <span>Service</span>
+      <select
+        [ngModel]="selectedServiceId()"
+        (ngModelChange)="selectedServiceId.set($event)"
+      >
+        @for (s of activeServices(); track s.id) {
+          <option [value]="s.id">{{ s.name }}</option>
+        }
+      </select>
+    </label>
+  </div>
+
+  <div class="readonly-note">
+    Read-only — matrix reflects each garment's base price. Edit a garment from
+    Services &amp; Items to change its price.
+  </div>
+
+  @if (matrixRows().length === 0) {
+    <div class="empty small">
+      @if (selectedService()) {
+        No garments in this service yet.
+      } @else {
+        Pick a service to see its pricing matrix.
+      }
+    </div>
+  } @else {
+    <div class="matrix-scroll">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th class="sticky-col">Garment</th>
+            <th class="num">Base (₹)</th>
+            @for (z of activeZones(); track z.id) {
+              <th class="num">
+                {{ z.name }}
+                <div class="th-sub">{{ z.pincode }}</div>
+              </th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (g of matrixRows(); track g.id) {
+            <tr>
+              <td class="sticky-col">
+                <span class="grm-emoji-sm">{{ g.emoji || '👕' }}</span>
+                <b>{{ g.name }}</b>
+                @if (g.priceOverride === null) {
+                  <span class="tag">base</span>
+                }
+              </td>
+              <td class="num price">₹{{ basePrice(g) }}</td>
+              @for (z of activeZones(); track z.id) {
+                <td class="num">₹{{ basePrice(g) }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
+
+<!-- ================ Zones card ================ -->
+<section class="card-section zones-card">
+  <div class="section-head">
+    <h2>Delivery Zones</h2>
+    <button class="link-add" (click)="openNewZone()">+ Add zone →</button>
+  </div>
+
+  @if (zones().length === 0) {
+    <div class="empty small">No zones configured yet.</div>
+  } @else {
+    <table class="zones-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Pincode</th>
+          <th>City</th>
+          <th>Area</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (z of zones(); track z.id) {
+          <tr [class.inactive]="!z.isActive">
+            <td><b class="item-name">{{ z.name }}</b></td>
+            <td class="mono">{{ z.pincode }}</td>
+            <td>{{ z.city }}</td>
+            <td class="muted-sm">{{ z.area || '—' }}</td>
+            <td>
+              @if (z.isActive) {
+                <span class="chip chip-live">LIVE</span>
+              } @else {
+                <span class="chip chip-off">OFF</span>
+              }
+            </td>
+            <td class="actions-col">
+              <button class="btn btn-ghost btn-sm" (click)="openEditZone(z)">
+                Edit
+              </button>
+              @if (z.isActive) {
+                <button
+                  class="btn btn-ghost btn-sm danger-btn"
+                  (click)="deactivateZone(z)"
+                >
+                  Deactivate
+                </button>
+              }
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>
+
+<!-- ================ Zone modal ================ -->
+@if (zoneModalOpen()) {
+  <div class="modal-backdrop" (click)="closeZoneModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>{{ editingZone() ? 'Edit Zone' : 'New Zone' }}</h3>
+      <p class="modal-sub">
+        Zones map delivery pincodes to a friendly name. Customers check
+        serviceability by pincode.
+      </p>
+      @if (zError(); as e) {
+        <div class="alert">{{ e }}</div>
+      }
+      <label class="field">
+        <span>Name <span class="req">*</span></span>
+        <input
+          type="text"
+          [ngModel]="zName()"
+          (ngModelChange)="zName.set($event)"
+          placeholder="e.g. Bandra West"
+        />
+      </label>
+      <div class="field-row">
+        <label class="field">
+          <span>Pincode <span class="req">*</span></span>
+          <input
+            type="text"
+            maxlength="6"
+            [ngModel]="zPincode()"
+            (ngModelChange)="zPincode.set($event)"
+            placeholder="400050"
+          />
+        </label>
+        <label class="field">
+          <span>City <span class="req">*</span></span>
+          <input
+            type="text"
+            [ngModel]="zCity()"
+            (ngModelChange)="zCity.set($event)"
+            placeholder="Mumbai"
+          />
+        </label>
+      </div>
+      <label class="field">
+        <span>Area</span>
+        <input
+          type="text"
+          [ngModel]="zArea()"
+          (ngModelChange)="zArea.set($event)"
+          placeholder="optional"
+        />
+      </label>
+      <label class="field">
+        <span>Description</span>
+        <textarea
+          rows="2"
+          [ngModel]="zDescription()"
+          (ngModelChange)="zDescription.set($event)"
+        ></textarea>
+      </label>
+      @if (editingZone()) {
+        <div class="field-row">
+          <label class="field">
+            <span>Sort</span>
+            <input
+              type="number"
+              [ngModel]="zSort()"
+              (ngModelChange)="zSort.set($event)"
+            />
+          </label>
+        </div>
+        <label class="check">
+          <input
+            type="checkbox"
+            [checked]="zActive()"
+            (change)="zActive.set($any($event.target).checked)"
+          />
+          <span>Live (serviceable)</span>
+        </label>
+      }
+      <div class="modal-actions">
+        <button
+          class="btn btn-ghost"
+          (click)="closeZoneModal()"
+          [disabled]="zSaving()"
+        >
+          Cancel
+        </button>
+        <button
+          class="btn btn-primary"
+          (click)="submitZone()"
+          [disabled]="zSaving()"
+        >
+          {{ zSaving() ? 'Saving…' : 'Save' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

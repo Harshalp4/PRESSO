@@ -1,0 +1,113 @@
+<a class="back" routerLink="/customers">← Back to customers</a>
+
+@if (loading() && !customer()) {
+  <div class="loading">Loading customer…</div>
+}
+@if (error(); as e) {
+  <div class="alert">{{ e }}</div>
+}
+@if (customer(); as c) {
+  <header class="page-head">
+    <div>
+      <h1>{{ c.name || 'Unnamed customer' }}</h1>
+      <div class="meta">
+        <span class="mono">{{ c.phone }}</span>
+        @if (c.email) {
+          <span class="sep">·</span>
+          <span>{{ c.email }}</span>
+        }
+        @if (c.isStudentVerified) {
+          <span class="sep">·</span>
+          <span class="badge student">Student verified</span>
+        }
+      </div>
+    </div>
+  </header>
+
+  <section class="stat-grid">
+    <div class="stat">
+      <div class="label">Total orders</div>
+      <div class="value">{{ c.orderCount }}</div>
+    </div>
+    <div class="stat">
+      <div class="label">Total spent</div>
+      <div class="value">₹{{ c.totalSpent | number:'1.0-0' }}</div>
+    </div>
+    <div class="stat">
+      <div class="label">Avg order value</div>
+      <div class="value">₹{{ c.averageOrderValue | number:'1.0-0' }}</div>
+    </div>
+    <div class="stat">
+      <div class="label">Coin balance</div>
+      <div class="value coins">{{ c.coinBalance }}</div>
+    </div>
+  </section>
+
+  <section class="grid-2">
+    <div class="card">
+      <h2>Lifecycle</h2>
+      <dl>
+        <dt>Joined</dt>
+        <dd>{{ c.createdAt | date:'d MMM yyyy, h:mm a' }}</dd>
+        @if (c.firstOrderAt) {
+          <dt>First order</dt>
+          <dd>{{ c.firstOrderAt | date:'d MMM yyyy, h:mm a' }}</dd>
+        }
+        @if (c.lastOrderAt) {
+          <dt>Last order</dt>
+          <dd>{{ c.lastOrderAt | date:'d MMM yyyy, h:mm a' }}</dd>
+        }
+      </dl>
+    </div>
+
+    <div class="card">
+      <h2>Loyalty</h2>
+      <dl>
+        <dt>Coin balance</dt>
+        <dd class="coins">{{ c.coinBalance }} coins</dd>
+        <dt>Student verified</dt>
+        <dd>{{ c.isStudentVerified ? 'Yes' : 'No' }}</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="card orders-card">
+    <h2>Recent orders</h2>
+    @if (c.recentOrders.length === 0) {
+      <div class="empty">No orders yet.</div>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Order #</th>
+            <th>Items</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Placed</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (o of c.recentOrders; track o.id) {
+            <tr>
+              <td class="order-num">{{ o.orderNumber }}</td>
+              <td>{{ o.itemCount }}</td>
+              <td class="amount">₹{{ o.totalAmount | number:'1.0-0' }}</td>
+              <td>
+                <span class="chip"
+                      [style.background]="statusColor(o.status) + '22'"
+                      [style.color]="statusColor(o.status)">
+                  {{ statusLabel(o.status) }}
+                </span>
+              </td>
+              <td class="placed">{{ o.createdAt | date:'d MMM, h:mm a' }}</td>
+              <td>
+                <a class="btn sm ghost" [routerLink]="['/orders', o.id]">View</a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </section>
+}

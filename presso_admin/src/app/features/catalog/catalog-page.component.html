@@ -1,0 +1,472 @@
+<div class="breadcrumb">
+  <h1>Services &amp; Items</h1>
+  <span class="crumb">/ Catalog</span>
+</div>
+
+<div class="page-head">
+  <div>
+    <h2>Services &amp; Items</h2>
+    <p>
+      Everything the customer can order — services, garments, treatments.
+      Changes go live instantly in the app.
+    </p>
+  </div>
+  <div class="head-actions">
+    <button class="btn btn-ghost" disabled>Bulk import CSV</button>
+    <button class="btn btn-primary" (click)="openNewService()">+ Add</button>
+  </div>
+</div>
+
+<div class="tabs">
+  <button
+    class="tab"
+    [class.active]="activeTab() === 'services'"
+    (click)="setTab('services')"
+  >
+    Services <span class="count">{{ services().length }}</span>
+  </button>
+  <button
+    class="tab"
+    [class.active]="activeTab() === 'garments'"
+    (click)="setTab('garments')"
+  >
+    Garment Types <span class="count">{{ garments().length }}</span>
+  </button>
+  <button
+    class="tab"
+    [class.active]="activeTab() === 'treatments'"
+    (click)="setTab('treatments')"
+  >
+    Treatments <span class="count">{{ treatments().length }}</span>
+  </button>
+</div>
+
+@if (error(); as e) {
+  <div class="alert">{{ e }}</div>
+}
+
+@if (loading() && services().length === 0) {
+  <div class="empty">Loading catalog…</div>
+}
+
+<!-- ====================== SERVICES SECTION ====================== -->
+<section #servicesSection class="cat-section">
+  <div class="svc-grid">
+    @for (s of services(); track s.id) {
+      <div class="svc-card" [class.inactive]="!s.isActive">
+        <div class="svc-head">
+          <div class="svc-icon">{{ s.emoji || '🧺' }}</div>
+          <div class="svc-actions">
+            <button
+              class="icon-btn yellow"
+              title="Edit"
+              (click)="openEditService(s)"
+            >
+              ✏️
+            </button>
+            <button
+              class="icon-btn blue"
+              title="Toggle active"
+              (click)="toggleServiceActive(s)"
+            >
+              👁
+            </button>
+            <button class="icon-btn red" title="Category" disabled>🧺</button>
+          </div>
+        </div>
+        <h3 class="svc-name">{{ s.name }}</h3>
+        <div class="svc-slug">
+          slug: {{ slug(s) }} · from ₹{{ s.pricePerPiece }}
+        </div>
+        @if (s.description) {
+          <p class="svc-desc">{{ s.description }}</p>
+        } @else {
+          <p class="svc-desc muted">No description.</p>
+        }
+        <div class="svc-foot">
+          <span class="linked">{{ s.garmentCount }} garments linked</span>
+          @if (s.isActive) {
+            <span class="chip chip-live">LIVE</span>
+          } @else {
+            <span class="chip chip-off">OFF</span>
+          }
+        </div>
+      </div>
+    }
+
+    <button class="svc-card svc-add" (click)="openNewService()">
+      <div class="plus">+</div>
+      <h3>Add new service</h3>
+      <div class="svc-slug">Shoe cleaning, curtains, carpets…</div>
+    </button>
+  </div>
+</section>
+
+<!-- ====================== GARMENT TYPES SECTION ====================== -->
+<section #garmentsSection class="cat-section card-section">
+  <div class="section-head">
+    <h2>Garment Types</h2>
+    <button
+      class="link-add"
+      (click)="openNewGarment()"
+      [disabled]="activeServices().length === 0"
+    >
+      + Add garment →
+    </button>
+  </div>
+  @if (garments().length === 0) {
+    <div class="empty small">No garments yet.</div>
+  } @else {
+    <div class="grm-grid">
+      @for (g of garments(); track g.id) {
+        <button class="grm-tile" (click)="openEditGarment(g)" [title]="g.serviceName">
+          <div class="grm-emoji">{{ g.emoji || '👕' }}</div>
+          <div class="grm-name">{{ g.name }}</div>
+          <div class="grm-base">
+            @if (g.priceOverride !== null) {
+              ₹{{ g.priceOverride }}
+            } @else {
+              base
+            }
+          </div>
+        </button>
+      }
+      <button
+        class="grm-tile grm-add"
+        (click)="openNewGarment()"
+        [disabled]="activeServices().length === 0"
+      >
+        <div class="grm-emoji">+</div>
+        <div class="grm-name muted">Add</div>
+      </button>
+    </div>
+  }
+</section>
+
+<!-- ====================== TREATMENTS SECTION ====================== -->
+<section #treatmentsSection class="cat-section card-section">
+  <div class="section-head">
+    <h2>Treatments</h2>
+    <button
+      class="link-add"
+      (click)="openNewTreatment()"
+      [disabled]="activeServices().length === 0"
+    >
+      + Add treatment →
+    </button>
+  </div>
+  @if (treatments().length === 0) {
+    <div class="empty small">No treatments yet.</div>
+  } @else {
+    <table class="trt-table">
+      <thead>
+        <tr>
+          <th>Icon</th>
+          <th>Name</th>
+          <th>Multiplier</th>
+          <th>Applies to</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (t of treatments(); track t.id) {
+          <tr>
+            <td class="trt-icon-col">
+              <div class="trt-icon">💎</div>
+            </td>
+            <td>
+              <b class="item-name">{{ t.name }}</b>
+              @if (t.description) {
+                <div class="sub">{{ t.description }}</div>
+              }
+            </td>
+            <td><b class="mult">×{{ t.priceMultiplier }}</b></td>
+            <td class="muted-sm">{{ t.serviceName }}</td>
+            <td>
+              @if (t.isActive) {
+                <span class="chip chip-live">LIVE</span>
+              } @else {
+                <span class="chip chip-paused">PAUSED</span>
+              }
+            </td>
+            <td class="actions-col">
+              <button class="btn btn-ghost btn-sm" (click)="openEditTreatment(t)">
+                Edit
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>
+
+<!-- ====================== SERVICE MODAL ====================== -->
+@if (svcModalOpen()) {
+  <div class="modal-backdrop" (click)="closeSvcModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>{{ editingService() ? 'Edit Service' : 'New Service' }}</h3>
+      <p class="modal-sub">
+        Services are the top-level offerings customers pick first (Wash &amp;
+        Fold, Dry Clean, Iron, etc.).
+      </p>
+      @if (svcError(); as e) {
+        <div class="alert">{{ e }}</div>
+      }
+      <label class="field">
+        <span>Service Name <span class="req">*</span></span>
+        <input
+          type="text"
+          [ngModel]="svcName()"
+          (ngModelChange)="svcName.set($event)"
+          placeholder="e.g. Dry Clean"
+        />
+      </label>
+      <div class="field-row">
+        <label class="field">
+          <span>Emoji</span>
+          <input
+            type="text"
+            [ngModel]="svcEmoji()"
+            (ngModelChange)="svcEmoji.set($event)"
+            maxlength="4"
+          />
+        </label>
+        <label class="field">
+          <span>Category</span>
+          <input
+            type="text"
+            [ngModel]="svcCategory()"
+            (ngModelChange)="svcCategory.set($event)"
+          />
+        </label>
+      </div>
+      <div class="field-row">
+        <label class="field">
+          <span>From price / pc (₹) <span class="req">*</span></span>
+          <input
+            type="number"
+            min="0"
+            step="1"
+            [ngModel]="svcPrice()"
+            (ngModelChange)="svcPrice.set($event)"
+          />
+        </label>
+        <label class="field">
+          <span>Sort</span>
+          <input
+            type="number"
+            [ngModel]="svcSort()"
+            (ngModelChange)="svcSort.set($event)"
+          />
+        </label>
+      </div>
+      <label class="field">
+        <span>Description</span>
+        <textarea
+          rows="2"
+          [ngModel]="svcDescription()"
+          (ngModelChange)="svcDescription.set($event)"
+        ></textarea>
+      </label>
+      @if (editingService()) {
+        <label class="check">
+          <input
+            type="checkbox"
+            [checked]="svcActive()"
+            (change)="svcActive.set($any($event.target).checked)"
+          />
+          <span>Live (visible in app)</span>
+        </label>
+      }
+      <div class="modal-actions">
+        <button class="btn btn-ghost" (click)="closeSvcModal()" [disabled]="svcSaving()">
+          Cancel
+        </button>
+        <button class="btn btn-primary" (click)="submitService()" [disabled]="svcSaving()">
+          {{ svcSaving() ? 'Saving…' : 'Save' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ====================== GARMENT MODAL ====================== -->
+@if (grmModalOpen()) {
+  <div class="modal-backdrop" (click)="closeGrmModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>{{ editingGarment() ? 'Edit Garment' : 'New Garment' }}</h3>
+      <p class="modal-sub">
+        Garments belong to a parent service. Leave <b>price</b> blank to use the
+        service base price.
+      </p>
+      @if (grmError(); as e) {
+        <div class="alert">{{ e }}</div>
+      }
+      @if (!editingGarment()) {
+        <label class="field">
+          <span>Parent service <span class="req">*</span></span>
+          <select
+            [ngModel]="grmServiceId()"
+            (ngModelChange)="grmServiceId.set($event)"
+          >
+            @for (s of activeServices(); track s.id) {
+              <option [value]="s.id">{{ s.name }}</option>
+            }
+          </select>
+        </label>
+      } @else {
+        <div class="field">
+          <span>Parent service</span>
+          <div class="readonly">{{ editingGarment()!.serviceName }}</div>
+        </div>
+      }
+      <label class="field">
+        <span>Name <span class="req">*</span></span>
+        <input
+          type="text"
+          [ngModel]="grmName()"
+          (ngModelChange)="grmName.set($event)"
+          placeholder="e.g. Shirt"
+        />
+      </label>
+      <div class="field-row">
+        <label class="field">
+          <span>Emoji</span>
+          <input
+            type="text"
+            [ngModel]="grmEmoji()"
+            (ngModelChange)="grmEmoji.set($event)"
+            maxlength="4"
+            placeholder="👔"
+          />
+        </label>
+        <label class="field">
+          <span>Price (₹)</span>
+          <input
+            type="number"
+            min="0"
+            step="1"
+            [ngModel]="grmPriceOverride()"
+            (ngModelChange)="grmPriceOverride.set($event)"
+            placeholder="base"
+          />
+        </label>
+        <label class="field">
+          <span>Sort</span>
+          <input
+            type="number"
+            [ngModel]="grmSort()"
+            (ngModelChange)="grmSort.set($event)"
+          />
+        </label>
+      </div>
+      <div class="modal-actions">
+        @if (editingGarment()) {
+          <button
+            class="btn btn-ghost danger-btn"
+            (click)="deleteGarment(editingGarment()!); closeGrmModal()"
+            [disabled]="grmSaving()"
+          >
+            Delete
+          </button>
+        }
+        <button class="btn btn-ghost" (click)="closeGrmModal()" [disabled]="grmSaving()">
+          Cancel
+        </button>
+        <button class="btn btn-primary" (click)="submitGarment()" [disabled]="grmSaving()">
+          {{ grmSaving() ? 'Saving…' : 'Save' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ====================== TREATMENT MODAL ====================== -->
+@if (trtModalOpen()) {
+  <div class="modal-backdrop" (click)="closeTrtModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>{{ editingTreatment() ? 'Edit Treatment' : 'New Treatment' }}</h3>
+      <p class="modal-sub">
+        Treatments multiply the item price (e.g. ×1.5 for premium finish).
+      </p>
+      @if (trtError(); as e) {
+        <div class="alert">{{ e }}</div>
+      }
+      @if (!editingTreatment()) {
+        <label class="field">
+          <span>Applies to <span class="req">*</span></span>
+          <select
+            [ngModel]="trtServiceId()"
+            (ngModelChange)="trtServiceId.set($event)"
+          >
+            @for (s of activeServices(); track s.id) {
+              <option [value]="s.id">{{ s.name }}</option>
+            }
+          </select>
+        </label>
+      } @else {
+        <div class="field">
+          <span>Applies to</span>
+          <div class="readonly">{{ editingTreatment()!.serviceName }}</div>
+        </div>
+      }
+      <label class="field">
+        <span>Treatment Name <span class="req">*</span></span>
+        <input
+          type="text"
+          [ngModel]="trtName()"
+          (ngModelChange)="trtName.set($event)"
+          placeholder="e.g. Premium Starch"
+        />
+      </label>
+      <label class="field">
+        <span>Description</span>
+        <textarea
+          rows="2"
+          [ngModel]="trtDescription()"
+          (ngModelChange)="trtDescription.set($event)"
+        ></textarea>
+      </label>
+      <div class="field-row">
+        <label class="field">
+          <span>Multiplier <span class="req">*</span></span>
+          <input
+            type="number"
+            min="0.1"
+            step="0.05"
+            [ngModel]="trtMultiplier()"
+            (ngModelChange)="trtMultiplier.set($event)"
+          />
+        </label>
+        <label class="field">
+          <span>Sort</span>
+          <input
+            type="number"
+            [ngModel]="trtSort()"
+            (ngModelChange)="trtSort.set($event)"
+          />
+        </label>
+      </div>
+      @if (editingTreatment()) {
+        <label class="check">
+          <input
+            type="checkbox"
+            [checked]="trtActive()"
+            (change)="trtActive.set($any($event.target).checked)"
+          />
+          <span>Live</span>
+        </label>
+      }
+      <div class="modal-actions">
+        <button class="btn btn-ghost" (click)="closeTrtModal()" [disabled]="trtSaving()">
+          Cancel
+        </button>
+        <button class="btn btn-primary" (click)="submitTreatment()" [disabled]="trtSaving()">
+          {{ trtSaving() ? 'Saving…' : 'Save' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

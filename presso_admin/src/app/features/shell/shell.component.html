@@ -1,0 +1,43 @@
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">P</div>
+      <div>
+        <h1>Presso</h1>
+        <p>Admin Portal</p>
+      </div>
+    </div>
+
+    @for (section of sections; track section) {
+      <div class="nav-section">
+        <div class="nav-heading">{{ section }}</div>
+        @for (item of itemsFor(section); track item.route) {
+          <a
+            class="nav-item"
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <span class="icon">{{ item.icon }}</span>
+            <span>{{ item.label }}</span>
+          </a>
+        }
+      </div>
+    }
+
+    <div class="sidebar-footer">
+      <div class="user">
+        <div class="avatar">{{ (auth.user()?.name || 'A').charAt(0) }}</div>
+        <div class="user-meta">
+          <div class="user-name">{{ auth.user()?.name || 'Admin' }}</div>
+          <div class="user-role">{{ auth.user()?.role }}</div>
+        </div>
+      </div>
+      <button (click)="logout()">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

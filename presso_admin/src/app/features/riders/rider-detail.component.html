@@ -1,0 +1,166 @@
+<a class="back" routerLink="/riders">← Back to riders</a>
+
+@if (loading() && !rider()) {
+  <div class="loading">Loading rider…</div>
+}
+@if (error(); as e) {
+  <div class="alert">{{ e }}</div>
+}
+@if (rider(); as r) {
+  <header class="page-head">
+    <div>
+      <h1>{{ r.name || 'Unnamed rider' }}</h1>
+      <div class="meta">
+        <span class="chip"
+              [style.background]="riderStatusColor(r.status) + '22'"
+              [style.color]="riderStatusColor(r.status)">
+          {{ riderStatusLabel(r.status) }}
+        </span>
+        <span class="sep">·</span>
+        <span class="mono">{{ r.phone }}</span>
+        @if (r.vehicleNumber) {
+          <span class="sep">·</span>
+          <span class="mono">{{ r.vehicleNumber }}</span>
+        }
+      </div>
+    </div>
+    <div class="actions">
+      @if (r.status === 'Pending') {
+        <button class="btn primary" (click)="openAction('approve')">Approve</button>
+        <button class="btn danger" (click)="openAction('reject')">Reject</button>
+      }
+      @if (r.status === 'Approved') {
+        <button class="btn danger" (click)="openAction('suspend')">Suspend</button>
+      }
+      @if (r.status === 'Suspended') {
+        <button class="btn primary" (click)="openAction('reinstate')">Reinstate</button>
+      }
+    </div>
+  </header>
+
+  <section class="stat-grid">
+    <div class="stat">
+      <div class="label">Today's earnings</div>
+      <div class="value">₹{{ r.todayEarnings | number:'1.0-0' }}</div>
+    </div>
+    <div class="stat">
+      <div class="label">Completed deliveries</div>
+      <div class="value">{{ r.completedDeliveries }}</div>
+    </div>
+    <div class="stat">
+      <div class="label">In-flight</div>
+      <div class="value">{{ r.inFlightAssignments }}</div>
+    </div>
+    <div class="stat">
+      <div class="label">Availability</div>
+      <div class="value">
+        @if (r.status === 'Approved') {
+          <span class="dot" [class.online]="r.isAvailable"></span>
+          {{ r.isAvailable ? 'Online' : 'Offline' }}
+        } @else {
+          —
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="grid-2">
+    <div class="card">
+      <h2>Timeline</h2>
+      <dl>
+        <dt>Joined</dt>
+        <dd>{{ r.createdAt | date:'d MMM yyyy, h:mm a' }}</dd>
+        @if (r.approvedAt) {
+          <dt>Approved</dt>
+          <dd>{{ r.approvedAt | date:'d MMM yyyy, h:mm a' }}</dd>
+        }
+        @if (r.suspendedAt) {
+          <dt>Suspended</dt>
+          <dd>{{ r.suspendedAt | date:'d MMM yyyy, h:mm a' }}</dd>
+        }
+        @if (r.rejectionReason) {
+          <dt>Reason</dt>
+          <dd class="reason">{{ r.rejectionReason }}</dd>
+        }
+      </dl>
+    </div>
+
+    <div class="card">
+      <h2>Last known location</h2>
+      @if (r.currentLat !== null && r.currentLng !== null) {
+        <div class="mono small">
+          {{ r.currentLat }}, {{ r.currentLng }}
+        </div>
+        <div class="small muted">
+          Updated {{ r.lastLocationUpdate | date:'d MMM, h:mm a' }}
+        </div>
+      } @else {
+        <div class="muted">No location pings yet.</div>
+      }
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Admin notes</h2>
+    <textarea
+      rows="4"
+      placeholder="Internal notes about this rider — visible only to admins"
+      [ngModel]="notesDraft()"
+      (ngModelChange)="notesDraft.set($event)"
+    ></textarea>
+    <div class="notes-actions">
+      <button
+        class="btn ghost"
+        (click)="saveNotes()"
+        [disabled]="savingNotes() || (rider()?.adminNotes ?? '') === notesDraft().trim()"
+      >
+        {{ savingNotes() ? 'Saving…' : 'Save notes' }}
+      </button>
+    </div>
+  </section>
+}
+
+@if (actionKind(); as kind) {
+  <div class="modal-backdrop" (click)="closeAction()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>{{ actionTitle() }}</h3>
+      @if (actionNeedsReason()) {
+        <label class="field">
+          <span>Reason <span class="req">*</span></span>
+          <textarea
+            rows="2"
+            [ngModel]="actionReason()"
+            (ngModelChange)="actionReason.set($event)"
+            placeholder="Visible on the rider record."
+          ></textarea>
+        </label>
+      }
+      <label class="field">
+        <span>Admin notes</span>
+        <textarea
+          rows="3"
+          [ngModel]="actionNotes()"
+          (ngModelChange)="actionNotes.set($event)"
+          placeholder="Optional internal notes."
+        ></textarea>
+      </label>
+      @if (actionError(); as e) {
+        <div class="alert">{{ e }}</div>
+      }
+      <div class="modal-actions">
+        <button class="btn ghost" (click)="closeAction()" [disabled]="acting()">
+          Cancel
+        </button>
+        <button
+          class="btn"
+          [class.primary]="kind === 'approve' || kind === 'reinstate'"
+          [class.danger]="kind === 'reject' || kind === 'suspend'"
+          (click)="submitAction()"
+          [disabled]="acting()"
+        >
+          {{ acting() ? 'Working…' : actionTitle() }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presso Admin — Catalog, Pricing & Offers Wireframe</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Poppins',-apple-system,BlinkMacSystemFont,sans-serif;background:#0A1628;color:#E5EEF5;min-height:100vh;font-size:13px}
+
+/* Page header */
+.wf-header{padding:22px 28px 10px;border-bottom:1px solid #16263B;background:#0A1628;position:sticky;top:0;z-index:100}
+.wf-header h1{font-size:1.1rem;font-weight:700;color:#00C6FF;margin-bottom:4px}
+.wf-header p{font-size:.75rem;color:#7A8FA8}
+.wf-tabs{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.wf-tab{padding:7px 14px;border-radius:18px;background:#16263B;color:#7A8FA8;cursor:pointer;font-size:.72rem;font-weight:600;border:1px solid transparent;transition:.15s;letter-spacing:.3px}
+.wf-tab:hover{color:#E5EEF5}
+.wf-tab.active{background:#00C6FF15;color:#00C6FF;border-color:#00C6FF50}
+
+/* Browser frame */
+.browser{max-width:1480px;margin:24px auto 60px;background:#0F1B2E;border-radius:12px;overflow:hidden;border:1px solid #1C2F48;box-shadow:0 20px 50px rgba(0,0,0,.4)}
+.browser-bar{background:#16263B;padding:10px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #1C2F48}
+.browser-dots{display:flex;gap:6px}
+.browser-dots span{width:11px;height:11px;border-radius:50%}
+.browser-dots span:nth-child(1){background:#FF5F57}
+.browser-dots span:nth-child(2){background:#FFBD2E}
+.browser-dots span:nth-child(3){background:#27C93F}
+.browser-url{flex:1;background:#0A1628;padding:6px 14px;border-radius:6px;font-size:.7rem;color:#7A8FA8;margin-left:12px;font-family:monospace}
+.browser-url span{color:#00C6FF}
+
+.app-layout{display:flex;min-height:820px}
+.sidebar{width:230px;background:#0C1A2D;border-right:1px solid #16263B;padding:22px 0;flex-shrink:0}
+.logo{padding:0 22px 22px;border-bottom:1px solid #16263B;margin-bottom:14px}
+.logo .name{font-size:1.1rem;font-weight:700;color:#00C6FF}
+.logo .sub{font-size:.65rem;color:#55708C;margin-top:3px;letter-spacing:1px;text-transform:uppercase}
+.nav-section{padding:10px 0}
+.nav-label{font-size:.6rem;color:#55708C;letter-spacing:1.2px;text-transform:uppercase;padding:4px 22px 6px;font-weight:600}
+.nav-item{display:flex;align-items:center;gap:11px;padding:9px 22px;color:#7A8FA8;cursor:pointer;font-size:.78rem;font-weight:500;border-left:3px solid transparent;transition:.15s}
+.nav-item:hover{background:#0F1B2E;color:#E5EEF5}
+.nav-item.active{background:#00C6FF0F;color:#00C6FF;border-left-color:#00C6FF;font-weight:600}
+.nav-item .ico{font-size:1rem;width:18px;text-align:center}
+.nav-item .badge{margin-left:auto;background:#FF5F57;color:#fff;font-size:.58rem;padding:2px 7px;border-radius:10px;font-weight:700}
+
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:#0F1B2E;border-bottom:1px solid #16263B;padding:14px 26px;display:flex;align-items:center;gap:18px}
+.topbar h2{font-size:1rem;font-weight:700;color:#E5EEF5}
+.topbar .crumb{font-size:.7rem;color:#55708C;margin-left:8px}
+.topbar .spacer{flex:1}
+.topbar .search{background:#0A1628;border:1px solid #1C2F48;border-radius:8px;padding:7px 12px;font-size:.72rem;color:#7A8FA8;width:280px}
+.topbar .iconbtn{width:32px;height:32px;border-radius:8px;background:#0A1628;border:1px solid #1C2F48;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#7A8FA8;font-size:.85rem}
+.topbar .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#00C6FF,#0077B6);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#fff}
+
+.content{padding:24px 26px;flex:1;overflow-y:auto;background:#0A1628}
+
+/* Reusable */
+.page-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.page-title h3{font-size:1.15rem;font-weight:700;color:#E5EEF5}
+.page-title .sub{font-size:.72rem;color:#55708C;margin-top:3px}
+.btn{padding:8px 16px;border-radius:8px;font-size:.72rem;font-weight:600;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:#00C6FF;color:#0A1628}
+.btn-ghost{background:transparent;border:1px solid #1C2F48;color:#7A8FA8}
+.btn-success{background:#27C93F;color:#0A1628}
+.btn-danger{background:#FF5F57;color:#fff}
+.btn-warn{background:#FFBD2E;color:#0A1628}
+.btn-sm{padding:5px 12px;font-size:.68rem}
+
+.card{background:#0F1B2E;border:1px solid #16263B;border-radius:10px;padding:18px;margin-bottom:16px}
+.card-title{font-size:.78rem;font-weight:700;color:#E5EEF5;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.card-title .link{font-size:.68rem;color:#00C6FF;cursor:pointer;font-weight:500}
+
+table{width:100%;border-collapse:collapse}
+th{font-size:.62rem;color:#55708C;text-transform:uppercase;letter-spacing:.6px;font-weight:600;padding:10px 12px;text-align:left;border-bottom:1px solid #16263B}
+td{padding:12px;font-size:.74rem;color:#C5D4E4;border-bottom:1px solid #13223A;vertical-align:middle}
+tr:hover td{background:#0C1A2D}
+tr:last-child td{border-bottom:none}
+
+.chip{display:inline-block;padding:3px 9px;border-radius:10px;font-size:.6rem;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
+.chip-active{background:#27C93F25;color:#27C93F}
+.chip-draft{background:#7A8FA820;color:#7A8FA8}
+.chip-scheduled{background:#FFBD2E25;color:#FFBD2E}
+.chip-expired{background:#FF5F5725;color:#FF5F57}
+.chip-live{background:#00C6FF25;color:#00C6FF}
+.chip-flat{background:#B15CFF25;color:#B15CFF}
+.chip-percent{background:#00C6FF25;color:#00C6FF}
+
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+.field.full{grid-column:1/-1}
+.field label{font-size:.65rem;color:#7A8FA8;font-weight:600;letter-spacing:.3px}
+.field .hint{font-size:.6rem;color:#55708C;margin-top:2px}
+.field input,.field select,.field textarea{background:#0A1628;border:1px solid #1C2F48;border-radius:7px;padding:9px 11px;color:#E5EEF5;font-size:.75rem;font-family:inherit}
+.field textarea{min-height:80px;resize:vertical}
+.upload-box{background:#0A1628;border:1.5px dashed #1C2F48;border-radius:8px;padding:20px;text-align:center;color:#55708C;font-size:.7rem;cursor:pointer}
+
+.tabs{display:flex;gap:4px;border-bottom:1px solid #16263B;margin-bottom:16px}
+.tabs .tab{padding:10px 18px;font-size:.73rem;color:#7A8FA8;cursor:pointer;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs .tab.active{color:#00C6FF;border-bottom-color:#00C6FF}
+.tabs .tab .count{background:#16263B;color:#7A8FA8;padding:2px 7px;border-radius:10px;font-size:.6rem;margin-left:5px}
+.tabs .tab.active .count{background:#00C6FF25;color:#00C6FF}
+
+.filters{display:flex;gap:10px;margin-bottom:14px;align-items:center;flex-wrap:wrap}
+.filters select,.filters input{background:#0F1B2E;border:1px solid #1C2F48;border-radius:7px;padding:7px 10px;color:#C5D4E4;font-size:.7rem;font-family:inherit}
+
+/* Catalog-specific */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.item-card{background:#0F1B2E;border:1px solid #16263B;border-radius:10px;padding:14px;cursor:pointer;transition:.15s;position:relative}
+.item-card:hover{border-color:#00C6FF50;transform:translateY(-2px)}
+.item-card .icon{width:54px;height:54px;border-radius:12px;background:linear-gradient(135deg,#00C6FF20,#0077B620);display:flex;align-items:center;justify-content:center;font-size:1.7rem;margin-bottom:10px;border:1px solid #00C6FF30}
+.item-card h4{font-size:.82rem;font-weight:600;color:#E5EEF5;margin-bottom:3px}
+.item-card .meta{font-size:.65rem;color:#55708C;margin-bottom:8px}
+.item-card .price{font-size:.95rem;font-weight:700;color:#00C6FF}
+.item-card .price small{font-size:.6rem;color:#7A8FA8;font-weight:500}
+.item-card .badge-inactive{position:absolute;top:10px;right:10px;background:#7A8FA830;color:#7A8FA8;font-size:.55rem;font-weight:700;padding:3px 7px;border-radius:8px;text-transform:uppercase}
+.item-card .badge-promo{position:absolute;top:10px;right:10px;background:#FF5F5725;color:#FF5F57;font-size:.55rem;font-weight:700;padding:3px 7px;border-radius:8px;text-transform:uppercase}
+
+/* Service header */
+.service-header{display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#00C6FF15,#0F1B2E);border:1px solid #00C6FF30;border-radius:12px;padding:18px;margin-bottom:18px}
+.service-header .big-icon{width:64px;height:64px;border-radius:14px;background:#00C6FF20;display:flex;align-items:center;justify-content:center;font-size:2rem;border:1px solid #00C6FF50}
+.service-header h3{font-size:1.05rem;font-weight:700;color:#E5EEF5}
+.service-header .desc{font-size:.7rem;color:#7A8FA8;margin-top:3px}
+.service-header .stats{display:flex;gap:18px;margin-top:8px}
+.service-header .stats div{font-size:.65rem;color:#55708C}
+.service-header .stats div b{color:#00C6FF;font-size:.78rem;display:block;font-weight:700}
+.service-header .actions{margin-left:auto;display:flex;gap:8px}
+
+/* Icon picker */
+.icon-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;background:#0A1628;padding:14px;border:1px solid #1C2F48;border-radius:8px;max-height:240px;overflow-y:auto}
+.icon-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;background:#0F1B2E;border:1px solid #16263B;border-radius:8px;cursor:pointer;font-size:1.4rem;transition:.15s}
+.icon-cell:hover{border-color:#00C6FF60;background:#00C6FF10}
+.icon-cell.selected{border-color:#00C6FF;background:#00C6FF20;box-shadow:0 0 0 2px #00C6FF40}
+
+/* Mobile preview */
+.preview-pane{position:sticky;top:20px;background:#0C1A2D;border:1px solid #16263B;border-radius:14px;padding:16px}
+.preview-title{font-size:.65rem;color:#55708C;text-transform:uppercase;letter-spacing:.8px;font-weight:600;margin-bottom:10px;text-align:center}
+.phone{width:240px;height:480px;background:#0A1628;border:6px solid #16263B;border-radius:30px;margin:0 auto;overflow:hidden;position:relative}
+.phone-status{height:22px;background:#0A1628;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-size:.55rem;color:#7A8FA8}
+.phone-content{padding:12px;height:calc(100% - 22px);overflow-y:auto}
+.phone-h{font-size:.75rem;font-weight:700;color:#E5EEF5;margin-bottom:8px}
+.phone-card{background:#0F1B2E;border:1px solid #16263B;border-radius:10px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.phone-card .pico{width:36px;height:36px;border-radius:8px;background:#00C6FF20;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.phone-card .pname{font-size:.65rem;font-weight:600;color:#E5EEF5}
+.phone-card .pprice{font-size:.6rem;color:#00C6FF;font-weight:700}
+.phone-card .pold{font-size:.55rem;color:#55708C;text-decoration:line-through}
+.phone-card .add{margin-left:auto;background:#00C6FF;color:#0A1628;font-size:.55rem;font-weight:700;padding:4px 10px;border-radius:6px}
+.phone-banner{background:linear-gradient(135deg,#FF5F57,#B15CFF);color:#fff;padding:10px;border-radius:10px;font-size:.6rem;font-weight:700;margin-bottom:10px;text-align:center}
+
+/* Pricing matrix */
+.matrix{width:100%;border-collapse:collapse;font-size:.7rem}
+.matrix th{background:#0C1A2D;text-align:center}
+.matrix td{text-align:center}
+.matrix td.zone{text-align:left;font-weight:600;color:#E5EEF5;background:#0C1A2D}
+.matrix .price-cell{font-weight:600;color:#00C6FF}
+
+/* Rule builder */
+.rule-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;background:#0A1628;padding:10px;border:1px solid #1C2F48;border-radius:8px}
+.rule-row select,.rule-row input{background:#0F1B2E;border:1px solid #1C2F48;border-radius:6px;padding:6px 9px;color:#E5EEF5;font-size:.7rem}
+.rule-row .rm{margin-left:auto;color:#FF5F57;cursor:pointer;font-size:.9rem}
+
+/* Toggle */
+.toggle{display:inline-flex;align-items:center;gap:8px;cursor:pointer}
+.toggle .sw{width:32px;height:18px;background:#1C2F48;border-radius:10px;position:relative;transition:.15s}
+.toggle .sw::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;background:#7A8FA8;border-radius:50%;transition:.15s}
+.toggle.on .sw{background:#00C6FF}
+.toggle.on .sw::after{left:16px;background:#fff}
+.toggle .lbl{font-size:.7rem;color:#C5D4E4}
+
+.two-col{display:grid;grid-template-columns:1fr 320px;gap:18px}
+.two-col-wide{display:grid;grid-template-columns:1fr 280px;gap:18px}
+
+.audit-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #13223A;font-size:.7rem}
+.audit-row:last-child{border:0}
+.audit-row .who{color:#00C6FF;font-weight:600}
+.audit-row .what{color:#C5D4E4;flex:1}
+.audit-row .when{color:#55708C;font-size:.62rem}
+
+.note{background:#FFBD2E10;border-left:3px solid #FFBD2E;padding:10px 12px;border-radius:6px;font-size:.68rem;color:#FFBD2E;margin-bottom:14px}
+.note b{color:#fff}
+</style>
+</head>
+<body>
+
+<div class="wf-header">
+  <h1>Presso Admin — Catalog, Pricing & Offers Wireframe</h1>
+  <p>Companion to the main admin portal wireframe. Focused on the surfaces that drive what customers see in the mobile app: services, items, icons, pricing, offers, promo codes, and the change-tracking that goes with it.</p>
+  <div class="wf-tabs">
+    <div class="wf-tab active" onclick="show(1)">1. Catalog Overview</div>
+    <div class="wf-tab" onclick="show(2)">2. Service Detail (Items)</div>
+    <div class="wf-tab" onclick="show(3)">3. Add / Edit Item</div>
+    <div class="wf-tab" onclick="show(4)">4. Icon Library</div>
+    <div class="wf-tab" onclick="show(5)">5. Pricing Matrix (Zones)</div>
+    <div class="wf-tab" onclick="show(6)">6. Bulk Import</div>
+    <div class="wf-tab" onclick="show(7)">7. Offers List</div>
+    <div class="wf-tab" onclick="show(8)">8. Create Offer (Rules)</div>
+    <div class="wf-tab" onclick="show(9)">9. Promo Codes</div>
+    <div class="wf-tab" onclick="show(10)">10. Mobile App Preview</div>
+    <div class="wf-tab" onclick="show(11)">11. Catalog Audit Log</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ SCREEN 1: CATALOG OVERVIEW ═══════════════════════════════════════════════ -->
+<div class="browser" id="screen-1">
+  <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">admin.presso.in/<span>catalog</span></div></div>
+  <div class="app-layout">
+    <div class="sidebar">
+      <div class="logo"><div class="name">Presso</div><div class="sub">Admin Portal</div></div>
+      <div class="nav-section">
+        <div class="nav-label">Operate</div>
+        <div class="nav-item"><span class="ico">📊</span>Dashboard</div>
+        <div class="nav-item"><span class="ico">📦</span>Orders</div>
+        <div class="nav-item"><span class="ico">🛵</span>Riders</div>
+        <div class="nav-item"><span class="ico">🏭</span>Facilities</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Catalog</div>
+        <div class="nav-item active"><span class="ico">🧺</span>Services & Items</div>
+        <div class="nav-item"><span class="ico">🖼️</span>Icon Library</div>
+        <div class="nav-item"><span class="ico">💰</span>Pricing Zones</div>
+        <div class="nav-item"><span class="ico">📥</span>Bulk Import</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Growth</div>
+        <div class="nav-item"><span class="ico">🎁</span>Offers <span class="badge">3</span></div>
+        <div class="nav-item"><span class="ico">🏷️</span>Promo Codes</div>
+        <div class="nav-item"><span class="ico">📱</span>App Preview</div>
+      </div>
+      <div class="nav-section">
+        <div class="nav-label">Track</div>
+        <div class="nav-item"><span class="ico">📜</span>Catalog Audit</div>
+        <div class="nav-item"><span class="ico">⚙️</span>Settings</div>
+      </div>
+    </div>
+    <div class="main">
+      <div class="topbar"><h2>Services & Items</h2><span class="crumb">/ Catalog overview</span><div class="spacer"></div><input class="search" placeholder="Search items, services, SKUs…"><div class="iconbtn">🔔</div><div class="avatar">HP</div></div>
+      <div class="content">
+        <div class="page-title">
+          <div><h3>Catalog Overview</h3><div class="sub">8 services · 64 active items · 12 inactive · last published 2h ago</div></div>
+          <div style="display:flex;gap:8px"><button class="btn btn-ghost">📥 Import CSV</button><button class="btn btn-ghost">⤓ Export</button><button class="btn btn-primary">+ New Service</button></div>
+        </div>
+
+        <div class="note"><b>Publishing model.</b> Edits stay in <b>Draft</b> until you click <b>Publish</b>. Customers continue seeing the last published snapshot. This protects against half-finished price changes leaking to the app.</div>
+
+        <div class="cat-grid">
+          <div class="item-card"><div class="icon">👕</div><h4>Wash & Fold</h4><div class="meta">12 items · 3 zones</div><div class="price">From ₹49 <small>/ kg</small></div></div>
+          <div class="item-card"><div class="icon">🧥</div><h4>Dry Clean</h4><div class="meta">22 items · 3 zones</div><div class="price">From ₹120 <small>/ pc</small></div></div>
+          <div class="item-card"><div class="icon">👔</div><h4>Steam Iron</h4><div class="meta">8 items · 2 zones</div><div class="price">From ₹15 <small>/ pc</small></div></div>
+          <div class="item-card"><div class="icon">👞</div><h4>Shoe Care</h4><div class="meta">6 items · 1 zone</div><div class="price">From ₹150 <small>/ pair</small></div></div>
+          <div class="item-card"><div class="icon">🛏️</div><h4>Home Linen</h4><div class="meta">10 items · 2 zones</div><div class="price">From ₹80 <small>/ pc</small></div></div>
+          <div class="item-card"><div class="icon">⚡</div><h4>Express (24h)</h4><div class="meta">All items · +30%</div><div class="price">Surcharge</div></div>
+          <div class="item-card"><div class="icon">💎</div><h4>Premium Care</h4><div class="meta">4 items · 1 zone</div><div class="price">From ₹350 <small>/ pc</small></div><div class="badge-promo">PROMO</div></div>
+          <div class="item-card" style="border-style:dashed;color:#55708C"><div class="icon" style="background:#16263B;border-color:#1C2F48;color:#55708C">＋</div><h4 style="color:#7A8FA8">Add Service</h4><div class="meta">Create a new service category</div></div>
+        </div>
+
+        <div class="card" style="margin-top:18px">
+          <div class="card-title">Catalog Health <span class="link">View all warnings →</span></div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+            <div style="padding:12px;background:#FFBD2E10;border:1px solid #FFBD2E30;border-radius:8px"><div style="font-size:.6rem;color:#FFBD2E;font-weight:700;text-transform:uppercase">Missing Icons</div><div style="font-size:1.2rem;font-weight:700;color:#FFBD2E;margin-top:4px">3 items</div></div>
+            <div style="padding:12px;background:#FF5F5710;border:1px solid #FF5F5730;border-radius:8px"><div style="font-size:.6rem;color:#FF5F57;font-weight:700;text-transform:uppercase">No Price Set</div><div style="font-size:1.2rem;font-weight:700;color:#FF5F57;margin-top:4px">2 items</div></div>
+            <div style="padding:12px;background:#00C6FF10;border:1px solid #00C6FF30;border-radius:8px"><div style="font-size:.6rem;color:#00C6FF;font-weight:700;text-transform:uppercase">Draft Changes</div><div style="font-size:1.2rem;font-weight:700;color:#00C6FF;margin-top:4px">7 pending</div></div>
+            <div style="padding:12px;background:#27C93F10;border:1px solid #27C93F30;border-radius:8px"><div style="font-size:.6rem;color:#27C93F;font-weight:700;text-transform:uppercase">Published</div><div style="font-size:1.2rem;font-weight:700;color:#27C93F;margin-top:4px">64 live</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ SCREEN 2: SERVICE DETAIL ═══════════════════════════════════════════════ -->
+<div class="browser" id="screen-2">
+  <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">admin.presso.in/catalog/services/<span>dry-clean</span></div></div>
+  <div class="app-layout">
+    <div class="sidebar"><div class="logo"><div class="name">Presso</div><div class="sub">Admin Portal</div></div><div class="nav-section"><div class="nav-label">Catalog</div><div class="nav-item active"><span class="ico">🧺</span>Services & Items</div><div class="nav-item"><span class="ico">🖼️</span>Icon Library</div><div class="nav-item"><span class="ico">💰</span>Pricing Zones</div></div></div>
+    <div class="main">
+      <div class="topbar"><h2>Dry Clean</h2><span class="crumb">/ Catalog / Dry Clean</span><div class="spacer"></div><input class="search" placeholder="Search items in this service…"><div class="avatar">HP</div></div>
+      <div class="content">
+        <div class="service-header">
+          <div class="big-icon">🧥</div>
+          <div>
+            <h3>Dry Clean</h3>
+            <div class="desc">Professional dry cleaning for delicate fabrics — silk, wool, suits, sarees, jackets.</div>
+            <div class="stats">
+              <div><b>22</b>Items</div>
+              <div><b>3</b>Zones</div>
+              <div><b>₹120 – ₹650</b>Price range</div>
+              <div><b>4.8 ★</b>Customer rating</div>
+              <div><b>1,243</b>Orders / 30d</div>
+            </div>
+          </div>
+          <div class="actions">
+            <div class="toggle on"><span class="lbl">Active</span><div class="sw"></div></div>
+            <button class="btn btn-ghost">Edit Service</button>
+            <button class="btn btn-primary">+ Add Item</button>
+          </div>
+        </div>
+
+        <div class="filters">
+          <select><option>All categories</option><option>Men's wear</option><option>Women's wear</option><option>Ethnic</option><option>Outerwear</option></select>
+          <select><option>All status</option><option>Active</option><option>Inactive</option><option>Draft</option></select>
+          <select><option>Sort: Most ordered</option><option>Price low → high</option><option>Recently edited</option></select>
+          <input placeholder="Search by name or SKU">
+        </div>
+
+        <div class="card" style="padding:0;overflow:hidden">
+          <table>
+            <thead><tr><th></th><th>Item</th><th>SKU</th><th>Category</th><th>Base Price</th><th>Express +30%</th><th>30d Orders</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><div style="width:36px;height:36px;border-radius:8px;background:#00C6FF20;display:flex;align-items:center;justify-content:center;font-size:1.2rem">👔</div></td><td><b style="color:#E5EEF5">Shirt</b><div style="font-size:.6rem;color:#55708C">Cotton / formal</div></td><td><span style="font-family:monospace;color:#7A8FA8">DC-SH-001</span></td><td>Men's wear</td><td><b style="color:#00C6FF">₹120</b></td><td>₹156</td><td>342</td><td><span class="chip chip-active">Active</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
+              <tr><td><div style="width:36px;height:36px;border-radius:8px;background:#00C6FF20;display:flex;align-items:center;justify-content:center;font-size:1.2rem">👖</div></td><td><b style="color:#E5EEF5">Trousers</b><div style="font-size:.6rem;color:#55708C">Formal / casual</div></td><td><span style="font-family:monospace;color:#7A8FA8">DC-TR-002</span></td><td>Men's wear</td><td><b style="color:#00C6FF">₹140</b></td><td>₹182</td><td>289</td><td><span class="chip chip-active">Active</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
+              <tr><td><div style="width:36px;height:36px;border-radius:8px;background:#00C6FF20;display:flex;align-items:center;justify-content:center;font-size:1.2rem">🧥</div></td><td><b style="color:#E5EEF5">Suit (2pc)</b><div style="font-size:.6rem;color:#55708C">Coat + trouser</div></td><td><span style="font-family:monospace;color:#7A8FA8">DC-SU-003</span></td><td>Men's wear</td><td><b style="color:#00C6FF">₹450</b></td><td>₹585</td><td>87</td><td><span class="chip chip-active">Active</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
+              <tr><td><div style="width:36px;height:36px;border-radius:8px;background:#B15CFF20;display:flex;align-items:center;justify-content:center;font-size:1.2rem">👗</div></td><td><b style="color:#E5EEF5">Saree</b><div style="font-size:.6rem;color:#55708C">Plain / cotton</div></td><td><span style="font-family:monospace;color:#7A8FA8">DC-SR-007</span></td><td>Ethnic</td><td><b style="color:#00C6FF">₹250</b></td><td>₹325</td><td>156</td><td><span class="chip chip-active">Active</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
+              <tr><td><div style="width:36px;height:36px;border-radius:8px;background:#FFBD2E20;display:flex;align-items:center;justify-content:center;font-size:1.2rem">💎</div></td><td><b style="color:#E5EEF5">Saree (Silk / Embroidered)</b><div style="font-size:.6rem;color:#55708C">Premium care</div></td><td><span style="font-family:monospace;color:#7A8FA8">DC-SR-008</span></td><td>Ethnic</td><td><b style="color:#00C6FF">₹650</b></td><td>₹845</td><td>42</td><td><span class="chip chip-scheduled">Draft</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
+              <tr><td><div style="width:36px;height:36px;border-radius:8px;background:#7A8FA830;display:flex;align-items:center;justify-content:center;font-size:1.2rem">🧣</div></td><td><b style="color:#E5EEF5">Shawl</b><div style="font-size:.6rem;color:#55708C">Wool / pashmina</div></td><td><span style="font-family:monospace;color:#7A8FA8">DC-SH-012</span></td><td>Outerwear</td><td><b style="color:#00C6FF">₹180</b></td><td>₹234</td><td>23</td><td><span class="chip chip-draft">Inactive</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ SCREEN 3: ADD / EDIT ITEM ═══════════════════════════════════════════════ -->
+<div class="browser" id="screen-3">
+  <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">admin.presso.in/catalog/items/<span>new</span></div></div>
+  <div class="app-layout">
+    <div class="sidebar"><div class="logo"><div class="name">Presso</div><div class="sub">Admin Portal</div></div><div class="nav-section"><div class="nav-label">Catalog</div><div class="nav-item active"><span class="ico">🧺</span>Services & Items</div></div></div>
+    <div class="main">
+      <div class="topbar"><h2>New Item</h2><span class="crumb">/ Catalog / Dry Clean / New Item</span><div class="spacer"></div><button class="btn btn-ghost">Cancel</button><button class="btn btn-warn">Save Draft</button><button class="btn btn-success">Publish</button></div>
+      <div class="content">
+        <div class="two-col">
+          <div>
+            <div class="card">
+              <div class="card-title">Basics</div>
+              <div class="form-grid">
+                <div class="field"><label>Item Name *</label><input value="Saree (Silk / Embroidered)"><div class="hint">Shown to customers in the app.</div></div>
+                <div class="field"><label>SKU *</label><input value="DC-SR-008"><div class="hint">Auto-generated, editable. Used in invoices.</div></div>
+                <div class="field"><label>Service *</label><select><option>Dry Clean</option><option>Wash & Fold</option><option>Steam Iron</option></select></div>
+                <div class="field"><label>Category</label><select><option>Ethnic</option><option>Men's wear</option><option>Women's wear</option><option>Outerwear</option></select></div>
+                <div class="field full"><label>Description (optional)</label><textarea>Specialised cleaning for silk and embroidered sarees. Hand-finished, no harsh solvents. 48-hour TAT.</textarea></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Icon</div>
+              <div style="display:flex;gap:14px;align-items:flex-start">
+                <div style="flex-shrink:0;text-align:center">
+                  <div style="width:80px;height:80px;border-radius:14px;background:linear-gradient(135deg,#00C6FF20,#0077B620);display:flex;align-items:center;justify-content:center;font-size:2.4rem;border:1px solid #00C6FF50;margin-bottom:6px">💎</div>
+                  <div style="font-size:.6rem;color:#7A8FA8">Selected</div>
+                </div>
+                <div style="flex:1">
+                  <div style="display:flex;gap:8px;margin-bottom:8px">
+                    <button class="btn btn-ghost btn-sm">📚 Pick from Library</button>
+                    <button class="btn btn-ghost btn-sm">⤴️ Upload Custom</button>
+                    <button class="btn btn-ghost btn-sm">🎨 Use Emoji</button>
+                  </div>
+                  <div class="upload-box">📎 Drag SVG / PNG here · max 256KB · 1:1 ratio recommended</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Pricing</div>
+              <div class="form-grid">
+                <div class="field"><label>Pricing Unit *</label><select><option>Per Piece</option><option>Per Kg</option><option>Per Pair</option><option>Per Set</option></select></div>
+                <div class="field"><label>Tax Slab</label><select><option>GST 18%</option><option>GST 12%</option><option>Exempt</option></select></div>
+                <div class="field"><label>Base Price (₹) *</label><input type="number" value="650"><div class="hint">Default zone (Bengaluru Central). Override per zone in Pricing Matrix.</div></div>
+                <div class="field"><label>MRP / Strike-through (₹)</label><input type="number" value="800"><div class="hint">Optional. Shows discount on the customer card.</div></div>
+                <div class="field"><label>Express Surcharge</label><select><option>Use service default (+30%)</option><option>Custom %</option><option>None</option></select></div>
+                <div class="field"><label>Min. Quantity</label><input type="number" value="1"></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Variants & Add-ons (optional)</div>
+              <div class="rule-row"><select style="width:140px"><option>Variant: Color</option></select><input placeholder="Options" value="Light, Dark"><span style="font-size:.65rem;color:#55708C">Price delta: ₹0</span><span class="rm">×</span></div>
+              <div class="rule-row"><select style="width:140px"><option>Add-on: Stain treatment</option></select><input placeholder="Label" value="Heavy stain removal"><input type="number" placeholder="₹" value="80" style="width:70px"><span class="rm">×</span></div>
+              <button class="btn btn-ghost btn-sm">+ Add Variant / Add-on</button>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Availability</div>
+              <div class="form-grid">
+                <div class="field"><label>Active in Zones</label><select multiple style="height:80px"><option selected>Bengaluru Central</option><option selected>Whitefield</option><option>HSR Layout</option><option>Electronic City</option></select></div>
+                <div class="field"><label>Available For</label><select><option>All customers</option><option>Premium customers only</option><option>Students only</option></select></div>
+                <div class="field"><label>TAT (Hours)</label><input type="number" value="48"><div class="hint">Used for promised-delivery slot calculation.</div></div>
+                <div class="field"><label>Status</label><div class="toggle on" style="margin-top:4px"><span class="lbl">Active (visible in app)</span><div class="sw"></div></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="preview-pane">
+              <div class="preview-title">Mobile Preview · Live</div>
+              <div class="phone">
+                <div class="phone-status"><span>9:41</span><span>●●●● 100%</span></div>
+                <div class="phone-content">
+                  <div class="phone-h">Dry Clean → Ethnic</div>
+                  <div class="phone-card"><div class="pico">💎</div><div><div class="pname">Saree (Silk / Embroidered)</div><div><span class="pprice">₹650</span> &nbsp;<span class="pold">₹800</span></div></div><div class="add">ADD</div></div>
+                  <div class="phone-card"><div class="pico">👗</div><div><div class="pname">Saree (Plain)</div><div class="pprice">₹250</div></div><div class="add">ADD</div></div>
+                  <div class="phone-card"><div class="pico">🧥</div><div><div class="pname">Suit (2pc)</div><div class="pprice">₹450</div></div><div class="add">ADD</div></div>
+                </div>
+              </div>
+              <div style="font-size:.6rem;color:#55708C;text-align:center;margin-top:10px">Reflects unsaved draft</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ SCREEN 4: ICON LIBRARY ═══════════════════════════════════════════════ -->
+<div class="browser" id="screen-4">
+  <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">admin.presso.in/catalog/<span>icons</span></div></div>
+  <div class="app-layout">
+    <div class="sidebar"><div class="logo"><div class="name">Presso</div><div class="sub">Admin Portal</div></div><div class="nav-section"><div class="nav-label">Catalog</div><div class="nav-item"><span class="ico">🧺</span>Services & Items</div><div class="nav-item active"><span class="ico">🖼️</span>Icon Library</div></div></div>
+    <div class="main">
+      <div class="topbar"><h2>Icon Library</h2><span class="crumb">/ Catalog / Icons</span><div class="spacer"></div><button class="btn btn-primary">⤴️ Upload Icon</button></div>
+      <div class="content">
+        <div class="page-title"><div><h3>Icon Library</h3><div class="sub">Reusable icon set used across services, items and offers — keeps the app visually consistent.</div></div></div>
+
+        <div class="filters">
+          <select><option>All collections</option><option>Default (system)</option><option>Custom uploads</option><option>Premium pack</option></select>
+          <select><option>Format: All</option><option>SVG</option><option>PNG</option><option>Emoji</option></select>
+          <input placeholder="Search icons by tag…">
+        </div>
+
+        <div class="two-col-wide">
+          <div>
+            <div class="card">
+              <div class="card-title">System Icons (47) <span class="link">View all →</span></div>
+              <div class="icon-grid">
+                <div class="icon-cell selected">👕</div><div class="icon-cell">👔</div><div class="icon-cell">👖</div><div class="icon-cell">🧥</div><div class="icon-cell">👗</div><div class="icon-cell">👘</div><div class="icon-cell">🥼</div><div class="icon-cell">🧣</div>
+                <div class="icon-cell">🧤</div><div class="icon-cell">🧦</div><div class="icon-cell">🎽</div><div class="icon-cell">🩳</div><div class="icon-cell">👞</div><div class="icon-cell">👟</div><div class="icon-cell">👠</div><div class="icon-cell">🥾</div>
+                <div class="icon-cell">🧺</div><div class="icon-cell">🛏️</div><div class="icon-cell">🛋️</div><div class="icon-cell">🚿</div><div class="icon-cell">🧴</div><div class="icon-cell">💎</div><div class="icon-cell">⚡</div><div class="icon-cell">🌟</div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-title">Custom Uploads (8)</div>
+              <div class="icon-grid">
+                <div class="icon-cell">🪡</div><div class="icon-cell">✨</div><div class="icon-cell">🧼</div><div class="icon-cell">🌿</div><div class="icon-cell">🛡️</div><div class="icon-cell">🔥</div><div class="icon-cell">❄️</div><div class="icon-cell">🌀</div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="card">
+              <div class="card-title">Selected Icon</div>
+              <div style="text-align:center;padding:18px 0">
+                <div style="width:120px;height:120px;border-radius:20px;background:linear-gradient(135deg,#00C6FF20,#0077B620);display:flex;align-items:center;justify-content:center;font-size:3.6rem;border:1px solid #00C6FF50;margin:0 auto 12px">👕</div>
+                <div style="font-size:.85rem;font-weight:700;color:#E5EEF5">shirt-classic</div>
+                <div style="font-size:.62rem;color:#55708C;margin-top:3px">tags: shirt, cotton, formal, men</div>
+                <div style="font-size:.62rem;color:#55708C">used in: 4 items, 1 offer</div>
+              </div>
+              <div style="display:flex;gap:6px;justify-content:center;margin-bottom:8px">
+                <button class="btn btn-ghost btn-sm">Edit Tags</button>
+                <button class="btn btn-danger btn-sm">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ SCREEN 5: PRICING MATRIX ═══════════════════════════════════════════════ -->
+<div class="browser" id="screen-5">
+  <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">admin.presso.in/catalog/<span>pricing</span></div></div>
+  <div class="app-layout">
+    <div class="sidebar"><div class="logo"><div class="name">Presso</div><div class="sub">Admin Portal</div></div><div class="nav-section"><div class="nav-label">Catalog</div><div class="nav-item"><span class="ico">🧺</span>Services & Items</div><div class="nav-item active"><span class="ico">💰</span>Pricing Zones</div></div></div>
+    <div class="main">
+      <div class="topbar"><h2>Pricing Matrix</h2><span class="crumb">/ Catalog / Pricing</span><div class="spacer"></div><button class="btn btn-ghost">⤓ Export</button><button class="btn btn-warn">Save as Draft</button><button class="btn btn-success">Publish All</button></div>
+      <div class="content">
+        <div class="page-title"><div><h3>Pricing Matrix</h3><div class="sub">Override item base prices per zone. Empty cells fall back to base price.</div></div></div>
+
+        <div class="filters">
+          <select><option>Service: Dry Clean</option><option>Wash & Fold</option><option>Steam Iron</option><option>Shoe Care</option></select>
+          <select><option>Category: All</option><option>Men's wear</option><option>Ethnic</option></select>
+          <button class="btn btn-ghost btn-sm">+ Add Zone</button>
+          <button class="btn btn-ghost btn-sm">% Bulk Adjust</button>
+        </div>
+
+        <div class="card" style="padding:0;overflow-x:auto">
+          <table class="matrix">
+            <thead><tr><th style="text-align:left">Item</th><th>Base</th><th>BLR Central</th><th>Whitefield</th><th>HSR Layout</th><th>Electronic City</th><th>Indiranagar</th><th>Express +%</th></tr></thead>
+            <tbody>
+              <tr><td class="zone">👔 Shirt</td><td>₹120</td><td class="price-cell">₹120</td><td class="price-cell">₹130</td><td class="price-cell">₹125</td><td class="price-cell">₹110</td><td class="price-cell">₹140</td><td>30%</td></tr>
+              <tr><td class="zone">👖 Trousers</td><td>₹140</td><td class="price-cell">₹140</td><td class="price-cell">₹150</td><td class="price-cell">₹145</td><td class="price-cell">₹130</td><td class="price-cell">₹160</td><td>30%</td></tr>
+              <tr><td class="zone">🧥 Suit (2pc)</td><td>₹450</td><td class="price-cell">₹450</td><td class="price-cell">₹480</td><td class="price-cell">₹460</td><td class="price-cell">₹430</td><td class="price-cell">₹520</td><td>30%</td></tr>
+              <tr><td class="zone">👗 Saree (Plain)</td><td>₹250</td><td class="price-cell">₹250</td><td class="price-cell">₹260</td><td class="price-cell">₹255</td><td class="price-cell">₹240</td><td class="price-cell">₹280</td><td>30%</td></tr>
+              <tr><td class="zone">💎 Saree (Silk)</td><td>₹650</td><td class="price-cell">₹650</td><td class="price-cell">₹680</td><td class="price-cell">₹660</td><td class="price-cell">₹630</td><td class="price-cell">₹720</td><td>30%</td></tr>
+              <tr><td class="zone">🧣 Shawl</td><td>₹180</td><td class="price-cell">₹180</td><td class="price-cell">—</td><td class="price-cell">—</td><td class="price-cell">—</td><td class="price-cell">₹200</td><td>20%</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="note" style="margin-top:14px"><b>Tip.</b> Use <b>% Bulk Adjust</b> to raise or lower an entire column (e.g., +5% for Whitefield) in one shot. Every cell change becomes an audit log entry.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ SCREEN 6: BULK IMPORT ═══════════════════════════════════════════════ -->
+<div class="browser" id="screen-6">
+  <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">admin.presso.in/catalog/<span>import</span></div></div>
+  <div class="app-layout">
+    <div class="sidebar"><div class="logo"><div class="name">Presso</div><div class="sub">Admin Portal</div></div><div class="nav-section"><div class="nav-label">Catalog</div><div class="nav-item active"><span class="ico">📥</span>Bulk Import</div></div></div>
+    <div class="main">
+      <div class="topbar"><h2>Bulk Import</h2><span class="crumb">/ Catalog / Import</span><div class="spacer"></div><button class="btn btn-ghost">⤓ Download Template</button></div>
+      <div class="content">
+        <div class="page-title"><div><h3>Bulk Import Items</h3><div class="sub">Upload a CSV to add or update items in bulk. Existing SKUs are updated, new SKUs are created as drafts.</div></div></div>
+
+        <div class="card">
+          <div class="card-title">Step 1 · Upload File</div>
+          <div class="upload-box" style="padding:40px">📎 Drop your CSV / XLSX file here, or click to browse<br><span style="font-size:.6rem;color:#55708C">Max 5MB · supports .csv, .xlsx</span></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Step 2 · Preview & Validate <span style="color:#27C93F;font-size:.65rem">✓ 18 valid · 2 errors · 4 warnings</span></div>
+          <table>
+            <thead><tr><th>Row</th><th>SKU</th><th>Name</th><th>Service</th><th>Base ₹</th><th>Status</th><th>Issue</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><span style="font-family:monospace">DC-SH-001</span></td><td>Shirt</td><td>Dry Clean</td><td>120</td><td><span class="chip chip-active">Update</span></td><td>—</td></tr>
+              <tr><td>2</td><td><span style="font-family:monospace">WF-NEW-021</span></td><td>Bedsheet (Single)</td><td>Wash & Fold</td><td>80</td><td><span class="chip chip-scheduled">New</span></td><td><span style="color:#FFBD2E">⚠ No icon set</span></td></tr>
+              <tr><td>3</td><td><span style="font-family:monospace">DC-XX-099</span></td><td>—</td><td>Dry Clean</td><td>—</td><td><span class="chip chip-expired">Error</span></td><td><span style="color:#FF5F57">✗ Missing name & price</span></td></tr>
+              <tr><td>4</td><td><span style="font-family:monospace">SI-IR-005</span></td><td>Kurta Iron</td><td>Steam Iron</td><td>20</td><td><span class="chip chip-scheduled">New</span></td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+          <button class="btn btn-ghost">Cancel</button>
+          <button class="btn btn-warn">Import as Draft</button>
+          <button class="btn btn-success">Import & Publish</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ SCREEN 7: OFFERS LIST ═══════════════════════════════════════════════ -->
+<div class="browser" id="screen-7">
+  <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">admin.presso.in/<span>offers</span></div></div>
+  <div class="app-layout">
+    <div class="sidebar"><div class="logo"><div class="name">Presso</div><div class="sub">Admin Portal</div></div><div class="nav-section"><div class="nav-label">Growth</div><div class="nav-item active"><span class="ico">🎁</span>Offers</div><div class="nav-item"><span class="ico">🏷️</span>Promo Codes</div></div></div>
+    <div class="main">
+      <div class="topbar"><h2>Offers</h2><span class="crumb">/ Growth / Offers</span><div class="spacer"></div><button class="btn btn-primary">+ New Offer</button></div>
+      <div class="content">
+        <div class="tabs">
+          <div class="tab active">Live <span class="count">5</span></div>
+          <div class="tab">Scheduled <span class="count">3</span></div>
+          <div class="tab">Drafts <span class="count">2</span></div>
+          <div class="tab">Expired <span class="count">14</span></div>
+          <div class="tab">All</div>
+        </div>
+
+        <div class="filters">
+          <select><option>Type: All</option><option>% Off</option><option>Flat ₹ Off</option><option>BOGO</option><option>Free Add-on</option></select>
+          <select><option>Audience: All</option><option>New users</option><option>Returning</option><option>Premium tier</option></select>
+          <input placeholder="Search offers…">
+        </div>
+
+        <div class="card" style="padding:0;overflow:hidden">
+          <table>
+            <thead><tr><th>Offer</th><th>Type</th><th>Discount</th><th>Applies To</th><th>Schedule</th><th>Used / Cap</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><b style="color:#E5EEF5">First Order 30% Off</b><div style="font-size:.6rem;color:#55708C">FIRST30 · Auto-applied for new users</div></td><td><span class="chip chip-percent">Percent</span></td><td><b style="color:#00C6FF">30%</b><div style="font-size:.55rem;color:#55708C">Max ₹150</div></td><td>All services</td><td><div style="font-size:.65rem">Always on</div></td><td>1,243 / ∞</td><td><span class="chip chip-live">Live</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
+              <tr><td><b style="color:#E5EEF5">Monsoon Premium ₹100 Off</b><div style="font-size:.6rem;color:#55708C">RAINY100</div></td><td><span class="chip chip-flat">Flat</span></td><td><b style="color:#00C6FF">₹100</b></td><td>Premium Care only</td><td><div style="font-size:.65rem">Apr 1 → Jun 30</div></td><td>87 / 500</td><td><span class="chip chip-live">Live</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
+              <tr><td><b style="color:#E5EEF5">Weekend Saree Special</b><div style="font-size:.6rem;color:#55708C">Sat–Sun only</div></td><td><span class="chip chip-percent">Percent</span></td><td><b style="color:#00C6FF">20%</b></td><td>Dry Clean → Ethnic</td><td><div style="font-size:.65rem">Recurring · Sat–Sun</div></td><td>234 / 1000</td><td><span class="chip chip-live">Live</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
+              <tr><td><b style="color:#E5EEF5">Diwali Mega Sale</b><div style="font-size:.6rem;color:#55708C">DIWALI50 · All services</div></td><td><span class="chip chip-percent">Percent</span></td><td><b style="color:#00C6FF">50%</b><div style="font-size:.55rem;color:#55708C">Max ₹500</div></td><td>All services</td><td><div style="font-size:.65rem">Oct 28 → Nov 5</div></td><td>0 / 5000</td><td><span class="chip chip-scheduled">Scheduled</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
+              <tr><td><b style="color:#E5EEF5">Express Free Trial</b><div style="font-size:.6rem;color:#55708C">Free express upgrade · 1×</div></td><td><span class="chip chip-flat">Free</span></td><td><b style="color:#00C6FF">100%</b><div style="font-size:.55rem;color:#55708C">Express fee waived</div></td><td>Express Add-on</td><td><div style="font-size:.65rem">Always on</div></td><td>342 / 2000</td><td><span class="chip chip-live">Live</span></td><td><button class="btn btn-ghost btn-sm">Edit</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ SCREEN 8: CREATE OFFER ═══════════════════════════════════════════════ -->
+<div class="browser" id="screen-8">
+  <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">admin.presso.in/offers/<span>new</span></div></div>
+  <div class="app-layout">
+    <div class="sidebar"><div class="logo"><div class="name">Presso</div><div class="sub">Admin Portal</div></div><div class="nav-section"><div class="nav-label">Growth</div><div class="nav-item active"><span class="ico">🎁</span>Offers</div></div></div>
+    <div class="main">
+      <div class="topbar"><h2>New Offer</h2><span class="crumb">/ Offers / New</span><div class="spacer"></div><button class="btn btn-ghost">Cancel</button><button class="btn btn-warn">Save Draft</button><button class="btn btn-success">Schedule & Publish</button></div>
+      <div class="content">
+        <div class="two-col">
+          <div>
+            <div class="card">
+              <div class="card-title">Basics</div>
+              <div class="form-grid">
+                <div class="field"><label>Offer Name *</label><input value="Diwali Mega Sale"><div class="hint">Internal name. Customer-facing copy below.</div></div>
+                <div class="field"><label>Code (optional)</label><input value="DIWALI50"><div class="hint">Leave blank for auto-applied offer.</div></div>
+                <div class="field full"><label>Customer Banner Title</label><input value="Diwali Mega Sale — 50% Off"></div>
+                <div class="field full"><label>Banner Subtitle</label><input value="Up to ₹500 off on all services. Limited time."></div>
+                <div class="field"><label>Banner Icon</label><select><option>🪔 (lamp)</option><option>🎉</option><option>✨</option></select></div>
+                <div class="field"><label>Display Priority</label><input type="number" value="1"><div class="hint">1 = top of carousel.</div></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Discount</div>
+              <div class="form-grid">
+                <div class="field"><label>Discount Type *</label><select><option>Percent off</option><option>Flat ₹ off</option><option>BOGO</option><option>Free add-on</option><option>Free express</option></select></div>
+                <div class="field"><label>Value *</label><input value="50"><div class="hint">% if percent, ₹ if flat</div></div>
+                <div class="field"><label>Max Discount Cap (₹)</label><input value="500"></div>
+                <div class="field"><label>Min Order Value (₹)</label><input value="299"></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Eligibility Rules <span style="font-size:.6rem;color:#55708C">All conditions must match</span></div>
+              <div class="rule-row"><select style="width:140px"><option>Customer tier</option><option>City / zone</option><option>Service</option><option>Item</option><option>First order</option><option>Day of week</option></select><select><option>is one of</option></select><input value="Silver, Gold, Platinum"><span class="rm">×</span></div>
+              <div class="rule-row"><select style="width:140px"><option>Service</option></select><select><option>is one of</option></select><input value="Wash & Fold, Dry Clean, Steam Iron"><span class="rm">×</span></div>
+              <div class="rule-row"><select style="width:140px"><option>City / zone</option></select><select><option>is one of</option></select><input value="Bengaluru Central, Whitefield, HSR"><span class="rm">×</span></div>
+              <button class="btn btn-ghost btn-sm">+ Add Condition</button>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Schedule</div>
+              <div class="form-grid">
+                <div class="field"><label>Starts At</label><input type="datetime-local" value="2026-10-28T00:00"></div>
+                <div class="field"><label>Ends At</label><input type="datetime-local" value="2026-11-05T23:59"></div>
+                <div class="field"><label>Recurring</label><select><option>None</option><option>Daily</option><option>Weekly (Sat–Sun)</option></select></div>
+                <div class="field"><label>Time Window</label><input value="00:00 – 23:59"></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Caps & Stacking</div>
+              <div class="form-grid">
+                <div class="field"><label>Total Usage Cap</label><input value="5000"></div>
+                <div class="field"><label>Per-User Cap</label><input value="1"></div>
+                <div class="field"><label>Stacking</label><select><option>Cannot stack with other offers</option><option>Can stack with auto offers</option><option>Always stackable</option></select></div>
+                <div class="field"><label>Reverse on Refund</label><select><option>Yes (recommended)</option><option>No</option></select></div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="preview-pane">
+              <div class="preview-title">Customer Preview · Live</div>
+              <div class="phone">
+                <div class="phone-status"><span>9:41</span><span>●●●● 100%</span></div>
+                <div class="phone-content">
+                  <div class="phone-banner">🪔 DIWALI MEGA SALE<br><span style="font-weight:500;font-size:.55rem">50% off · max ₹500 · code DIWALI50</span></div>
+                  <div class="phone-h">Cart Summary</div>
+                  <div class="phone-card"><div class="pico">🧥</div><div><div class="pname">Suit (2pc) × 1</div><div class="pprice">₹450</div></div></div>
+                  <div class="phone-card"><div class="pico">👔</div><div><div class="pname">Shirt × 3</div><div class="pprice">₹360</div></div></div>
+                  <div style="background:#27C93F15;border:1px solid #27C93F40;padding:8px;border-radius:8px;font-size:.6rem;color:#27C93F;font-weight:600">DIWALI50 applied · –₹405</div>
+                  <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:.7rem;color:#E5EEF5;font-weight:700"><span>Total</span><span>₹405</span></div>
+                </div>
+              </div>
+              <div style="font-size:.6rem;color:#55708C;text-align:center;margin-top:10px">Reflects current rule set</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ SCREEN 9: PROMO CODES ═══════════════════════════════════════════════ -->
+<div class="browser" id="screen-9">
+  <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">admin.presso.in/<span>promo-codes</span></div></div>
+  <div class="app-layout">
+    <div class="sidebar"><div class="logo"><div class="name">Presso</div><div class="sub">Admin Portal</div></div><div class="nav-section"><div class="nav-label">Growth</div><div class="nav-item"><span class="ico">🎁</span>Offers</div><div class="nav-item active"><span class="ico">🏷️</span>Promo Codes</div></div></div>
+    <div class="main">
+      <div class="topbar"><h2>Promo Codes</h2><span class="crumb">/ Growth / Codes</span><div class="spacer"></div><button class="btn btn-ghost">⤴️ Bulk Generate</button><button class="btn btn-primary">+ New Code</button></div>
+      <div class="content">
+        <div class="page-title"><div><h3>Promo Codes</h3><div class="sub">Manually-entered codes — single-use, multi-use, partner codes, influencer codes.</div></div></div>
+
+        <div class="filters">
+          <select><option>Type: All</option><option>Single-use</option><option>Multi-use</option><option>Partner</option></select>
+          <select><option>Status: All</option><option>Active</option><option>Exhausted</option><option>Expired</option></select>
+          <input placeholder="Search code…">
+        </div>
+
+        <div class="card" style="padding:0;overflow:hidden">
+          <table>
+            <thead><tr><th>Code</th><th>Linked Offer</th><th>Type</th><th>Used / Cap</th><th>Created By</th><th>Expires</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+              <tr><td><span style="font-family:monospace;color:#00C6FF;font-weight:700">DIWALI50</span></td><td>Diwali Mega Sale</td><td>Multi-use</td><td>0 / 5000</td><td>Harshal P.</td><td>Nov 5</td><td><span class="chip chip-scheduled">Scheduled</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+              <tr><td><span style="font-family:monospace;color:#00C6FF;font-weight:700">FIRST30</span></td><td>First Order Discount</td><td>Per user (1×)</td><td>1,243 / ∞</td><td>System</td><td>—</td><td><span class="chip chip-live">Live</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+              <tr><td><span style="font-family:monospace;color:#00C6FF;font-weight:700">RAJESH-YT</span></td><td>YouTube Influencer Deal</td><td>Multi-use</td><td>87 / 500</td><td>Marketing</td><td>Dec 31</td><td><span class="chip chip-live">Live</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+              <tr><td><span style="font-family:monospace;color:#7A8FA8">WELCOME20</span></td><td>—</td><td>Multi-use</td><td>2,341 / 2500</td><td>Harshal P.</td><td>Mar 31</td><td><span class="chip chip-expired">Exhausted</span></td><td><button class="btn btn-ghost btn-sm">View</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ SCREEN 10: MOBILE APP PREVIEW ═══════════════════════════════════════════════ -->
+<div class="browser" id="screen-10">
+  <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">admin.presso.in/<span>app-preview</span></div></div>
+  <div class="app-layout">
+    <div class="sidebar"><div class="logo"><div class="name">Presso</div><div class="sub">Admin Portal</div></div><div class="nav-section"><div class="nav-label">Growth</div><div class="nav-item active"><span class="ico">📱</span>App Preview</div></div></div>
+    <div class="main">
+      <div class="topbar"><h2>Mobile App Preview</h2><span class="crumb">/ Preview</span><div class="spacer"></div><select style="background:#0A1628;border:1px solid #1C2F48;border-radius:7px;padding:6px 10px;color:#C5D4E4;font-size:.7rem"><option>Snapshot: Draft</option><option>Snapshot: Published (live)</option></select><button class="btn btn-primary">Push to Production</button></div>
+      <div class="content">
+        <div class="page-title"><div><h3>App Preview · Customer View</h3><div class="sub">See exactly what the customer sees with the current draft (or published) catalog & offers — switch zone / tier / first-order status to test rules.</div></div></div>
+
+        <div class="filters">
+          <select><option>Zone: Bengaluru Central</option><option>Whitefield</option><option>HSR Layout</option></select>
+          <select><option>Tier: Silver</option><option>Gold</option><option>Platinum</option></select>
+          <select><option>First-time user: No</option><option>Yes</option></select>
+          <select><option>Day: Today (Thu)</option><option>Saturday</option></select>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px">
+          <div>
+            <div style="font-size:.65rem;color:#55708C;text-transform:uppercase;font-weight:700;margin-bottom:8px;text-align:center">Home</div>
+            <div class="phone" style="margin:0 auto">
+              <div class="phone-status"><span>9:41</span><span>●●●● 100%</span></div>
+              <div class="phone-content">
+                <div class="phone-banner">🪔 DIWALI MEGA SALE · 50% OFF</div>
+                <div class="phone-h">Services</div>
+                <div class="phone-card"><div class="pico">👕</div><div><div class="pname">Wash & Fold</div><div class="pprice">From ₹49/kg</div></div></div>
+                <div class="phone-card"><div class="pico">🧥</div><div><div class="pname">Dry Clean</div><div class="pprice">From ₹120</div></div></div>
+                <div class="phone-card"><div class="pico">👔</div><div><div class="pname">Steam Iron</div><div class="pprice">From ₹15</div></div></div>
+                <div class="phone-card"><div class="pico">👞</div><div><div class="pname">Shoe Care</div><div class="pprice">From ₹150</div></div></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:.65rem;color:#55708C;text-transform:uppercase;font-weight:700;margin-bottom:8px;text-align:center">Service · Dry Clean</div>
+            <div class="phone" style="margin:0 auto">
+              <div class="phone-status"><span>9:41</span><span>●●●● 100%</span></div>
+              <div class="phone-content">
+                <div class="phone-h">Dry Clean</div>
+                <div class="phone-card"><div class="pico">👔</div><div><div class="pname">Shirt</div><div class="pprice">₹120</div></div><div class="add">ADD</div></div>
+                <div class="phone-card"><div class="pico">👖</div><div><div class="pname">Trousers</div><div class="pprice">₹140</div></div><div class="add">ADD</div></div>
+                <div class="phone-card"><div class="pico">🧥</div><div><div class="pname">Suit (2pc)</div><div class="pprice">₹450</div></div><div class="add">ADD</div></div>
+                <div class="phone-card"><div class="pico">👗</div><div><div class="pname">Saree (Plain)</div><div class="pprice">₹250</div></div><div class="add">ADD</div></div>
+                <div class="phone-card"><div class="pico">💎</div><div><div class="pname">Saree (Silk)</div><div><span class="pprice">₹650</span> <span class="pold">₹800</span></div></div><div class="add">ADD</div></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:.65rem;color:#55708C;text-transform:uppercase;font-weight:700;margin-bottom:8px;text-align:center">Cart · Offer Applied</div>
+            <div class="phone" style="margin:0 auto">
+              <div class="phone-status"><span>9:41</span><span>●●●● 100%</span></div>
+              <div class="phone-content">
+                <div class="phone-h">Your Cart (4)</div>
+                <div class="phone-card"><div class="pico">🧥</div><div><div class="pname">Suit × 1</div><div class="pprice">₹450</div></div></div>
+                <div class="phone-card"><div class="pico">👔</div><div><div class="pname">Shirt × 3</div><div class="pprice">₹360</div></div></div>
+                <div style="background:#27C93F15;border:1px solid #27C93F40;padding:8px;border-radius:8px;font-size:.6rem;color:#27C93F;font-weight:600;margin-bottom:8px">DIWALI50 · –₹405</div>
+                <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#C5D4E4;margin-bottom:4px"><span>Subtotal</span><span>₹810</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:.7rem;color:#27C93F;margin-bottom:4px"><span>Discount</span><span>–₹405</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:.78rem;color:#E5EEF5;font-weight:700;border-top:1px solid #16263B;padding-top:6px;margin-top:6px"><span>Total</span><span>₹405</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ SCREEN 11: AUDIT LOG ═══════════════════════════════════════════════ -->
+<div class="browser" id="screen-11">
+  <div class="browser-bar"><div class="browser-dots"><span></span><span></span><span></span></div><div class="browser-url">admin.presso.in/catalog/<span>audit</span></div></div>
+  <div class="app-layout">
+    <div class="sidebar"><div class="logo"><div class="name">Presso</div><div class="sub">Admin Portal</div></div><div class="nav-section"><div class="nav-label">Track</div><div class="nav-item active"><span class="ico">📜</span>Catalog Audit</div></div></div>
+    <div class="main">
+      <div class="topbar"><h2>Catalog Audit Log</h2><span class="crumb">/ Track / Audit</span><div class="spacer"></div><button class="btn btn-ghost">⤓ Export CSV</button></div>
+      <div class="content">
+        <div class="page-title"><div><h3>Catalog Change History</h3><div class="sub">Every item / price / offer / icon edit is logged with actor, timestamp, before & after. Required for the "track everything" goal.</div></div></div>
+
+        <div class="filters">
+          <select><option>Entity: All</option><option>Item</option><option>Price</option><option>Offer</option><option>Promo Code</option><option>Icon</option><option>Service</option></select>
+          <select><option>Action: All</option><option>Created</option><option>Updated</option><option>Published</option><option>Deleted</option></select>
+          <select><option>Actor: All admins</option><option>Harshal P.</option><option>Aishwarya M.</option><option>System</option></select>
+          <input type="date">
+        </div>
+
+        <div class="card">
+          <div class="audit-row"><div style="width:30px;height:30px;border-radius:50%;background:#00C6FF20;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#00C6FF;font-weight:700">HP</div><div class="what"><span class="who">Harshal P.</span> updated price of <b>Saree (Silk)</b> in zone <b>Whitefield</b> from <span style="color:#FF5F57">₹650</span> → <span style="color:#27C93F">₹680</span></div><div class="when">2 min ago</div></div>
+          <div class="audit-row"><div style="width:30px;height:30px;border-radius:50%;background:#B15CFF20;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#B15CFF;font-weight:700">AM</div><div class="what"><span class="who">Aishwarya M.</span> created offer <b>Diwali Mega Sale</b> (50% off, cap ₹500)</div><div class="when">38 min ago</div></div>
+          <div class="audit-row"><div style="width:30px;height:30px;border-radius:50%;background:#00C6FF20;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#00C6FF;font-weight:700">HP</div><div class="what"><span class="who">Harshal P.</span> published <b>7 draft items</b> in service Dry Clean</div><div class="when">1h ago</div></div>
+          <div class="audit-row"><div style="width:30px;height:30px;border-radius:50%;background:#FFBD2E20;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#FFBD2E;font-weight:700">SY</div><div class="what"><span class="who">System</span> auto-deactivated promo <b>WELCOME20</b> — usage cap reached (2500/2500)</div><div class="when">3h ago</div></div>
+          <div class="audit-row"><div style="width:30px;height:30px;border-radius:50%;background:#B15CFF20;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#B15CFF;font-weight:700">AM</div><div class="what"><span class="who">Aishwarya M.</span> uploaded icon <b>silk-saree.svg</b> to library</div><div class="when">5h ago</div></div>
+          <div class="audit-row"><div style="width:30px;height:30px;border-radius:50%;background:#00C6FF20;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#00C6FF;font-weight:700">HP</div><div class="what"><span class="who">Harshal P.</span> deactivated item <b>Shawl</b> in service Dry Clean</div><div class="when">Yesterday</div></div>
+          <div class="audit-row"><div style="width:30px;height:30px;border-radius:50%;background:#B15CFF20;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#B15CFF;font-weight:700">AM</div><div class="what"><span class="who">Aishwarya M.</span> bulk-imported <b>18 items</b> via CSV (16 new, 2 updated)</div><div class="when">Yesterday</div></div>
+          <div class="audit-row"><div style="width:30px;height:30px;border-radius:50%;background:#00C6FF20;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#00C6FF;font-weight:700">HP</div><div class="what"><span class="who">Harshal P.</span> created service <b>Premium Care</b></div><div class="when">2 days ago</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function show(n){
+    for(let i=1;i<=11;i++){const el=document.getElementById('screen-'+i);if(el)el.style.display=(i===n?'block':'none');}
+    document.querySelectorAll('.wf-tab').forEach((t,i)=>t.classList.toggle('active',i===n-1));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  show(1);
+</script>
+</body>
+</html>

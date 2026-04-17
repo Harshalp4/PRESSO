@@ -1,0 +1,201 @@
+<div class="breadcrumb">
+  <h1>Payouts</h1>
+  <span class="crumb">/ Finance</span>
+</div>
+
+<div class="page-head">
+  <div>
+    <h2>Rider Payouts</h2>
+    <p>Track delivery earnings owed to riders and mark payments as completed.</p>
+  </div>
+  <div class="head-actions">
+    <button class="btn btn-primary" (click)="openCreate()">+ New Payout</button>
+  </div>
+</div>
+
+<!-- Rider summaries -->
+<section class="card summary-section">
+  <div class="summary-head">
+    <h3>Rider Earnings Summary</h3>
+    <div class="summary-controls">
+      <input type="date" class="date-input" [ngModel]="summaryFrom()" (ngModelChange)="summaryFrom.set($event)"/>
+      <span class="date-sep">to</span>
+      <input type="date" class="date-input" [ngModel]="summaryTo()" (ngModelChange)="summaryTo.set($event)"/>
+      <button class="btn btn-ghost btn-sm" (click)="refreshSummaries()">Refresh</button>
+    </div>
+  </div>
+
+  @if (loadingSummaries()) {
+    <div class="empty-sm">Loading…</div>
+  } @else if (summaries().length === 0) {
+    <div class="empty-sm">No rider deliveries in this period.</div>
+  } @else {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Rider</th>
+            <th>Phone</th>
+            <th>Deliveries</th>
+            <th>Owed</th>
+            <th>Paid</th>
+            <th>Balance</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of summaries(); track s.riderId) {
+            <tr>
+              <td class="fw">{{ s.name || 'Unnamed' }}</td>
+              <td class="dim">{{ s.phone }}</td>
+              <td class="mono">{{ s.completedDeliveries }}</td>
+              <td class="mono">{{ formatCurrency(s.amountOwed) }}</td>
+              <td class="mono">{{ formatCurrency(s.amountPaid) }}</td>
+              <td class="mono" [class.neg]="s.amountOwed - s.amountPaid > 0">
+                {{ formatCurrency(s.amountOwed - s.amountPaid) }}
+              </td>
+              <td>
+                @if (s.amountOwed - s.amountPaid > 0) {
+                  <button class="btn btn-ghost btn-sm" (click)="openCreate(s.riderId)">Create Payout</button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>
+
+<!-- Payout history -->
+<section class="card">
+  <div class="payments-head">
+    <h3>Payout History</h3>
+    <div class="range-seg">
+      <button class="seg" [class.active]="filterStatus() === ''" (click)="setStatus('')">All</button>
+      <button class="seg" [class.active]="filterStatus() === 'Pending'" (click)="setStatus('Pending')">Pending</button>
+      <button class="seg" [class.active]="filterStatus() === 'Paid'" (click)="setStatus('Paid')">Paid</button>
+      <button class="seg" [class.active]="filterStatus() === 'Cancelled'" (click)="setStatus('Cancelled')">Cancelled</button>
+    </div>
+  </div>
+
+  @if (error(); as e) {
+    <div class="alert">{{ e }}</div>
+  }
+
+  @if (loading() && !data()) {
+    <div class="empty-sm">Loading payouts…</div>
+  } @else {
+    @if (data()!.items.length === 0) {
+      <div class="empty-sm">No payouts found.</div>
+    } @else {
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Rider</th>
+              <th>Period</th>
+              <th>Deliveries</th>
+              <th>Amount</th>
+              <th>Status</th>
+              <th>Paid At</th>
+              <th>Ref</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of data()!.items; track p.id) {
+              <tr>
+                <td class="fw">{{ p.riderName || 'Unnamed' }}</td>
+                <td class="dim">{{ formatDate(p.periodStart) }} – {{ formatDate(p.periodEnd) }}</td>
+                <td class="mono">{{ p.deliveryCount }}</td>
+                <td class="mono">{{ formatCurrency(p.amount) }}</td>
+                <td><span class="chip" [ngClass]="statusClass(p.status)">{{ p.status }}</span></td>
+                <td class="dim">{{ formatDate(p.paidAt) }}</td>
+                <td class="dim mono">{{ p.reference || '—' }}</td>
+                <td class="row-actions">
+                  @if (p.status === 'Pending') {
+                    <button class="btn btn-ghost btn-sm btn-green" (click)="openMarkPaid(p)">Mark Paid</button>
+                    <button class="btn btn-ghost btn-sm btn-danger" (click)="cancelPayout(p)">Cancel</button>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <div class="pager">
+      <span class="pager-info">Page {{ data()!.page }} of {{ data()!.totalPages }} ({{ data()!.totalCount }} total)</span>
+      <div class="pager-btns">
+        <button class="btn btn-ghost btn-sm" [disabled]="!data()!.hasPrevious" (click)="goPage(data()!.page - 1)">‹ Prev</button>
+        <button class="btn btn-ghost btn-sm" [disabled]="!data()!.hasNext" (click)="goPage(data()!.page + 1)">Next ›</button>
+      </div>
+    </div>
+  }
+</section>
+
+<!-- Create payout modal -->
+@if (createModal()) {
+  <div class="modal-backdrop" (click)="closeCreate()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>New Payout</h3>
+      <p class="modal-sub">Auto-calculates based on completed deliveries in the period.</p>
+      @if (createError(); as e) { <div class="alert">{{ e }}</div> }
+
+      <label class="field">
+        <span>Rider ID <span class="req">*</span></span>
+        <input type="text" [ngModel]="createRiderId()" (ngModelChange)="createRiderId.set($event)" placeholder="Paste rider GUID"/>
+      </label>
+
+      <div class="field-row">
+        <label class="field">
+          <span>Period Start</span>
+          <input type="date" [ngModel]="createFrom()" (ngModelChange)="createFrom.set($event)"/>
+        </label>
+        <label class="field">
+          <span>Period End</span>
+          <input type="date" [ngModel]="createTo()" (ngModelChange)="createTo.set($event)"/>
+        </label>
+      </div>
+
+      <label class="field">
+        <span>Notes</span>
+        <input type="text" [ngModel]="createNotes()" (ngModelChange)="createNotes.set($event)" placeholder="Optional"/>
+      </label>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" (click)="closeCreate()" [disabled]="creating()">Cancel</button>
+        <button class="btn btn-primary" (click)="submitCreate()" [disabled]="creating()">
+          {{ creating() ? 'Creating…' : 'Create' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Mark paid modal -->
+@if (markPaidModal()) {
+  <div class="modal-backdrop" (click)="closeMarkPaid()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3>Mark Payout as Paid</h3>
+      @if (markPaidPayout(); as p) {
+        <p class="modal-sub">{{ p.riderName }} — {{ formatCurrency(p.amount) }} for {{ p.deliveryCount }} deliveries</p>
+      }
+      @if (markError(); as e) { <div class="alert">{{ e }}</div> }
+
+      <label class="field">
+        <span>Payment Reference / UTR</span>
+        <input type="text" [ngModel]="markPaidRef()" (ngModelChange)="markPaidRef.set($event)" placeholder="Bank UTR, transaction ID, etc."/>
+      </label>
+
+      <div class="modal-actions">
+        <button class="btn btn-ghost" (click)="closeMarkPaid()" [disabled]="marking()">Cancel</button>
+        <button class="btn btn-primary" (click)="submitMarkPaid()" [disabled]="marking()">
+          {{ marking() ? 'Saving…' : 'Confirm Paid' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: presso-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ConnectionStrings__DefaultConnection
+        sync: false  # set manually in Render dashboard
+      - key: JwtSettings__Secret
+        generateValue: true
+      - key: JwtSettings__Issuer
+        value: Presso.API
+      - key: JwtSettings__Audience
+        value: Presso.Client
+      - key: JwtSettings__ExpiryInMinutes
+        value: "1440"
+      - key: JwtSettings__RefreshExpiryInDays
+        value: "30"

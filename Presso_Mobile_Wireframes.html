@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presso — Operations Flow Wireframes</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Poppins',sans-serif;background:#0f172a;color:#fff;min-height:100vh}
+.top-bar{background:#1e293b;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;border-bottom:1px solid #334155}
+.top-bar h1{font-size:1rem;color:#22d3ee;font-weight:700}
+.top-bar .nav{display:flex;gap:6px;flex-wrap:wrap}
+.top-bar .nav button{padding:5px 12px;border-radius:14px;border:1px solid #334155;background:transparent;color:#94a3b8;cursor:pointer;font-size:.68rem;font-family:'Poppins';font-weight:500;transition:.2s;white-space:nowrap}
+.top-bar .nav button.active{background:#0891b2;color:#fff;border-color:#0891b2}
+.top-bar .nav button:hover{border-color:#0891b2;color:#e2e8f0}
+.flow-title{text-align:center;padding:24px 20px 4px;font-size:1.1rem;color:#e2e8f0;font-weight:600}
+.flow-sub{text-align:center;color:#64748b;font-size:.72rem;margin-bottom:16px}
+.flow-section{display:none;padding:0 10px 40px}
+.flow-section.active{display:block}
+.phone-row{display:flex;gap:18px;overflow-x:auto;padding:0 10px 16px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.phone-row::-webkit-scrollbar{height:4px}
+.phone-row::-webkit-scrollbar-thumb{background:#334155;border-radius:4px}
+
+.phone-wrap{scroll-snap-align:center;flex-shrink:0}
+.phone-wrap .label{text-align:center;font-size:.65rem;color:#64748b;margin-bottom:6px;font-weight:600;letter-spacing:.3px}
+.phone-wrap .label.new{color:#dc2626}
+.phone{width:300px;height:620px;border-radius:32px;overflow:hidden;position:relative;box-shadow:0 10px 40px rgba(0,0,0,.5);border:2px solid #334155}
+.notch{width:120px;height:24px;background:#000;border-radius:0 0 16px 16px;position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:10}
+.screen{height:100%;overflow-y:auto;scrollbar-width:none;background:#F8FAFC}
+.screen::-webkit-scrollbar{display:none}
+
+.sb{height:34px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 20px;font-size:9px;font-weight:600;color:#1e293b}
+.ab{background:#fff;padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #f1f5f9}
+.ab h2{font-size:.9rem;color:#0f172a;font-weight:700;flex:1}
+.ab .ic{color:#0891b2;font-size:1.1rem}
+.ab .back{color:#64748b;font-size:1rem;margin-right:4px}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:14px;margin:0 14px 10px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.card .h{font-size:.74rem;font-weight:700;color:#0f172a;margin-bottom:6px}
+.card .sub{font-size:.62rem;color:#64748b;line-height:1.5}
+.card .meta{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:.62rem;color:#64748b}
+.sec-title{color:#94a3b8;font-size:.6rem;font-weight:600;letter-spacing:.6px;text-transform:uppercase;margin:14px 16px 8px}
+.btn-primary{margin:10px 14px;padding:12px;border-radius:12px;text-align:center;font-weight:600;font-size:.78rem;color:#fff;background:linear-gradient(135deg,#0891b2,#0e7490);box-shadow:0 4px 14px rgba(8,145,178,.25)}
+.btn-outline{margin:8px 14px;padding:10px;border-radius:12px;text-align:center;font-weight:600;font-size:.75rem;color:#0891b2;border:1.5px solid #0891b2;background:transparent}
+.btn-green{margin:10px 14px;padding:12px;border-radius:12px;text-align:center;font-weight:600;font-size:.78rem;color:#fff;background:linear-gradient(135deg,#059669,#047857);box-shadow:0 4px 14px rgba(5,150,105,.25)}
+.btn-purple{margin:10px 14px;padding:12px;border-radius:12px;text-align:center;font-weight:600;font-size:.78rem;color:#fff;background:linear-gradient(135deg,#7c3aed,#6d28d9);box-shadow:0 4px 14px rgba(124,58,237,.25)}
+
+.chip{display:inline-block;padding:3px 10px;border-radius:14px;font-size:.6rem;font-weight:600}
+.chip-teal{background:rgba(8,145,178,.1);color:#0891b2}
+.chip-green{background:rgba(5,150,105,.1);color:#059669}
+.chip-amber{background:rgba(217,119,6,.1);color:#d97706}
+.chip-red{background:rgba(220,38,38,.1);color:#dc2626}
+.chip-purple{background:rgba(124,58,237,.1);color:#7c3aed}
+.chip-blue{background:rgba(59,130,246,.1);color:#3b82f6}
+
+.tab-row{display:flex;gap:0;margin:0 14px 10px;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0}
+.tab-row .tab{flex:1;padding:8px;text-align:center;font-size:.65rem;font-weight:600;color:#64748b;background:#f8fafc;cursor:pointer}
+.tab-row .tab.active{background:#0891b2;color:#fff}
+
+.stat-card{background:#fff;border-radius:12px;padding:12px 10px;border:1px solid #e2e8f0;text-align:center}
+.stat-card .s-val{font-size:1.1rem;font-weight:700;color:#0891b2}
+.stat-card .s-label{font-size:.55rem;color:#64748b;font-weight:500;text-transform:uppercase;letter-spacing:.3px}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 14px;margin-bottom:10px}
+
+.order-step{display:flex;align-items:flex-start;gap:10px;padding:6px 0}
+.order-step .step-dot{width:12px;height:12px;border-radius:50%;margin-top:3px;flex-shrink:0;border:2px solid #e2e8f0;background:#fff}
+.order-step .step-dot.done{background:#059669;border-color:#059669}
+.order-step .step-dot.active{background:#0891b2;border-color:#0891b2;box-shadow:0 0 0 3px rgba(8,145,178,.2)}
+.order-step .step-text{font-size:.7rem;color:#0f172a;font-weight:600}
+.order-step .step-sub{font-size:.58rem;color:#64748b;margin-top:1px}
+.tracker{position:relative}
+.tracker::before{content:'';position:absolute;left:5px;top:10px;bottom:10px;width:2px;background:#e2e8f0;z-index:0}
+.tracker .order-step{position:relative;z-index:1}
+
+.bottom-bar{position:sticky;bottom:0;background:#fff;border-top:1px solid #e2e8f0;display:flex;padding:8px 0}
+.bottom-bar .nav-item{flex:1;text-align:center;padding:6px 0;font-size:.55rem;color:#94a3b8;font-weight:600}
+.bottom-bar .nav-item.active{color:#0891b2}
+.bottom-bar .nav-item .ic{font-size:1.1rem;display:block;margin-bottom:2px}
+
+.input{padding:10px 12px;border-radius:10px;border:1.5px solid #e2e8f0;background:#fff;font-size:.72rem;color:#64748b;margin:0 14px 10px}
+.input.active{border-color:#0891b2;color:#0f172a}
+
+.otp-row{display:flex;gap:8px;justify-content:center;margin:10px 14px}
+.otp-row div{width:42px;height:52px;border-radius:10px;border:1.5px solid #e2e8f0;background:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;color:#0f172a}
+.otp-row div.active{border-color:#0891b2}
+.otp-row div.empty{color:#cbd5e1}
+
+.photo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 14px;margin-bottom:10px}
+.photo-cell{aspect-ratio:1;border-radius:10px;border:1.5px dashed #e2e8f0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#94a3b8;font-size:.62rem;font-weight:500}
+.photo-cell .emoji{font-size:1.4rem}
+.photo-cell.filled{border:1px solid #0891b2;background:rgba(8,145,178,.04);color:#0891b2}
+
+.map{margin:0 14px 10px;height:140px;border-radius:12px;background:linear-gradient(135deg,#e0f2fe,#cffafe);position:relative;overflow:hidden;border:1px solid #e2e8f0}
+.map::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(8,145,178,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(8,145,178,.08) 1px,transparent 1px);background-size:20px 20px}
+.map::after{content:'📍';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:1.8rem}
+.map .route{position:absolute;top:35%;left:15%;width:70%;height:2px;background:#0891b2;border-radius:2px}
+
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#0891b2,#06b6d4);display:inline-flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.72rem}
+.row-flex{display:flex;align-items:center;gap:10px}
+.row-flex .info{flex:1}
+.row-flex .info b{color:#0f172a;font-size:.72rem;display:block;font-weight:700}
+.row-flex .info span{color:#64748b;font-size:.6rem}
+
+.counter{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+.counter .ctrl{width:32px;height:32px;border-radius:10px;border:1.5px solid #e2e8f0;background:#fff;color:#0891b2;font-size:1rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.counter b.num{font-size:1.6rem;color:#0891b2;font-weight:700}
+
+.chips-row{display:flex;gap:6px;padding:0 14px 10px;flex-wrap:wrap}
+
+.note-warn{margin:0 14px 10px;padding:10px 12px;border-radius:10px;background:rgba(220,38,38,.06);border:1px dashed #dc2626;font-size:.6rem;color:#dc2626;line-height:1.5}
+.note-warn b{display:block;font-weight:700;margin-bottom:2px;font-size:.65rem}
+
+.scanframe{margin:0 14px 10px;aspect-ratio:1;border-radius:14px;background:#0f172a;position:relative;overflow:hidden}
+.scanframe::before,.scanframe::after{content:'';position:absolute;width:26px;height:26px;border:3px solid #0891b2}
+.scanframe::before{top:12px;left:12px;border-right:none;border-bottom:none;border-radius:8px 0 0 0}
+.scanframe::after{bottom:12px;right:12px;border-left:none;border-top:none;border-radius:0 0 8px 0}
+.scanframe .line{position:absolute;top:50%;left:12%;right:12%;height:2px;background:#06b6d4;box-shadow:0 0 10px #06b6d4}
+
+.toggle{width:36px;height:20px;background:#059669;border-radius:12px;position:relative;display:inline-block}
+.toggle::after{content:'';position:absolute;right:2px;top:2px;width:16px;height:16px;background:#fff;border-radius:50%}
+
+footer.info{text-align:center;padding:20px;color:#475569;font-size:.65rem;margin-top:20px;border-top:1px solid #1e293b}
+footer.info span{color:#0891b2;font-weight:600}
+footer.info .legend-note{max-width:720px;margin:10px auto 0;line-height:1.7;color:#64748b}
+footer.info code{background:#1e293b;padding:2px 6px;border-radius:4px;color:#22d3ee;font-family:ui-monospace,Menlo,monospace;font-size:.62rem}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1>Presso · Ops Wireframes</h1>
+  <div class="nav">
+    <button class="active" onclick="showSection(event,'rider')">Rider App</button>
+    <button onclick="showSection(event,'facility')">Facility App</button>
+    <button onclick="showSection(event,'customer')">Customer App</button>
+  </div>
+</div>
+
+<!-- ==================== SECTION: RIDER ==================== -->
+<div id="sec-rider" class="flow-section active">
+  <div class="flow-title">Rider App Flow</div>
+  <div class="flow-sub">Sign in &rarr; Offer &rarr; Pickup &rarr; Drop at Facility &rarr; History with live status</div>
+
+  <div class="phone-row">
+
+    <!-- 1. SIGN IN -->
+    <div class="phone-wrap">
+      <div class="label">1 &middot; SIGN IN</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div style="padding:50px 24px 20px;text-align:center">
+          <div style="font-size:2.4rem;margin-bottom:8px">&#128666;</div>
+          <div style="font-size:1.3rem;font-weight:700;color:#0891b2;letter-spacing:-0.5px">Presso Rider</div>
+          <div style="font-size:.65rem;color:#94a3b8;margin-top:2px">Sign in to start earning</div>
+        </div>
+        <div style="padding:0 24px">
+          <div style="font-size:.6rem;color:#64748b;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.3px">Phone number</div>
+          <div style="display:flex;gap:8px;margin-bottom:16px">
+            <div style="padding:12px 10px;border-radius:10px;border:1.5px solid #e2e8f0;background:#fff;font-size:.78rem;color:#0f172a;font-weight:600;width:55px;text-align:center">+91</div>
+            <div style="flex:1;padding:12px 14px;border-radius:10px;border:1.5px solid #0891b2;background:#fff;font-size:.78rem;color:#0f172a;font-weight:500">98765 43210</div>
+          </div>
+        </div>
+        <div style="padding:0 24px">
+          <div style="font-size:.6rem;color:#64748b;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.3px">Enter OTP</div>
+          <div class="otp-row" style="margin:0 0 14px">
+            <div class="active">4</div><div class="active">8</div><div class="active">2</div><div class="empty">_</div>
+          </div>
+        </div>
+        <div class="btn-primary" style="margin:0 24px">Verify &amp; Continue</div>
+        <div style="text-align:center;margin-top:12px;font-size:.58rem;color:#94a3b8">Resend OTP in 28s</div>
+      </div></div>
+    </div>
+
+    <!-- 2. JOBS LIST -->
+    <div class="phone-wrap">
+      <div class="label">2 &middot; JOBS LIST</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab">
+          <div class="avatar" style="width:30px;height:30px;font-size:.65rem">SM</div>
+          <div style="flex:1">
+            <h2 style="font-size:.78rem;margin:0">Suresh M</h2>
+            <div style="font-size:.55rem;color:#059669;font-weight:600">● Available</div>
+          </div>
+          <div class="toggle"></div>
+          <span class="ic">&#128276;</span>
+        </div>
+
+        <div class="tab-row" style="margin-top:12px">
+          <div class="tab active">All &middot; 3</div>
+          <div class="tab">Pickup</div>
+          <div class="tab">Delivery</div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div class="h">PR-1042 &middot; Pickup</div>
+            <span class="chip chip-teal">NEW</span>
+          </div>
+          <div class="sub">Ravi Kumar &middot; Baner, Pune<br>Slot 11:00 – 12:00</div>
+          <div class="meta"><span>&#128230; 8 garments &middot; 2.1 km</span><b style="color:#0891b2;font-size:.72rem">&#8377;80</b></div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div class="h">PR-1039 &middot; Delivery</div>
+            <span class="chip chip-blue">READY</span>
+          </div>
+          <div class="sub">Priya Sharma &middot; Aundh<br>Express &middot; by 13:00</div>
+          <div class="meta"><span>&#128230; 6 garments &middot; 1.4 km</span><b style="color:#0891b2;font-size:.72rem">&#8377;120</b></div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div class="h">PR-1037 &middot; Pickup</div>
+            <span class="chip" style="background:#f1f5f9;color:#64748b">SCHEDULED</span>
+          </div>
+          <div class="sub">Amit Joshi &middot; Balewadi<br>Slot 13:00 – 14:00</div>
+        </div>
+
+        <div class="bottom-bar">
+          <div class="nav-item active"><span class="ic">&#128203;</span>Jobs</div>
+          <div class="nav-item"><span class="ic">&#128176;</span>Earnings</div>
+          <div class="nav-item"><span class="ic">&#128100;</span>Account</div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 2b. JOB OFFER / COUNTDOWN (NEW) -->
+    <div class="phone-wrap">
+      <div class="label new">2b &middot; JOB OFFER &middot; NEW</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><h2>New pickup offer</h2><span class="chip chip-red" style="font-size:.55rem">NEW</span></div>
+
+        <div class="note-warn">
+          <b>⚠ Solves "two riders same order"</b>
+          Dispatcher pre-assigns one rider. Timer prevents stuck jobs — auto-releases to next rider at 0.
+        </div>
+
+        <div class="card" style="text-align:center;background:linear-gradient(135deg,#0891b2,#06b6d4);border:none;color:#fff">
+          <div style="font-size:.55rem;text-transform:uppercase;letter-spacing:.5px;opacity:.85;font-weight:600">Respond in</div>
+          <div style="font-size:2.6rem;font-weight:700;color:#fff;margin:4px 0;line-height:1;font-variant-numeric:tabular-nums">00:42</div>
+          <div style="height:4px;background:rgba(255,255,255,.2);border-radius:2px;overflow:hidden;margin-top:6px">
+            <div style="height:100%;width:70%;background:#fff;border-radius:2px"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div class="h">PR-1042 &middot; Pickup</div>
+            <b style="color:#0891b2;font-size:.72rem">&#8377;80</b>
+          </div>
+          <div class="sub">Ravi Kumar &middot; Baner, Pune<br>2.1 km away &middot; Slot 11:00 – 12:00</div>
+          <div class="meta"><span>&#128230; 8 garments</span><span class="chip chip-amber">⚡ Express</span></div>
+        </div>
+
+        <div style="display:flex;gap:10px;padding:0 14px;margin-top:4px">
+          <div class="btn-outline" style="flex:1;margin:0;color:#dc2626;border-color:#dc2626">Decline</div>
+          <div class="btn-primary" style="flex:2;margin:0">Accept</div>
+        </div>
+
+        <div style="text-align:center;font-size:.55rem;color:#94a3b8;margin-top:10px">Auto-released to next rider at 0</div>
+      </div></div>
+    </div>
+
+    <!-- 3. JOB DETAIL -->
+    <div class="phone-wrap">
+      <div class="label">3 &middot; JOB DETAIL</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>PR-1042</h2><span class="ic">&#128222;</span></div>
+
+        <div class="map"><div class="route"></div></div>
+
+        <div class="card">
+          <div class="row-flex">
+            <div class="avatar">RK</div>
+            <div class="info"><b>Ravi Kumar</b><span>XXXXX X1234 &middot; 4.8★</span></div>
+          </div>
+          <div style="margin-top:10px;font-size:.66rem;color:#0f172a;line-height:1.5">
+            Flat 302, Aurora Heights<br>
+            Baner Road, Pune 411045
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="h">Order summary</div>
+          <div class="sub">8 garments &middot; Wash &amp; Iron</div>
+          <div class="meta">
+            <span class="chip chip-amber">⚡ Express</span>
+            <b style="color:#0f172a;font-size:.72rem">&#8377;420</b>
+          </div>
+        </div>
+
+        <div class="card" style="background:rgba(217,119,6,.04);border-color:rgba(217,119,6,.3)">
+          <div class="h" style="color:#d97706">📝 Customer note</div>
+          <div class="sub">"Ring doorbell twice. Dog is friendly but may bark."</div>
+        </div>
+
+        <div class="btn-primary">Accept Pickup</div>
+      </div></div>
+    </div>
+
+    <!-- 4. NAVIGATE -->
+    <div class="phone-wrap">
+      <div class="label">4 &middot; NAVIGATE</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>On the way</h2><span class="ic">&#129517;</span></div>
+
+        <div class="map" style="height:260px"><div class="route"></div></div>
+
+        <div class="card" style="background:linear-gradient(135deg,#0891b2,#06b6d4);border:none;color:#fff">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div style="font-size:1.4rem;font-weight:700;color:#fff;line-height:1">450 m</div>
+              <div style="font-size:.6rem;opacity:.9;margin-top:3px">ETA 3 min</div>
+            </div>
+            <div style="text-align:right;font-size:.6rem;opacity:.9">Turn right at<br><b style="color:#fff">Baner Road</b></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="row-flex">
+            <div class="avatar" style="width:30px;height:30px;font-size:.62rem">RK</div>
+            <div class="info"><b>Ravi Kumar</b><span>Aurora Heights · Flat 302</span></div>
+            <span style="color:#0891b2;font-size:1rem">📞</span>
+          </div>
+        </div>
+
+        <div class="btn-green">I've Arrived</div>
+      </div></div>
+    </div>
+
+    <!-- 5. PHOTOS -->
+    <div class="phone-wrap">
+      <div class="label">5 &middot; PICKUP PHOTOS</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>Pickup photos</h2><span class="ic">ⓘ</span></div>
+
+        <div style="padding:12px 14px 6px;font-size:.65rem;color:#64748b">
+          Capture <b style="color:#0f172a">2 photos minimum</b> of garments before pickup
+        </div>
+
+        <div class="photo-grid">
+          <div class="photo-cell filled"><span class="emoji">✓</span>Front view</div>
+          <div class="photo-cell filled"><span class="emoji">✓</span>Back view</div>
+          <div class="photo-cell"><span class="emoji">📷</span>Tags</div>
+          <div class="photo-cell"><span class="emoji">➕</span>Add more</div>
+        </div>
+
+        <div class="card">
+          <div class="h">Garment count</div>
+          <div class="counter">
+            <div class="ctrl">−</div>
+            <b class="num">8</b>
+            <div class="ctrl">+</div>
+          </div>
+          <div style="text-align:center;font-size:.58rem;color:#94a3b8">Customer confirmed: 8 items</div>
+        </div>
+
+        <div class="btn-primary">Next &middot; Verify OTP</div>
+      </div></div>
+    </div>
+
+    <!-- 6. PICKUP OTP -->
+    <div class="phone-wrap">
+      <div class="label">6 &middot; PICKUP OTP</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>Confirm pickup</h2></div>
+
+        <div style="text-align:center;padding:24px 20px 12px">
+          <div style="font-size:2.2rem;margin-bottom:6px">🔐</div>
+          <div style="font-size:.85rem;font-weight:700;color:#0f172a">Enter pickup OTP</div>
+          <div style="font-size:.62rem;color:#64748b;margin-top:3px">Ask Ravi — they received it via SMS</div>
+        </div>
+
+        <div class="otp-row">
+          <div class="active">4</div><div class="active">8</div><div class="empty">_</div><div class="empty">_</div>
+        </div>
+
+        <div class="card" style="background:rgba(59,130,246,.05);border-color:rgba(59,130,246,.3)">
+          <div class="h" style="color:#3b82f6">💡 Tip</div>
+          <div class="sub">Customer can also show the OTP on their app under "My Orders → Track"</div>
+        </div>
+
+        <div class="input">Notes (optional)</div>
+
+        <div class="btn-primary">Confirm Pickup</div>
+      </div></div>
+    </div>
+
+    <!-- 7. DROP AT FACILITY - NEW -->
+    <div class="phone-wrap">
+      <div class="label new">7 &middot; DROP AT FACILITY &middot; NEW</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>Drop at facility</h2><span class="chip chip-red" style="font-size:.55rem">NEW</span></div>
+
+        <div class="note-warn">
+          <b>⚠ Not built yet</b>
+          After pickup, order sits at <code style="background:#fff;padding:1px 4px;border-radius:3px">PickedUp</code> with no next step.
+        </div>
+
+        <div class="map" style="height:120px"></div>
+
+        <div class="card">
+          <div class="h">Nearest facility</div>
+          <div class="sub">Presso Hub &middot; Baner<br>1.2 km &middot; ETA 5 min</div>
+          <div class="meta"><span class="chip chip-purple">OPEN</span><span>🕐 24/7</span></div>
+        </div>
+
+        <div class="card">
+          <div class="h">Orders in bag</div>
+          <div style="display:flex;justify-content:space-between;font-size:.64rem;color:#0f172a;margin-top:3px">
+            <span>PR-1042 &middot; Ravi</span><span>8 items</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.64rem;color:#0f172a;margin-top:3px">
+            <span>PR-1037 &middot; Amit</span><span>12 items</span>
+          </div>
+        </div>
+
+        <div class="btn-green">Scan Intake QR at Facility</div>
+      </div></div>
+    </div>
+
+    <!-- 8. EARNINGS -->
+    <div class="phone-wrap">
+      <div class="label">8 &middot; EARNINGS</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><h2>Earnings</h2><span class="ic">📅</span></div>
+
+        <div class="card" style="text-align:center;background:linear-gradient(135deg,rgba(8,145,178,.08),rgba(8,145,178,.02));border-color:#0891b2">
+          <div style="font-size:.55rem;color:#64748b;text-transform:uppercase;letter-spacing:.5px;font-weight:600">Today</div>
+          <div style="font-size:1.8rem;font-weight:700;color:#0891b2;margin:4px 0;line-height:1">&#8377;1,240</div>
+          <div style="font-size:.6rem;color:#64748b">12 jobs &middot; 6h 24m online</div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card"><div class="s-val">28</div><div class="s-label">Week jobs</div></div>
+          <div class="stat-card"><div class="s-val">₹4.2k</div><div class="s-label">Week earn</div></div>
+          <div class="stat-card"><div class="s-val">4.9★</div><div class="s-label">Rating</div></div>
+        </div>
+
+        <div class="sec-title">Recent</div>
+
+        <div class="card" style="padding:10px 14px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="h" style="margin-bottom:0">PR-1042 &middot; Pickup</div>
+              <div style="font-size:.58rem;color:#64748b">11:45 &middot; Ravi K</div>
+            </div>
+            <b style="color:#059669;font-size:.75rem">+₹80</b>
+          </div>
+        </div>
+
+        <div class="card" style="padding:10px 14px">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div class="h" style="margin-bottom:0">PR-1039 &middot; Delivery</div>
+              <div style="font-size:.58rem;color:#64748b">10:20 &middot; Priya S</div>
+            </div>
+            <b style="color:#059669;font-size:.75rem">+₹120</b>
+          </div>
+        </div>
+
+        <div class="bottom-bar">
+          <div class="nav-item"><span class="ic">&#128203;</span>Jobs</div>
+          <div class="nav-item active"><span class="ic">&#128176;</span>Earnings</div>
+          <div class="nav-item"><span class="ic">&#128197;</span>History</div>
+          <div class="nav-item"><span class="ic">&#128100;</span>Account</div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 9. HISTORY LIST (NEW) -->
+    <div class="phone-wrap">
+      <div class="label new">9 &middot; HISTORY LIST &middot; NEW</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><h2>History</h2><span class="ic">🔍</span><span class="ic">📅</span></div>
+
+        <div class="tab-row" style="margin-top:12px">
+          <div class="tab active">All &middot; 47</div>
+          <div class="tab">Pickups</div>
+          <div class="tab">Deliveries</div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div class="h">PR-1042 &middot; Pickup</div>
+            <span class="chip chip-blue">WASHING</span>
+          </div>
+          <div class="sub">Ravi Kumar &middot; 8 items<br>Today 11:50 &middot; +&#8377;80</div>
+          <div style="display:flex;gap:3px;margin-top:8px;align-items:center">
+            <div style="width:6px;height:6px;border-radius:50%;background:#059669"></div>
+            <div style="height:2px;flex:1;background:#059669"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#059669"></div>
+            <div style="height:2px;flex:1;background:#059669"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#059669"></div>
+            <div style="height:2px;flex:1;background:#0891b2"></div>
+            <div style="width:8px;height:8px;border-radius:50%;background:#0891b2;box-shadow:0 0 0 2px rgba(8,145,178,.2)"></div>
+            <div style="height:2px;flex:1;background:#e2e8f0"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#e2e8f0"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:.52rem;color:#94a3b8;margin-top:4px">
+            <span>Picked</span><span>Facility</span><span>Wash</span><span>OFD</span><span>Done</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div class="h">PR-1028 &middot; Delivery</div>
+            <span class="chip chip-green">DELIVERED</span>
+          </div>
+          <div class="sub">Priya Sharma &middot; 6 items<br>Yesterday 14:20 &middot; +&#8377;120</div>
+          <div style="display:flex;gap:3px;margin-top:8px;align-items:center">
+            <div style="width:6px;height:6px;border-radius:50%;background:#059669"></div>
+            <div style="height:2px;flex:1;background:#059669"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#059669"></div>
+            <div style="height:2px;flex:1;background:#059669"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#059669"></div>
+            <div style="height:2px;flex:1;background:#059669"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#059669"></div>
+            <div style="height:2px;flex:1;background:#059669"></div>
+            <div style="width:6px;height:6px;border-radius:50%;background:#059669"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+            <div class="h">PR-1015 &middot; Pickup</div>
+            <span class="chip chip-green">DELIVERED</span>
+          </div>
+          <div class="sub">Vikram J &middot; 12 items<br>Apr 5 &middot; +&#8377;95</div>
+        </div>
+
+        <div class="bottom-bar">
+          <div class="nav-item"><span class="ic">&#128203;</span>Jobs</div>
+          <div class="nav-item"><span class="ic">&#128176;</span>Earnings</div>
+          <div class="nav-item active"><span class="ic">&#128197;</span>History</div>
+          <div class="nav-item"><span class="ic">&#128100;</span>Account</div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 10. HISTORY DETAIL + LIVE TIMELINE (NEW) -->
+    <div class="phone-wrap">
+      <div class="label new">10 &middot; HISTORY DETAIL &middot; NEW</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>PR-1042</h2><span class="ic">📞</span></div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div class="h" style="margin-bottom:2px">Ravi Kumar</div>
+              <div class="sub">8 garments &middot; Pickup by you</div>
+            </div>
+            <span class="chip chip-blue">WASHING</span>
+          </div>
+          <div class="meta"><span class="chip chip-amber">⚡ Express</span><b style="color:#059669">+&#8377;80</b></div>
+        </div>
+
+        <div class="card">
+          <div class="h" style="margin-bottom:10px">Live status</div>
+          <div class="tracker">
+            <div class="order-step"><div class="step-dot done"></div><div><div class="step-text">Picked up by you</div><div class="step-sub">11:50 &middot; 8 items verified</div></div></div>
+            <div class="order-step"><div class="step-dot done"></div><div><div class="step-text">Dropped at facility</div><div class="step-sub">12:05 &middot; Presso Hub Baner</div></div></div>
+            <div class="order-step"><div class="step-dot active"></div><div><div class="step-text">Washing</div><div class="step-sub">Started 12:20 &middot; in progress</div></div></div>
+            <div class="order-step"><div class="step-dot"></div><div><div class="step-text">Ironing</div></div></div>
+            <div class="order-step"><div class="step-dot"></div><div><div class="step-text">Out for delivery</div></div></div>
+            <div class="order-step"><div class="step-dot"></div><div><div class="step-text">Delivered</div></div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="h">Your pickup proof</div>
+          <div class="photo-grid" style="padding:0;margin-top:6px">
+            <div class="photo-cell filled"><span class="emoji">✓</span>Front</div>
+            <div class="photo-cell filled"><span class="emoji">✓</span>Back</div>
+          </div>
+          <div class="sub" style="margin-top:6px">Count recorded: 8 &middot; OTP verified at 11:52</div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 11. CONCURRENCY BLOCK (NEW) -->
+    <div class="phone-wrap">
+      <div class="label new">11 &middot; JOB LOCKED &middot; NEW</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>Offer expired</h2></div>
+
+        <div style="text-align:center;padding:40px 24px 16px">
+          <div style="font-size:2.6rem;margin-bottom:6px">🔒</div>
+          <div style="font-size:.95rem;font-weight:700;color:#0f172a">This job was reassigned</div>
+          <div style="font-size:.62rem;color:#64748b;margin-top:4px;line-height:1.5">
+            You didn't accept in time, so PR-1042 was auto-released to another available rider.
+          </div>
+        </div>
+
+        <div class="note-warn">
+          <b>⚠ Why this exists</b>
+          Backend enforces optimistic concurrency on <code style="background:#fff;padding:1px 4px;border-radius:3px">OrderAssignment.Status</code>. Only the first Accept wins — the second gets this screen.
+        </div>
+
+        <div class="card" style="background:rgba(8,145,178,.05);border-color:rgba(8,145,178,.3)">
+          <div class="h" style="color:#0891b2">💡 Tip</div>
+          <div class="sub">Respond to offers within 60 seconds to keep your acceptance rate high. Your current rate is 94%.</div>
+        </div>
+
+        <div class="btn-primary">Back to Jobs</div>
+      </div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== SECTION: FACILITY ==================== -->
+<div id="sec-facility" class="flow-section">
+  <div class="flow-title">Facility Staff App</div>
+  <div class="flow-sub">Scan intake &rarr; Process &rarr; Dispatch for delivery <span style="color:#dc2626">&middot; API not built</span></div>
+
+  <div class="phone-row">
+
+    <!-- 9. SCAN -->
+    <div class="phone-wrap">
+      <div class="label">9 &middot; SCAN INTAKE</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>Scan intake</h2><span class="ic" style="color:#7c3aed">💡</span></div>
+
+        <div style="text-align:center;font-size:.6rem;color:#64748b;padding:8px 14px">Point camera at order QR code on the bag</div>
+
+        <div class="scanframe"><div class="line"></div></div>
+
+        <div class="card">
+          <div class="h">Last scanned</div>
+          <div class="row-flex">
+            <div class="avatar" style="width:30px;height:30px;font-size:.62rem;background:linear-gradient(135deg,#7c3aed,#a855f7)">AJ</div>
+            <div class="info"><b>PR-1037 &middot; Amit J</b><span>12 items &middot; 2 min ago</span></div>
+            <span class="chip chip-green">✓</span>
+          </div>
+        </div>
+
+        <div class="btn-outline" style="color:#7c3aed;border-color:#7c3aed">Enter order number manually</div>
+      </div></div>
+    </div>
+
+    <!-- 10. RECEIVE -->
+    <div class="phone-wrap">
+      <div class="label">10 &middot; RECEIVE</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>Receive order</h2></div>
+
+        <div class="card" style="text-align:center;background:rgba(124,58,237,.05);border-color:rgba(124,58,237,.3)">
+          <div style="font-size:2rem;margin-bottom:4px">📦</div>
+          <div class="h" style="color:#7c3aed;font-size:.9rem">PR-1042</div>
+          <div class="sub">Ravi Kumar &middot; Pickup from Baner</div>
+        </div>
+
+        <div class="card">
+          <div class="h">Expected items (8)</div>
+          <div style="font-size:.64rem;color:#0f172a;line-height:1.7">
+            • 3 Shirts — Wash &amp; Iron<br>
+            • 2 Pants — Wash &amp; Iron<br>
+            • 1 Kurta — Dry clean<br>
+            • 2 Shoes — Clean &amp; polish
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="h">Dropped by</div>
+          <div class="row-flex">
+            <div class="avatar" style="width:30px;height:30px;font-size:.62rem">SM</div>
+            <div class="info"><b>Suresh M</b><span>4.8★ &middot; Rider</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="h">Actual count received</div>
+          <div class="counter">
+            <div class="ctrl" style="color:#7c3aed">−</div>
+            <b class="num" style="color:#7c3aed">8</b>
+            <div class="ctrl" style="color:#7c3aed">+</div>
+          </div>
+        </div>
+
+        <div class="btn-purple">Confirm Receive</div>
+      </div></div>
+    </div>
+
+    <!-- 11. ORDERS BOARD -->
+    <div class="phone-wrap">
+      <div class="label">11 &middot; ORDERS BOARD</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><h2>Orders</h2><span class="ic" style="color:#7c3aed">📷</span><span class="ic" style="color:#7c3aed">🔔</span></div>
+
+        <div class="stats-row">
+          <div class="stat-card"><div class="s-val" style="color:#7c3aed">12</div><div class="s-label">Received</div></div>
+          <div class="stat-card"><div class="s-val" style="color:#7c3aed">8</div><div class="s-label">Washing</div></div>
+          <div class="stat-card"><div class="s-val" style="color:#7c3aed">5</div><div class="s-label">Ready</div></div>
+        </div>
+
+        <div class="chips-row">
+          <span class="chip" style="background:#7c3aed;color:#fff">All</span>
+          <span class="chip" style="background:#f1f5f9;color:#64748b">Received</span>
+          <span class="chip" style="background:#f1f5f9;color:#64748b">Washing</span>
+          <span class="chip" style="background:#f1f5f9;color:#64748b">Ironing</span>
+          <span class="chip" style="background:#f1f5f9;color:#64748b">Ready</span>
+        </div>
+
+        <div class="input">🔍 Search order or customer…</div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="h" style="margin:0">PR-1042</div>
+            <span class="chip chip-purple">AT FACILITY</span>
+          </div>
+          <div class="sub">Ravi &middot; 8 items &middot; Express</div>
+          <div class="meta"><span>📥 2 min ago</span><span style="color:#7c3aed">›</span></div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="h" style="margin:0">PR-1040</div>
+            <span class="chip chip-blue">WASHING</span>
+          </div>
+          <div class="sub">Anu &middot; 6 items</div>
+          <div class="meta"><span>🧼 22 min</span><span style="color:#7c3aed">›</span></div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div class="h" style="margin:0">PR-1038</div>
+            <span class="chip chip-amber">IRONING</span>
+          </div>
+          <div class="sub">Vikram &middot; 4 items</div>
+          <div class="meta"><span>♨ 1h 12m</span><span style="color:#7c3aed">›</span></div>
+        </div>
+
+        <div class="bottom-bar">
+          <div class="nav-item active" style="color:#7c3aed"><span class="ic">&#128203;</span>Orders</div>
+          <div class="nav-item"><span class="ic">📷</span>Scan</div>
+          <div class="nav-item"><span class="ic">&#128100;</span>Account</div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 12. ORDER DETAIL -->
+    <div class="phone-wrap">
+      <div class="label">12 &middot; ORDER DETAIL</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>PR-1042</h2><span class="ic" style="color:#7c3aed">⋯</span></div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div class="h" style="margin-bottom:2px">Ravi Kumar</div>
+              <div class="sub">8 garments &middot; &#8377;420</div>
+            </div>
+            <span class="chip chip-purple">AT FACILITY</span>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:8px">
+            <span class="chip chip-amber">⚡ Express</span>
+            <span class="chip chip-teal">Baner</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="h">Items</div>
+          <div style="font-size:.64rem;color:#0f172a;line-height:1.7">
+            • 3 Shirts (Wash + Iron)<br>
+            • 2 Pants (Wash + Iron)<br>
+            • 1 Kurta (Dry clean)<br>
+            • 2 Shoes (Clean)
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="h" style="margin-bottom:10px">Progress</div>
+          <div class="tracker">
+            <div class="order-step"><div class="step-dot done"></div><div><div class="step-text">Received</div><div class="step-sub">11:50 &middot; Suresh M</div></div></div>
+            <div class="order-step"><div class="step-dot active"></div><div><div class="step-text">Washing</div><div class="step-sub">Started 12:05</div></div></div>
+            <div class="order-step"><div class="step-dot"></div><div><div class="step-text">Ironing</div></div></div>
+            <div class="order-step"><div class="step-dot"></div><div><div class="step-text">Ready for delivery</div></div></div>
+          </div>
+        </div>
+
+        <div class="btn-purple">Move to Ironing →</div>
+      </div></div>
+    </div>
+
+    <!-- 13. SHOE QC -->
+    <div class="phone-wrap">
+      <div class="label">13 &middot; SHOE QC</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>Shoe inspection</h2></div>
+
+        <div class="card">
+          <div class="h">Nike Air &middot; Item #1 of 2</div>
+          <div class="sub">PR-1042 &middot; Ravi Kumar</div>
+        </div>
+
+        <div class="sec-title">Before photos</div>
+        <div class="photo-grid">
+          <div class="photo-cell filled" style="border-color:#7c3aed;background:rgba(124,58,237,.04);color:#7c3aed"><span class="emoji">✓</span>Top</div>
+          <div class="photo-cell filled" style="border-color:#7c3aed;background:rgba(124,58,237,.04);color:#7c3aed"><span class="emoji">✓</span>Sole</div>
+          <div class="photo-cell"><span class="emoji">📷</span>Side L</div>
+          <div class="photo-cell"><span class="emoji">📷</span>Side R</div>
+        </div>
+
+        <div class="card">
+          <div class="h">Condition</div>
+          <div style="display:flex;gap:6px;margin-top:6px">
+            <span class="chip" style="background:#7c3aed;color:#fff">Good</span>
+            <span class="chip" style="background:#f1f5f9;color:#64748b">Worn</span>
+            <span class="chip" style="background:#f1f5f9;color:#64748b">Damaged</span>
+          </div>
+        </div>
+
+        <div class="input">Minor scuff on right toe</div>
+
+        <div class="btn-purple">Save &amp; Next Item</div>
+      </div></div>
+    </div>
+
+    <!-- 14. DISPATCH - NEW -->
+    <div class="phone-wrap">
+      <div class="label new">14 &middot; DISPATCH &middot; NEW</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>Dispatch</h2><span class="chip chip-red" style="font-size:.55rem">NEW</span></div>
+
+        <div class="card" style="text-align:center;background:rgba(5,150,105,.05);border-color:rgba(5,150,105,.3)">
+          <div style="font-size:1.8rem;line-height:1">✓</div>
+          <div class="h" style="color:#059669;font-size:.85rem;margin-top:4px">PR-1042 ready</div>
+          <div class="sub">All 8 items packed &middot; sealed</div>
+        </div>
+
+        <div class="sec-title">Proof of packing</div>
+        <div class="photo-grid">
+          <div class="photo-cell filled"><span class="emoji">✓</span>Packed bag</div>
+          <div class="photo-cell filled"><span class="emoji">✓</span>Label</div>
+        </div>
+
+        <div class="note-warn">
+          <b>⚠ Missing dispatcher</b>
+          When staff releases, backend must auto-create a delivery <code style="background:#fff;padding:1px 4px;border-radius:3px">OrderAssignment</code>. No code does this today.
+        </div>
+
+        <div class="card">
+          <div class="h">Suggested rider</div>
+          <div class="row-flex">
+            <div class="avatar" style="width:30px;height:30px;font-size:.62rem">SM</div>
+            <div class="info"><b>Suresh M</b><span>4.8★ &middot; 2.1 km away</span></div>
+            <span class="chip chip-green">ONLINE</span>
+          </div>
+        </div>
+
+        <div class="btn-purple">Release for Delivery</div>
+      </div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ==================== SECTION: CUSTOMER ==================== -->
+<div id="sec-customer" class="flow-section">
+  <div class="flow-title">Customer Tracking</div>
+  <div class="flow-sub">Live tracking &rarr; Delivery OTP &rarr; Complete &amp; earn coins</div>
+
+  <div class="phone-row">
+
+    <!-- 15. TRACKING -->
+    <div class="phone-wrap">
+      <div class="label">15 &middot; LIVE TRACKING</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>Track order</h2><span class="ic">📞</span></div>
+
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div>
+              <div class="h" style="margin-bottom:2px">PR-1042</div>
+              <div class="sub">8 garments &middot; &#8377;420</div>
+            </div>
+            <span class="chip chip-blue">WASHING</span>
+          </div>
+        </div>
+
+        <div class="map" style="height:120px"></div>
+
+        <div class="card">
+          <div class="h" style="margin-bottom:10px">Progress</div>
+          <div class="tracker">
+            <div class="order-step"><div class="step-dot done"></div><div><div class="step-text">Order placed</div><div class="step-sub">Today 10:15</div></div></div>
+            <div class="order-step"><div class="step-dot done"></div><div><div class="step-text">Picked up</div><div class="step-sub">11:50 by Suresh</div></div></div>
+            <div class="order-step"><div class="step-dot done"></div><div><div class="step-text">At facility</div><div class="step-sub">12:05</div></div></div>
+            <div class="order-step"><div class="step-dot active"></div><div><div class="step-text">Washing</div><div class="step-sub">ETA 2h</div></div></div>
+            <div class="order-step"><div class="step-dot"></div><div><div class="step-text">Out for delivery</div></div></div>
+            <div class="order-step"><div class="step-dot"></div><div><div class="step-text">Delivered</div></div></div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 16. DELIVERY OTP -->
+    <div class="phone-wrap">
+      <div class="label">16 &middot; DELIVERY OTP</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><span class="back">&larr;</span><h2>Delivery OTP</h2></div>
+
+        <div style="text-align:center;padding:24px 20px 10px">
+          <div style="font-size:2.4rem;margin-bottom:6px">🚪</div>
+          <div style="font-size:.95rem;font-weight:700;color:#0f172a">Rider at your door</div>
+          <div style="font-size:.62rem;color:#64748b;margin-top:3px">Share this OTP to receive your order</div>
+        </div>
+
+        <div class="otp-row" style="margin:10px 14px 18px">
+          <div class="active" style="width:48px;height:60px;font-size:1.5rem">4</div>
+          <div class="active" style="width:48px;height:60px;font-size:1.5rem">8</div>
+          <div class="active" style="width:48px;height:60px;font-size:1.5rem">2</div>
+          <div class="active" style="width:48px;height:60px;font-size:1.5rem">9</div>
+        </div>
+
+        <div class="card">
+          <div class="row-flex">
+            <div class="avatar">SM</div>
+            <div class="info"><b>Suresh M</b><span>4.8★ &middot; Presso Rider</span></div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px">
+            <div class="btn-outline" style="flex:1;margin:0;padding:8px">📞 Call</div>
+            <div class="btn-outline" style="flex:1;margin:0;padding:8px">💬 Chat</div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 17. DELIVERED -->
+    <div class="phone-wrap">
+      <div class="label">17 &middot; DELIVERED</div>
+      <div class="phone"><div class="notch"></div><div class="screen">
+        <div class="sb"><span>9:41</span><span>100%</span></div>
+        <div class="ab"><h2>Delivered ✓</h2></div>
+
+        <div style="text-align:center;padding:20px 20px 10px">
+          <div style="font-size:2.6rem;margin-bottom:4px">🎉</div>
+          <div style="font-size:1rem;font-weight:700;color:#0f172a">Order complete</div>
+          <div style="font-size:.6rem;color:#64748b;margin-top:2px">PR-1042 &middot; delivered 14:22</div>
+        </div>
+
+        <div class="card" style="text-align:center;background:linear-gradient(135deg,rgba(234,179,8,.1),rgba(234,179,8,.02));border-color:#ca8a04">
+          <div style="font-size:1.4rem">🪙</div>
+          <div class="h" style="color:#ca8a04;font-size:1rem;margin-top:4px">+21 coins earned</div>
+          <div class="sub">5% of &#8377;420 &middot; added to wallet</div>
+        </div>
+
+        <div class="card" style="text-align:center">
+          <div class="h">Rate your experience</div>
+          <div style="font-size:1.6rem;letter-spacing:4px;margin-top:4px">⭐⭐⭐⭐⭐</div>
+          <div style="font-size:.55rem;color:#94a3b8;margin-top:3px">Tap stars to rate</div>
+        </div>
+
+        <div class="input">Tell us more (optional)…</div>
+
+        <div class="btn-primary">Submit &amp; Repeat Order</div>
+      </div></div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="info">
+  <div><span>Presso · Operations Wireframes</span></div>
+  <div class="legend-note">
+    Screens <b>7</b> (Rider drop-at-facility) and <b>14</b> (Facility dispatch) are marked <b style="color:#dc2626">NEW</b> — these are the missing handoff screens in the current codebase.
+    All facility screens fail today because <code>/api/facility/*</code> endpoints don't exist on the backend.
+    Status labels here (At Facility / Washing / Ironing / Ready) match the Flutter app; the API enum uses <code>InProcess / ReadyForDelivery</code> — pick one vocabulary before building.
+  </div>
+</footer>
+
+<script>
+function showSection(e,id){
+  document.querySelectorAll('.flow-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  document.querySelectorAll('.top-bar .nav button').forEach(b=>b.classList.remove('active'));
+  e.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
