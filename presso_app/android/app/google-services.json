@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1041835508819",
+    "project_id": "presso-3a169",
+    "storage_bucket": "presso-3a169.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041835508819:android:3accbbb32f43f64264b2a6",
+        "android_client_info": {
+          "package_name": "com.presso.presso_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlCFdU4j_GRx1NXLZM_vWzwZT4kk6pICs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041835508819:android:de47e92c98c610d664b2a6",
+        "android_client_info": {
+          "package_name": "presso.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlCFdU4j_GRx1NXLZM_vWzwZT4kk6pICs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
