@@ -1,5 +1,7 @@
 class ApiConstants {
-  // Use Mac's network IP — works for both physical devices and desktop
+  // Toggle between local dev and Render production:
+  // Local:  'http://192.168.29.63:5181'
+  // Render: 'https://presso-api.onrender.com'
   static const String baseUrl = 'http://192.168.29.63:5181';
 
   // Auth

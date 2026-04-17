@@ -15,6 +15,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:presso_operations/core/constants/app_colors.dart';
 import 'package:presso_operations/features/rider/data/photo_upload_queue.dart';
+import 'package:presso_operations/features/rider/presentation/providers/jobs_provider.dart';
 
 class PhotoCaptureScreen extends ConsumerStatefulWidget {
   final String assignmentId;
@@ -369,10 +370,21 @@ class _PhotoCaptureScreenState extends ConsumerState<PhotoCaptureScreen> {
           child: ElevatedButton(
             onPressed: canContinue
                 ? () {
-                    context.push(
-                      '/rider/job/${widget.assignmentId}/garment-confirm',
-                      extra: total,
-                    );
+                    final jobAsync = ref.read(jobDetailProvider(widget.assignmentId));
+                    final hasShoeItems = jobAsync.valueOrNull?.order?.hasShoeItems ?? false;
+                    final shoeItems = jobAsync.valueOrNull?.order?.shoeItems ?? [];
+
+                    if (hasShoeItems && shoeItems.isNotEmpty) {
+                      context.push(
+                        '/rider/job/${widget.assignmentId}/shoe-photos',
+                        extra: shoeItems,
+                      );
+                    } else {
+                      context.push(
+                        '/rider/job/${widget.assignmentId}/garment-confirm',
+                        extra: total,
+                      );
+                    }
                   }
                 : null,
             style: ElevatedButton.styleFrom(

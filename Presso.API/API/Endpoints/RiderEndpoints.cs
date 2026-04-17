@@ -772,12 +772,16 @@ public static class RiderEndpoints
             return Result<bool>.Success(true).ToResult();
         });
 
-        // Upload shoe photos (dev stub)
+        // Upload shoe photos — stores in a shoe-photos/{orderId}/ folder and
+        // appends URLs to the order's PickupPhotoUrls alongside garment photos.
         group.MapPost("/me/job/{assignmentId:guid}/shoe-photos", async (
             Guid assignmentId,
+            HttpRequest request,
             ClaimsPrincipal user,
             IRepository<Rider> riderRepo,
-            IRepository<OrderAssignment> assignmentRepo) =>
+            IRepository<OrderAssignment> assignmentRepo,
+            IRepository<Order> orderRepo,
+            IAzureBlobService blobService) =>
         {
             var userId = user.GetUserId();
             var rider = await GetOrCreateRiderAsync(userId, riderRepo);
@@ -786,7 +790,42 @@ public static class RiderEndpoints
                 .FirstOrDefaultAsync(a => a.Id == assignmentId && a.RiderId == rider.Id);
             if (assignment == null) return Result<List<string>>.NotFound("Assignment not found").ToResult();
 
-            return Result<List<string>>.Success(new List<string>()).ToResult();
+            var order = await orderRepo.GetByIdAsync(assignment.OrderId);
+            if (order == null) return Result<List<string>>.NotFound("Order not found").ToResult();
+
+            if (!request.HasFormContentType)
+                return Result<List<string>>.Failure("Content-Type must be multipart/form-data").ToResult();
+
+            var form = await request.ReadFormAsync();
+            var files = form.Files.GetFiles("photos");
+            if (files.Count == 0)
+                return Result<List<string>>.Failure("No photos provided").ToResult();
+
+            var shoeItemId = request.Query["shoeItemId"].FirstOrDefault() ?? "unknown";
+            var folder = $"shoe-photos/{order.Id}/{shoeItemId}/";
+            var newUrls = new List<string>();
+            foreach (var file in files)
+            {
+                if (file.Length > 5 * 1024 * 1024)
+                    return Result<List<string>>.Failure($"File '{file.FileName}' exceeds 5MB limit").ToResult();
+
+                using var stream = file.OpenReadStream();
+                var url = await blobService.UploadPhotoAsync(
+                    stream,
+                    file.FileName,
+                    file.ContentType ?? "image/jpeg",
+                    folder);
+                newUrls.Add(url);
+            }
+
+            order.PickupPhotoUrls.AddRange(newUrls);
+            order.PickupPhotoCount = order.PickupPhotoUrls.Count;
+            order.PhotosUploadedAt = DateTime.UtcNow;
+            order.UpdatedAt = DateTime.UtcNow;
+            orderRepo.Update(order);
+            await orderRepo.SaveChangesAsync();
+
+            return Result<List<string>>.Success(newUrls).ToResult();
         }).DisableAntiforgery();
 
         // === ID-based endpoints (admin use) ===
