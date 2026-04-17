@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -468,10 +469,11 @@ class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
                   ),
                 ],
 
-                const SizedBox(height: 16),
-
-                // ── API Environment Toggle ──
-                _buildEnvToggle(),
+                // ── API Environment Toggle (debug only) ──
+                if (kDebugMode) ...[
+                  const SizedBox(height: 16),
+                  _buildEnvToggle(),
+                ],
 
                 const SizedBox(height: 24),
               ],
