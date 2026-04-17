@@ -6,17 +6,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:presso_app/core/constants/app_colors.dart';
 import 'package:presso_app/core/constants/app_text_styles.dart';
+import 'package:presso_app/core/config/env_config.dart';
 import 'package:presso_app/core/widgets/loading_overlay.dart';
 import 'package:presso_app/features/auth/presentation/providers/auth_provider.dart';
 
-class PhoneAuthScreen extends StatefulWidget {
+class PhoneAuthScreen extends ConsumerStatefulWidget {
   const PhoneAuthScreen({super.key});
 
   @override
-  State<PhoneAuthScreen> createState() => _PhoneAuthScreenState();
+  ConsumerState<PhoneAuthScreen> createState() => _PhoneAuthScreenState();
 }
 
-class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
+class _PhoneAuthScreenState extends ConsumerState<PhoneAuthScreen> {
   final _phoneController = TextEditingController();
   final List<TextEditingController> _otpControllers =
       List.generate(4, (_) => TextEditingController());
@@ -467,10 +468,63 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
                   ),
                 ],
 
+                const SizedBox(height: 16),
+
+                // ── API Environment Toggle ──
+                _buildEnvToggle(),
+
                 const SizedBox(height: 24),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEnvToggle() {
+    final env = ref.watch(envConfigProvider);
+    final isLocal = env == ApiEnvironment.local;
+
+    return GestureDetector(
+      onTap: () => ref.read(envConfigProvider.notifier).toggle(),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: isLocal
+              ? AppColors.amber.withOpacity(0.1)
+              : AppColors.green.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isLocal
+                ? AppColors.amber.withOpacity(0.3)
+                : AppColors.green.withOpacity(0.3),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              isLocal ? Icons.computer : Icons.cloud,
+              size: 14,
+              color: isLocal ? AppColors.amber : AppColors.green,
+            ),
+            const SizedBox(width: 6),
+            Text(
+              'API: ${env.label}',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: isLocal ? AppColors.amber : AppColors.green,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Icon(
+              Icons.swap_horiz,
+              size: 14,
+              color: isLocal ? AppColors.amber : AppColors.green,
+            ),
+          ],
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import '../constants/api_constants.dart';
+import '../config/env_config.dart';
 import 'api_interceptor.dart';
 import 'token_storage.dart';
 
@@ -43,8 +44,15 @@ Dio _createDio() {
   return dio;
 }
 
+final _dioInstance = _createDio();
+
 /// Riverpod provider that exposes the configured [Dio] instance.
-final dioProvider = Provider<Dio>((ref) => _createDio());
+/// Watches envConfigProvider so baseUrl updates when you toggle.
+final dioProvider = Provider<Dio>((ref) {
+  final env = ref.watch(envConfigProvider);
+  _dioInstance.options.baseUrl = env.url;
+  return _dioInstance;
+});
 
 /// Storage key constants — shared with [AuthInterceptor].
 const String kAccessTokenKey = 'access_token';

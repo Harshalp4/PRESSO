@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/config/env_config.dart';
 import '../providers/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -71,6 +72,54 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         margin: const EdgeInsets.all(16),
+      ),
+    );
+  }
+
+  Widget _buildEnvToggle() {
+    final env = ref.watch(envConfigProvider);
+    final isLocal = env == ApiEnvironment.local;
+
+    return GestureDetector(
+      onTap: () => ref.read(envConfigProvider.notifier).toggle(),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+        decoration: BoxDecoration(
+          color: isLocal
+              ? AppColors.amber.withOpacity(0.1)
+              : AppColors.green.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isLocal
+                ? AppColors.amber.withOpacity(0.3)
+                : AppColors.green.withOpacity(0.3),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              isLocal ? Icons.computer : Icons.cloud,
+              size: 14,
+              color: isLocal ? AppColors.amber : AppColors.green,
+            ),
+            const SizedBox(width: 6),
+            Text(
+              'API: ${env.label}',
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w600,
+                color: isLocal ? AppColors.amber : AppColors.green,
+              ),
+            ),
+            const SizedBox(width: 4),
+            Icon(
+              Icons.swap_horiz,
+              size: 14,
+              color: isLocal ? AppColors.amber : AppColors.green,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -378,6 +427,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
 
                   const SizedBox(height: 16),
+
+                  // ── API Environment Toggle ──
+                  _buildEnvToggle(),
+
+                  const SizedBox(height: 10),
                   Text(
                     'v1.0.0',
                     style: TextStyle(

@@ -3,13 +3,17 @@ import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/api_constants.dart';
+import '../config/env_config.dart';
 
 final dioClientProvider = Provider<DioClient>((ref) {
   return DioClient();
 });
 
 final dioProvider = Provider<Dio>((ref) {
-  return ref.watch(dioClientProvider).dio;
+  final env = ref.watch(envConfigProvider);
+  final dio = ref.watch(dioClientProvider).dio;
+  dio.options.baseUrl = env.url;
+  return dio;
 });
 
 class DioClient {
