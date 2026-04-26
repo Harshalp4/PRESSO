@@ -12,32 +12,8 @@ import 'package:presso_app/core/widgets/presso_button.dart';
 import 'package:presso_app/features/orders/domain/models/address_model.dart';
 import 'package:presso_app/features/orders/presentation/providers/create_order_provider.dart';
 
-// Fallback dummy addresses for when API is unavailable
-const _fallbackAddresses = [
-  AddressModel(
-    id: 'fallback-home',
-    label: 'Home',
-    addressLine1: '42, Sapphire Heights, MG Road',
-    addressLine2: 'Near City Mall',
-    city: 'Pune',
-    pincode: '411001',
-    isDefault: true,
-    type: 'home',
-    latitude: 18.5204,
-    longitude: 73.8567,
-  ),
-  AddressModel(
-    id: 'fallback-work',
-    label: 'Work',
-    addressLine1: '301, Tech Park Tower B, Hinjewadi Phase 1',
-    city: 'Pune',
-    pincode: '411057',
-    isDefault: false,
-    type: 'work',
-    latitude: 18.5912,
-    longitude: 73.7390,
-  ),
-];
+// No fallback addresses — users must add their own
+const _fallbackAddresses = <AddressModel>[];
 
 // Fetch addresses: API first → auto-create defaults if empty
 final _addressesApiProvider =
@@ -53,28 +29,7 @@ final _addressesApiProvider =
         .whereType<Map<String, dynamic>>()
         .map(AddressModel.fromJson)
         .toList();
-    if (addresses.isNotEmpty) return addresses;
-
-    // No addresses — create default ones via API so they get real IDs
-    final created = <AddressModel>[];
-    for (final fallback in _fallbackAddresses) {
-      try {
-        final createResp = await dio.post(ApiConstants.addresses, data: {
-          'label': fallback.label,
-          'addressLine1': fallback.addressLine1,
-          'addressLine2': fallback.addressLine2,
-          'city': fallback.city,
-          'pincode': fallback.pincode,
-          'isDefault': fallback.isDefault,
-          'latitude': fallback.latitude,
-          'longitude': fallback.longitude,
-        });
-        final createData = createResp.data as Map<String, dynamic>;
-        final payload = createData['data'] as Map<String, dynamic>? ?? createData;
-        created.add(AddressModel.fromJson(payload));
-      } catch (_) {}
-    }
-    if (created.isNotEmpty) return created;
+    return addresses;
   } on DioException {
     // API failed
   }

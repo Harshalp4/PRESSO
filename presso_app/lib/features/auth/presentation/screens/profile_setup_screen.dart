@@ -178,7 +178,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                             fontSize: 14,
                           ),
                           cursorColor: AppColors.primary,
-                          decoration: _inputDecor('Harshal Patil'),
+                          decoration: _inputDecor('John Doe'),
                         ),
 
                         const SizedBox(height: 16),
@@ -218,7 +218,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                             fontSize: 14,
                           ),
                           cursorColor: AppColors.primary,
-                          decoration: _inputDecor('harshal@gmail.com'),
+                          decoration: _inputDecor('john@example.com'),
                         ),
 
                         const SizedBox(height: 20),
