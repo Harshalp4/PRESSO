@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/constants/app_colors.dart';
@@ -20,6 +22,47 @@ import '../widgets/offers_strip.dart';
 import '../widgets/refer_banner.dart';
 import '../widgets/how_it_works_section.dart';
 import '../widgets/suvichar_card.dart';
+
+// ─── GPS area name ───────────────────────────────────────────────────────────
+
+final _gpsAreaProvider = FutureProvider<String?>((ref) async {
+  try {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) return null;
+
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) return null;
+    }
+    if (permission == LocationPermission.deniedForever) return null;
+
+    final position = await Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 10),
+      ),
+    );
+
+    final placemarks = await placemarkFromCoordinates(
+      position.latitude,
+      position.longitude,
+    );
+
+    if (placemarks.isNotEmpty) {
+      final p = placemarks.first;
+      final parts = <String>[];
+      if (p.subLocality != null && p.subLocality!.isNotEmpty) {
+        parts.add(p.subLocality!);
+      }
+      if (p.locality != null && p.locality!.isNotEmpty) {
+        parts.add(p.locality!);
+      }
+      if (parts.isNotEmpty) return parts.join(', ');
+    }
+  } catch (_) {}
+  return null;
+});
 
 // ─── User name from SharedPreferences ─────────────────────────────────────────
 
@@ -54,8 +97,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     _connectSignalR();
-    // Load addresses so the app bar can show the area name
-    Future.microtask(() => ref.read(profileProvider.notifier).loadAddresses());
   }
 
   Future<void> _connectSignalR() async {
@@ -137,6 +178,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   color: AppColors.primary,
                   backgroundColor: AppColors.surface,
                   onRefresh: () async {
+                    ref.invalidate(_gpsAreaProvider);
                     ref.invalidate(activeOrderProvider);
                     ref.invalidate(coinBalanceProvider);
                     ref.invalidate(servicesListProvider);
@@ -226,19 +268,9 @@ class _HomeAppBar extends ConsumerWidget {
     final fullName = ref.watch(authProvider).user?.name ?? userName;
     final initials = _buildInitials(fullName);
 
-    // Get default address area name
-    final addresses = ref.watch(profileProvider).addresses;
-    final defaultAddr = addresses.isEmpty
-        ? null
-        : addresses.firstWhere(
-            (a) => a.isDefault,
-            orElse: () => addresses.first,
-          );
-    final areaName = defaultAddr != null
-        ? (defaultAddr.addressLine2?.isNotEmpty == true
-            ? defaultAddr.addressLine2!
-            : defaultAddr.city)
-        : null;
+    // Get current GPS area name
+    final gpsArea = ref.watch(_gpsAreaProvider);
+    final areaName = gpsArea.valueOrNull;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
