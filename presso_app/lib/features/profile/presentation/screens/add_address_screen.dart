@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/widgets/presso_button.dart';
@@ -32,6 +33,7 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
   bool _isSaving = false;
   bool _isFetchingLocation = false;
   bool _isFetchingPincode = false;
+  GoogleMapController? _mapController;
 
   // Service zone check
   bool? _isServiceable; // null = not checked, true/false = result
@@ -267,6 +269,14 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
       _latitude = position.latitude;
       _longitude = position.longitude;
 
+      // Move map camera to detected location
+      _mapController?.animateCamera(
+        CameraUpdate.newLatLngZoom(
+          LatLng(position.latitude, position.longitude),
+          16,
+        ),
+      );
+
       // Reverse geocode to get address
       try {
         final placemarks = await placemarkFromCoordinates(
@@ -371,100 +381,85 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
             children: [
               const SizedBox(height: 8),
 
-              // ── Map / Location Area ──
-              GestureDetector(
-                onTap: _isFetchingLocation ? null : _useMyLocation,
-                child: Container(
+              // ── Google Map / Location Area ──
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: SizedBox(
                   width: double.infinity,
-                  height: 160,
-                  decoration: BoxDecoration(
-                    color: AppColors.surfaceLight,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: AppColors.cardBorder),
-                  ),
+                  height: 180,
                   child: Stack(
-                    alignment: Alignment.center,
                     children: [
-                      // Center content — either location info or placeholder
+                      // Google Map
+                      GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                          target: _latitude != null && _longitude != null
+                              ? LatLng(_latitude!, _longitude!)
+                              : const LatLng(19.0330, 73.0297), // Navi Mumbai default
+                          zoom: 15,
+                        ),
+                        markers: _latitude != null && _longitude != null
+                            ? {
+                                Marker(
+                                  markerId: const MarkerId('selected'),
+                                  position: LatLng(_latitude!, _longitude!),
+                                  icon: BitmapDescriptor.defaultMarkerWithHue(
+                                      BitmapDescriptor.hueCyan),
+                                ),
+                              }
+                            : {},
+                        onMapCreated: (controller) => _mapController = controller,
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: false,
+                        zoomControlsEnabled: false,
+                        mapToolbarEnabled: false,
+                        scrollGesturesEnabled: false,
+                        rotateGesturesEnabled: false,
+                        tiltGesturesEnabled: false,
+                        zoomGesturesEnabled: false,
+                      ),
+
+                      // Loading overlay
                       if (_isFetchingLocation)
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const SizedBox(
-                              width: 28,
-                              height: 28,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2.5,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    AppColors.primary),
+                        Container(
+                          color: Colors.white.withOpacity(0.7),
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2.5,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  AppColors.primary),
+                            ),
+                          ),
+                        ),
+
+                      // Location preview text
+                      if (_locationPreview != null)
+                        Positioned(
+                          bottom: 44,
+                          left: 12,
+                          right: 12,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 6),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              _locationPreview!,
+                              style: AppTextStyles.bodySmall.copyWith(
+                                fontWeight: FontWeight.w600,
                               ),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
-                            const SizedBox(height: 10),
-                            Text(
-                              'Fetching your location...',
-                              style: AppTextStyles.bodySmall
-                                  .copyWith(color: AppColors.textSecondary),
-                            ),
-                          ],
-                        )
-                      else if (_locationPreview != null)
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.location_on_rounded,
-                              color: AppColors.primary,
-                              size: 32,
-                            ),
-                            const SizedBox(height: 6),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16),
-                              child: Text(
-                                _locationPreview!,
-                                style: AppTextStyles.body.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 14,
-                                ),
-                                textAlign: TextAlign.center,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            if (_latitude != null) ...[
-                              const SizedBox(height: 4),
-                              Text(
-                                '${_latitude!.toStringAsFixed(5)}, ${_longitude!.toStringAsFixed(5)}',
-                                style: AppTextStyles.caption.copyWith(
-                                  color: AppColors.textSecondary,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ],
-                          ],
-                        )
-                      else
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.map_rounded,
-                              color: AppColors.textHint,
-                              size: 36,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Tap to detect your location',
-                              style: AppTextStyles.bodySmall
-                                  .copyWith(color: AppColors.textSecondary),
-                            ),
-                          ],
+                          ),
                         ),
 
                       // "Use my location" button
                       Positioned(
-                        bottom: 12,
-                        right: 12,
+                        bottom: 8,
+                        right: 8,
                         child: GestureDetector(
                           onTap: _isFetchingLocation ? null : _useMyLocation,
                           child: Container(
@@ -474,6 +469,13 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
                               color: AppColors.surface,
                               borderRadius: BorderRadius.circular(8),
                               border: Border.all(color: AppColors.primary),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,

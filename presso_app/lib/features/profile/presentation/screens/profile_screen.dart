@@ -5,12 +5,20 @@ import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_text_styles.dart';
 import '../../../../core/providers/app_config_provider.dart';
 import '../../../../features/auth/presentation/providers/auth_provider.dart';
+import '../providers/profile_provider.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Ensure addresses are loaded for the count
+    ref.listen(profileProvider, (_, __) {});
+    final profileState = ref.watch(profileProvider);
+    if (profileState.addresses.isEmpty && !profileState.addressLoading) {
+      Future.microtask(() => ref.read(profileProvider.notifier).loadAddresses());
+    }
+
     final authState = ref.watch(authProvider);
     final user = authState.user;
 
@@ -220,7 +228,7 @@ class ProfileScreen extends ConsumerWidget {
                     icon: Icons.location_on_rounded,
                     iconColor: AppColors.primary,
                     label: 'Saved addresses',
-                    trailingValue: '2 saved',
+                    trailingValue: '${ref.watch(profileProvider).addresses.length} saved',
                     onTap: () => context.push('/profile/addresses'),
                   ),
                   const _Divider(),
