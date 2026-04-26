@@ -50,8 +50,8 @@ final envConfigProvider =
 class FirebaseAuthToggleNotifier extends StateNotifier<bool> {
   static const _key = 'use_firebase_auth';
 
-  /// Default: false (dummy OTP). Flip to true when APNs is ready.
-  FirebaseAuthToggleNotifier() : super(false) {
+  /// Default: true (real Firebase Phone Auth).
+  FirebaseAuthToggleNotifier() : super(true) {
     _load();
   }
 

@@ -167,31 +167,29 @@ class _AddAddressScreenState extends ConsumerState<AddAddressScreen> {
   Future<void> _save() async {
     if (!_formKey.currentState!.validate()) return;
 
-    // Warn if pincode is not serviceable
+    // Block if pincode is not serviceable
     if (_isServiceable == false && mounted) {
-      final proceed = await showDialog<bool>(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          title: const Text('Area Not Serviceable'),
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
           content: Text(
             _serviceabilityMessage ??
-                'We don\'t currently serve this pincode. '
-                    'You can still save this address, but orders '
-                    'won\'t be accepted for this location.',
+                'We don\'t currently serve this pincode. Please use a Navi Mumbai pincode.',
           ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx, false),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(ctx, true),
-              child: const Text('Save Anyway'),
-            ),
-          ],
+          behavior: SnackBarBehavior.floating,
         ),
       );
-      if (proceed != true) return;
+      return;
+    }
+
+    // Block if serviceability hasn't been checked yet
+    if (_isServiceable == null && _pincodeController.text.trim().length == 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please wait while we verify your pincode.'),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      return;
     }
 
     setState(() => _isSaving = true);
