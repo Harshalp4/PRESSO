@@ -54,6 +54,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   void initState() {
     super.initState();
     _connectSignalR();
+    // Load addresses so the app bar can show the area name
+    Future.microtask(() => ref.read(profileProvider.notifier).loadAddresses());
   }
 
   Future<void> _connectSignalR() async {
@@ -224,8 +226,22 @@ class _HomeAppBar extends ConsumerWidget {
     final fullName = ref.watch(authProvider).user?.name ?? userName;
     final initials = _buildInitials(fullName);
 
+    // Get default address area name
+    final addresses = ref.watch(profileProvider).addresses;
+    final defaultAddr = addresses.isEmpty
+        ? null
+        : addresses.firstWhere(
+            (a) => a.isDefault,
+            orElse: () => addresses.first,
+          );
+    final areaName = defaultAddr != null
+        ? (defaultAddr.addressLine2?.isNotEmpty == true
+            ? defaultAddr.addressLine2!
+            : defaultAddr.city)
+        : null;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
         color: AppColors.surface,
         border: Border(
@@ -234,17 +250,57 @@ class _HomeAppBar extends ConsumerWidget {
       ),
       child: Row(
         children: [
-          // Greeting text
+          // Location + greeting
           Expanded(
-            child: Text(
-              'Hi, $userName! \u{1F44B}',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-                color: AppColors.textPrimary,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Area name row
+                GestureDetector(
+                  onTap: () => context.push('/profile/addresses'),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(
+                        Icons.location_on_rounded,
+                        color: AppColors.primary,
+                        size: 16,
+                      ),
+                      const SizedBox(width: 4),
+                      Flexible(
+                        child: Text(
+                          areaName ?? 'Set your location',
+                          style: const TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(width: 2),
+                      const Icon(
+                        Icons.keyboard_arrow_down_rounded,
+                        color: AppColors.textSecondary,
+                        size: 18,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Hi, $userName! \u{1F44B}',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.textSecondary,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
             ),
           ),
 
