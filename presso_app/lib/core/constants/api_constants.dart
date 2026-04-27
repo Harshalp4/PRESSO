@@ -54,4 +54,7 @@ class ApiConstants {
   // Service Zones
   static const String serviceZoneCheck = '/api/service-zones/check';
   static const String activeServiceZones = '/api/service-zones/active';
+
+  // Error Logs
+  static const String errorLogs = '/api/error-logs';
 }

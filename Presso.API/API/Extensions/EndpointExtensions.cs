@@ -28,6 +28,8 @@ public static class EndpointExtensions
         app.MapConfigEndpoints();
         app.MapServiceZoneEndpoints();
         app.MapAdminServiceZoneEndpoints();
+        app.MapErrorLogEndpoints();
+        app.MapAdminErrorLogEndpoints();
 
         return app;
     }

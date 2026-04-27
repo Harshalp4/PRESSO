@@ -29,6 +29,7 @@ public class AppDbContext : DbContext
     public DbSet<ServiceZone> ServiceZones => Set<ServiceZone>();
     public DbSet<Expense> Expenses => Set<Expense>();
     public DbSet<RiderPayout> RiderPayouts => Set<RiderPayout>();
+    public DbSet<AppErrorLog> AppErrorLogs => Set<AppErrorLog>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,14 +1,30 @@
+import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/router/app_router.dart';
+import 'core/services/error_reporter.dart';
 import 'core/theme/app_theme.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // ── Error Reporter ──────────────────────────────────────────────────────
+  await ErrorReporter().init();
+
+  // Catch Flutter framework errors
+  FlutterError.onError = (details) {
+    FlutterError.presentError(details);
+    ErrorReporter().report(
+      error: details.exceptionAsString(),
+      stackTrace: details.stack?.toString(),
+      screen: details.library,
+      severity: 'fatal',
+    );
+  };
 
   // ── Firebase ──────────────────────────────────────────────────────────────
   try {
@@ -33,10 +49,20 @@ Future<void> main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  runApp(
-    const ProviderScope(
-      child: PressoApp(),
+  // Catch async errors not caught by Flutter framework
+  runZonedGuarded(
+    () => runApp(
+      const ProviderScope(
+        child: PressoApp(),
+      ),
     ),
+    (error, stackTrace) {
+      ErrorReporter().report(
+        error: error.toString(),
+        stackTrace: stackTrace.toString(),
+        severity: 'error',
+      );
+    },
   );
 }
 
