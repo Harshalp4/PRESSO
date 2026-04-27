@@ -234,9 +234,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         const HowItWorksSection(),
                         const SizedBox(height: 16),
 
-                        // ── Daily suvichar ─────────────────────────────
-                        const SuvicharCard(),
-
                         // Bottom padding (accounts for bottom nav bar)
                         const SizedBox(height: 100),
                       ],
