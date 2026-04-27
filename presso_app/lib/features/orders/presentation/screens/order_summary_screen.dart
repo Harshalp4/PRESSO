@@ -715,59 +715,30 @@ class _PaymentBar extends StatelessWidget {
               ),
             ],
 
-            // Pay Online — Razorpay button (always full width)
+            // Cash on Pickup — primary button (Razorpay disabled)
             GestureDetector(
-              onTap: canPay ? onPayOnline : null,
+              onTap: canPay ? onPayCash : null,
               child: Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 14),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   gradient: canPay
-                      ? const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0xFF1E40AF), Color(0xFF3B82F6)])
+                      ? const LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [Color(0xFF0891B2), Color(0xFF0E7490)])
                       : null,
                   color: !canPay ? AppColors.textHint.withOpacity(0.4) : null,
                   boxShadow: canPay
-                      ? [BoxShadow(color: const Color(0xFF3B82F6).withOpacity(0.3), blurRadius: 14, offset: const Offset(0, 4))]
+                      ? [BoxShadow(color: const Color(0xFF0891B2).withOpacity(0.3), blurRadius: 14, offset: const Offset(0, 4))]
                       : null,
-                ),
-                child: Column(
-                  children: [
-                    Text('Pay securely with', style: TextStyle(fontSize: 10, color: Colors.white.withOpacity(canPay ? 0.7 : 0.4))),
-                    const SizedBox(height: 1),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Razorpay', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white.withOpacity(canPay ? 1 : 0.5), letterSpacing: 0.5)),
-                        Text('  \u{00B7}  \u{20B9}${total.toStringAsFixed(0)}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white.withOpacity(canPay ? 1 : 0.5))),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 8),
-
-            // Cash on Delivery — visible secondary button
-            GestureDetector(
-              onTap: canPay ? onPayCash : null,
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 11),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: canPay ? AppColors.surface : AppColors.background,
-                  border: Border.all(color: canPay ? AppColors.primary : AppColors.border, width: canPay ? 1.5 : 1),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.money_rounded, size: 16, color: canPay ? AppColors.primary : AppColors.textHint),
-                    const SizedBox(width: 6),
+                    Icon(Icons.money_rounded, size: 18, color: Colors.white.withOpacity(canPay ? 1 : 0.5)),
+                    const SizedBox(width: 8),
                     Text(
                       'Cash on Pickup \u{00B7} \u{20B9}${total.toStringAsFixed(0)}',
-                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: canPay ? AppColors.primary : AppColors.textHint),
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.white.withOpacity(canPay ? 1 : 0.5)),
                     ),
                   ],
                 ),
